@@ -1,0 +1,161 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" , charset="utf-8"/>
+
+    <style type="text/css">
+        #div1 {
+            width: 488px;
+            height: 70px;
+            padding: 10px;
+            border: 1px solid #aaaaaa;
+        }
+    </style>
+
+    <script src="./3rd/jquery-1.2.6.pack.js"></script>
+    <script src="./3rd/jquery.messager.js"></script>
+</head>
+<body>
+<script async src="index.js"></script>
+
+<script src="test.js"></script>
+Electron平台版本信息：
+<p id='content'></p>
+
+框架版本：
+<div id='mfversion'></div>
+程序版本：
+<div id='appversion'></div>
+
+<fieldset>
+    <legend>PPAPI</legend>
+
+    <input  type="button" value="创建PPAPI插件" onclick="createPlugin()"/>
+    <br/>
+    <input  type="button" value="删除PPAPI插件" onclick="deletePlugin()"/>
+
+    <div id="pluginContainer" >
+        <!--object type="application/x-ppapi-hello" id="pluginId" style="border-style: solid;" width=480 height=300  >
+            <param name="parent" value="00123456" />
+        </object-->
+
+    </div>
+    <br>
+
+    <button onclick="showpdf('http://www.orimi.com/pdf-test.pdf')">阅读pdf文件</button>
+    <!--button onclick="showpdf('E:/11.pdf')">阅读pdf文件</button-->
+    <!--webview src='E:\enginer\resources\app\plugins\pdfjs\web\viewer.html?file=E:/11.pdf'></webview-->
+</fieldset>
+
+
+
+<fieldset>
+    <legend>UI</legend>
+
+    <button onclick="createOtherWindow()">新建窗口</button>
+    <button onclick="shownoti(true,'hello world')">建立原生窗口消息提示</button>
+    <button onclick="shownoti(false,'hello world')">建立JQuery弹出层消息提示</button>
+</fieldset>
+
+<br/>
+
+<fieldset>
+    <legend>窗口间交互</legend>
+    接收的信息：<input type="text" id='recwt-msg' width="200px"/>
+    </br>
+    目标窗口标题：<input type="text" id='target-title' width="200px"/>
+    发送消息内容<input type="text" id='msg'/>
+    <button onclick="sendMessage(document.getElementById('target-title').value,document.getElementById('msg').value)">
+        发送消息给指定标题的窗口
+    </button>
+
+    </br>
+    <button onclick="sendAllMessage(document.getElementById('msg').value)">发送消息给所有窗口</button>
+</fieldset>
+
+</br>
+<fieldset>
+    <legend>剥离子窗口</legend>
+    <link rel="stylesheet" href="tearout.css">
+    <div class="tearout-container gold" id="tearout-container">
+        Name
+        <input type="text"  onChange="this.setAttribute('value', this.value);">
+        Email
+        <input type="text" onChange="this.setAttribute('value', this.value);">
+        </br>
+        <a href="http://www.baidu.com">百度</a>
+    </div>
+    <button onclick="tearout();">剥离</button>
+    <!--button onclick="document.getElementById('tearout-container').style.display=''">显示</button-->
+</fieldset>
+<br/>
+<fieldset>
+    <legend>通讯</legend>
+
+<!--textarea id='networkinfo' readonly
+          style="resize:none;border:1px solid #00f;width:600px;height:150px;overflow-x:visible;overflow-y:visible;">
+</textarea-->
+    </br>
+    <button onclick="ws_connect('127.0.0.1',8088)">连接websocket</button>
+    <button onclick="ws_send('hello websocket server')">发送数据</button>
+    <button onclick="ws_disconnect()">停止websocket</button>
+    </br>
+
+    <button onclick="wss_connect('127.0.0.1',8088)">连接websocket SSL</button>
+    <button onclick="wss_send('hello websocket server')">发送数据</button>
+    <button onclick="wss_disconnect()">停止websocket SSL</button>
+
+    </br>
+    <script src="../common/request.js"></script>
+    <button onclick="http_get('http://localhost:8088')">http get请求</button>
+    <button onclick="http_post('http://localhost:8088')">http post 请求</button>
+
+    </br>
+    <button onclick="https_get('https://127.0.0.1:8088')">https get请求</button>
+    
+    <button onclick="http_ecas('192.168.10.136',8087,'cert2/login.action','erayt','aaa111')">ECAS登录</button>
+    </br>
+    
+    <button onclick="http_proxy('http://101.226.249.237:80')">http代理</button>
+    </br>
+
+    网络状态：
+    <span id='netStatus'> </span>
+    </br>
+
+</fieldset>
+
+<fieldset>
+    <legend>加解密</legend>
+    <button onclick='encryptiontxt("hello world")'>AES加密</button>
+    <button onclick="decryptiontxt('rbiEHxpBXNBO38Y8UbT9sXj5qqh/pbdYl1WJWiWvteXE5kSdbW7XJjS5dlOpI7/zCo8E20NzTGoMoVYDjdXlmbX4h2HEkKZtrR2FDbagUaKaVHBCoX4wiR2CHV3lmEg9Iup442PLb2y5CSDnAIhqiQ==')">
+        AES解密
+    </button>
+
+    <button onclick='md5file("test.js")'>文件签名</button>
+    <button onclick='md5dir()'>文件夹签名</button>
+
+</fieldset>
+
+<br/>
+<fieldset>
+    <legend>C++ 组件</legend>
+    <button onclick="callcppaddon()">调用原生C++组件导出的函数</button>
+
+</fieldset>
+
+<fieldset>
+    <legend>其他</legend>
+    <button onclick="shareobj_set('count',1000)">设置共享值</button>
+    <button onclick="shareobj_get('count')">获取共享值</button>
+    </br>
+
+    <button>导出xls文件</button>
+    <button onclick="exCSV()">导出CSV文本</button>
+</fieldset>
+
+
+<!--object type="application/npdemo-plugin" id="pluginId" width=100% height=150  ></object-->
+<!--embed id="plugin" type="application/x-hello" width="600" height="480"-->
+
+</body>
+</html>

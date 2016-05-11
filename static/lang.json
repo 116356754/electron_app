@@ -1,0 +1,31 @@
+{
+    "en": {
+        "title": "TaiTan",
+        "description": "HTML5 Client For Windows",
+        "settings": "Settings",
+        "error": "Error",
+        "menu": {
+            "about": "About",
+            "help": "Support",
+            "contribute": "Contribute",
+            "bug": "Report a Bug",
+            "devtools": "Debug Tools",
+            "settings": "Preferences",
+            "quit": "Quit"
+        }
+    },
+
+    "cn": {
+        "title": "TaiTan",
+        "description": "基于HTML5的客户端应用程序",
+        "settings": "设置",
+        "error": "错误",
+        "menu": {
+            "about": "关于",
+            "help": "帮助",
+            "bug": "缺陷报告",
+            "devtools": "调试工具",
+            "quit": "退出"
+        }
+    }
+}

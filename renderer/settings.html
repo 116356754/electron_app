@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="../resources/IconLogo.png">
+    <style>
+        body {
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+            background-color: #FFF;
+            padding: 10px 20px;
+            color: #525252;
+            margin: 0;
+        }
+
+        h2 {
+            font-weight: 300;
+            font-size: 28px;
+            margin: 5px 0 20px;
+        }
+
+        h4 {
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+
+        hr {
+            margin: -5px 0 0;
+            border: none;
+            border-top: 1px solid #DDD;
+        }
+
+        blockquote {
+            margin-left: 10px;
+        }
+
+        select {
+            font-family: inherit;
+            width: 176px;
+            height: 30px;
+            font-size: 14px;
+            line-height: 1.4;
+            padding: 5px 14px 4px;
+            margin-top: 5px;
+            color: #525252;
+            border: 1px solid #ededed;
+            overflow: hidden;
+            background-color: white;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        select:focus {
+            outline: none;
+        }
+
+        button {
+            position: absolute;
+            z-index: 20;
+            top: 10px;
+            right: 20px;
+            font: inherit;
+            padding: 5px 14px 4px;
+            margin: 10px 0 10px;
+            color: #FFF;
+            border: 1px solid #4cae4c;
+            background: #5CB85C;
+            text-align: center;
+            cursor: pointer;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        button:hover,button:active {
+            border: 1px solid #4cae4c;
+            background: #63bb63;
+        }
+    </style>
+    <script>
+        window.onbeforeunload = save;
+        var fs = require("fs");
+        var path = require("path");
+        var locale = require("../resources/lang.json");
+        var settings = require("../settings.json");
+        var lang = settings.lang;
+        var settingsPath = path.join(__dirname, "../", "settings.json");
+        var settingsFile = {"lang": "en", "min_alert": "35", "first_run": false, "night_mode": true, "dev_mode": true};
+
+        function save() {
+            try {
+                var form = document.getElementById("settings");
+                var settings = {};
+                settings["lang"] = form["lang"].value;
+                fs.writeFile(settingsPath, JSON.stringify(settings));
+            } catch(err) {
+                alert("There was an error saving your settings: " + err);
+                console.error("Error: " + err);
+            } finally {
+                alert(locale[lang].setup.restart);
+                console.log("Success: Settings Saved.")
+                window.close();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (lang === "en") document.getElementById("lang_en").checked = true;
+            else if (lang === "cn") document.getElementById("lang_cn").checked = true;
+          
+            document.getElementById("lang_eng").innerHTML = locale[lang].setup.english;
+            document.getElementById("lang_zhcn").innerHTML = locale[lang].setup.chinese;
+           
+        });
+    </script>
+</head>
+<body>
+    <h2 id="title">Settings</h2>
+    <hr>
+
+    <form action="javascript:save()" id="settings">
+        <h4><span id="lang_title">Language</a></h4>
+        <blockquote>
+            <label><input type="radio" name="lang" id="lang_en" value="en"> <span id="lang_eng">English</span></label><br>
+            <label><input type="radio" name="lang" id="lang_cn" value="cn"> <span id="lang_zhcn">中文</span></label>
+        </blockquote>
+    </form>
+</body>
+</html>
