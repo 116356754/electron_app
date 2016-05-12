@@ -18,6 +18,7 @@ var electron = require('electron');
 
 var config = require('../config');
 var configStore = require('./user-config');
+
 var menu = require('./menu');
 var fs = require('fs');
 var windowStateKeeper = require('electron-window-state');
@@ -114,13 +115,15 @@ function createMainWindow() {
             win.hide();
         }
 
-        if (!configStore.get('closeToTray')) {
+        var setts = global.sharedObj.setts;
+        if (!setts['closeToTray']) {
             setTimeout(() => electron.app.quit(), 1000);
         }
     });
 
     win.on('minimize', () => {
-        if (configStore.get('minimizeToTray')) {
+        var setts = global.sharedObj.setts;
+        if (setts['minimizeToTray']) {
             win.hide();
         }
     });
@@ -208,8 +211,6 @@ function createNotiWindow(content) {
         var jscode = "document.getElementById('noti-msg').value='" + content + "'";
         console.log(jscode);
         win.webContents.executeJavaScript(jscode);
-
-
     });
 
     //阻止修改通知窗口的标题
@@ -304,11 +305,15 @@ function createSetWindow() {
     console.log('about windows id is:' + win.id);
 
     win.webContents.on('did-finish-load', function () {
-        win.show()
+        win.show();
+        win.toggleDevTools();
     });
 
     win.once('closed', function () {
         windows.set = null;
+
+        console.log(JSON.stringify(global.sharedObj.setts));
+        configStore.save(global.sharedObj.setts);
     })
 }
 

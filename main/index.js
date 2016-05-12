@@ -13,6 +13,10 @@ var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
+
+var setting = require("./user-config");
+
+
 log(config.PPAPI_PATH);
 app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH+'/hello_nacl.dll;application/x-ppapi-hello');
 
@@ -23,7 +27,7 @@ app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH+'/hell
 
 //全局共享数据测试，将数据存在主进程的某个全局变量中，然后在多个渲染进程中使用 remote 模块来访问它
 //share object in render process and main process
-global.sharedObj = {count: ''};
+global.sharedObj = {count: '',setts:{}};
 
 var shouldQuit = false;
 if (!shouldQuit) {
@@ -45,6 +49,8 @@ function init() {
     app.ipcReady = false; // main window has finished loading and IPC is ready
     app.isQuitting = false;
 
+    global.sharedObj.setts =setting.init();//加载配置
+    console.log(JSON.stringify(global.sharedObj.setts));
     ipc.init();
     app.on('will-finish-launching', function (e) {
         log('will-finish-launching');

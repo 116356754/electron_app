@@ -90,36 +90,42 @@
     <script>
         window.onbeforeunload = save;
 
-        var fs = require("fs");
-        var path = require("path");
-        var locale = require("../static/lang.json");
-        var app = require("remote").app;
-        var settingsPath = path.join(app.getPath('userData'), 'settings.json');
-        var settings ={'lang':'en'};//默认值
-
-        if(fs.existsSync(settingsPath))
-            settings = require(settingsPath);
+        var setting = require("../main/user-config");
+        var locale =require("../static/lang.json");
+        var remote = require('electron').remote;
+        var setts = remote.getGlobal('sharedObj').setts;
 
         function save() {
             try {
                 var form = document.getElementById("settings");
-                var settings = {};
-                settings["lang"] = form["lang"].value;
-                fs.writeFile(settingsPath, JSON.stringify(settings));
+                var sets={};
+                sets["lang"]=form["lang"].value;
+                sets["minimizeToTray"]= form["mintray_mode"].checked;
+                sets["closeToTray"]=form["closetray_mode"].checked;
+                remote.getGlobal('sharedObj').setts =sets;
             } catch(err) {
                 alert("There was an error saving your settings: " + err);
                 console.error("Error: " + err);
             } finally {
-                alert(locale[settings["lang"]].restart);
+                alert(locale[setting.settings["lang"]].settings.restart);
                 console.log("Success: Settings Saved.");
                 window.close();
             }
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            var lang = settings.lang;
+            var lang = setts["lang"];
+            //alert(setts);
+            document.getElementById("lang_title").innerHTML = locale[lang].settings.language;
+
             if (lang === "en") document.getElementById("lang_en").checked = true;
             else if (lang === "cn") document.getElementById("lang_cn").checked = true;
+
+            document.getElementById("mintray_title").innerHTML = locale[lang].settings.mintray_title;
+            if (setts["minimizeToTray"]) document.getElementById("mintray_mode").checked = true;
+
+            document.getElementById("closetray_title").innerHTML = locale[lang].settings.closetray_title;
+            if (setts["closeToTray"]) document.getElementById("closetray_mode").checked = true;
         });
     </script>
 </head>
@@ -128,11 +134,25 @@
     <hr>
 
     <form action="javascript:save()" id="settings">
+
         <h4><span id="lang_title">Language</span></h4>
         <blockquote>
             <label><input type="radio" name="lang" id="lang_en" value="en"> English</label><br>
             <label><input type="radio" name="lang" id="lang_cn" value="cn">中文</label>
         </blockquote>
+
+        <br><hr>
+
+        <h4 id="mintray_title">mintray_title</h4>
+        <label><input type="checkbox" name="mintray_mode" id="mintray_mode"> <span id="enable1">Enable</span></label>
+
+        <br>
+
+        <h4 id="closetray_title">closetray_title</h4>
+        <label><input type="checkbox" name="closetray_mode" id="closetray_mode"> <span id="enable2">Enable</span></label>
+
+        <br>
+
     </form>
 </body>
 </html>

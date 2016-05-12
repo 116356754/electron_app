@@ -2,9 +2,14 @@
     "en": {
         "title": "TaiTan",
         "description": "HTML5 Client For Windows",
-        "settings": "Settings",
+        "settings": {
+            "title":"Setting",
+            "language":"Language",
+            "mintray_title":"Minimize to tray",
+            "closetray_title":"Close to tray",
+            "restart":"Please restart Shake to apply your changes."
+        },
         "error": "Error",
-        "restart":"Please restart Shake to apply your changes.",
         "menu": {
             "about": "About",
             "help": "Support",
@@ -19,9 +24,14 @@
     "cn": {
         "title": "TaiTan",
         "description": "基于HTML5的客户端应用程序",
-        "settings": "设置",
+        "settings": {
+            "title":"设置",
+            "language":"语言设置",
+            "mintray_title":"最小化到托盘",
+            "closetray_title":"窗口关闭到托盘",
+            "restart":"请重启来应用更改."
+        },
         "error": "错误",
-        "restart":"请重启来应用更改.",
         "menu": {
             "about": "关于",
             "help": "帮助",
