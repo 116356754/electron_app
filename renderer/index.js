@@ -8,9 +8,14 @@ var config = require('../config');
 var crashReporter = require('../crash-reporter');
 var {setDispatch} = require('./lib/dispatcher');
 setDispatch(dispatch);
-var State = require('./state');
+
 var sound = require('./lib/sound');
 
+var windowState = {
+    bounds: null, /* {x, y, width, height } */
+    isFocused: true,
+    isFullScreen: false
+};
 // This dependency is the slowest-loading, so we lazy load it
 //var Cast = null
 
@@ -22,17 +27,12 @@ var ipcRenderer = electron.ipcRenderer;
 var clipboard = electron.clipboard;
 var dialog = remote.require('dialog');
 
-// For easy debugging in Developer Tools
-var state = global.state = State.getInitialState();
-
 //var vdomLoop
 
 // Report crashes back to our server.
 // Not global JS exceptions, not like Rollbar, handles segfaults/core dumps only
 //crashReporter.init()
 
-// All state lives in state.js. `state.saved` is read from and written to a file.
-// All other state is ephemeral. First we load state.saved then initialize the app.
 init();
 
 /**
@@ -44,7 +44,7 @@ function init () {
   // ...keyboard shortcuts
   document.addEventListener('keydown', function (e) {
     if (e.which === 27) { /* ESC means either exit fullscreen or go back */
-      if (state.window.isFullScreen) {
+      if (windowState.isFullScreen) {
         dispatch('toggleFullScreen')
       }
     }
@@ -61,10 +61,10 @@ function init () {
   console.timeEnd('init');
 }
 
+//预加载音频文件
 function delayedInit () {
   sound.preload();
 }
-
 
 // Events from the UI never modify state directly. Instead they call dispatch()
 function dispatch (action, ...args) {
@@ -89,7 +89,7 @@ function setupIpc () {
   ipcRenderer.on('dispatch', (e, ...args) => dispatch(...args));
 
   ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
-    state.window.isFullScreen = isFullScreen;
+      windowState.isFullScreen = isFullScreen;
   })
 }
 
@@ -97,18 +97,18 @@ function setupIpc () {
 function setDimensions (dimensions) {
   // Don't modify the window size if it's already maximized
   if (remote.getCurrentWindow().isMaximized()) {
-    state.window.bounds = null;
+      windowState.bounds = null;
     return
   }
 
   // Save the bounds of the window for later. See restoreBounds()
-  state.window.bounds = {
+    windowState.bounds = {
     x: window.screenX,
     y: window.screenY,
     width: window.outerWidth,
     height: window.outerHeight
   };
-  state.window.wasMaximized = remote.getCurrentWindow().isMaximized;
+    windowState.wasMaximized = remote.getCurrentWindow().isMaximized;
 
   // Limit window size to screen size
   var screenWidth = window.screen.width;
@@ -131,8 +131,8 @@ function setDimensions (dimensions) {
 
 function restoreBounds () {
   ipcRenderer.send('setAspectRatio', 0);
-  if (state.window.bounds) {
-    ipcRenderer.send('setBounds', state.window.bounds, false)
+  if (windowState.bounds) {
+    ipcRenderer.send('setBounds', windowState.bounds, false)
   }
 }
 

@@ -4,6 +4,7 @@
         "description": "HTML5 Client For Windows",
         "settings": "Settings",
         "error": "Error",
+        "restart":"Please restart Shake to apply your changes.",
         "menu": {
             "about": "About",
             "help": "Support",
@@ -20,6 +21,7 @@
         "description": "基于HTML5的客户端应用程序",
         "settings": "设置",
         "error": "错误",
+        "restart":"请重启来应用更改.",
         "menu": {
             "about": "关于",
             "help": "帮助",

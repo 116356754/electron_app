@@ -33,17 +33,21 @@ module.exports = {
   ROOT_PATH: __dirname,
   STATIC_PATH: path.join(__dirname, 'static'),
 
-  PLUGINS_PATH: path.join(__dirname, 'plugins'),
-  PDF_PLUGINURL:'file://' +path.join(__dirname , 'plugins', 'pdfjs/web/viewer.html?file='),
+  PPAPI_PATH: path.join(process.cwd(), 'ppapi'),
+
+  PDF_PDFURL:'file://' +path.join(__dirname , 'renderer','lib', 'pdfjs/web/viewer.html?file='),
 
   WINDOW_ABOUT: 'file://' + path.join(__dirname, 'renderer', 'about.html'),
   WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'main.html'),
-  //WINDOW_MAIN: 'http://1212.ip138.com/ic.asp',
+
   WINDOW_OTHER: 'file://' + path.join(__dirname, 'renderer', 'other.html'),
   WINDOW_NOTI: 'file://' + path.join(__dirname, 'renderer', 'noti.html'),
+
   WINDOW_TEAROUT: 'file://' + path.join(__dirname, 'renderer', 'tearout.html'),
   TEAROUT_CSS:  path.join(__dirname, 'renderer', 'tearout.css'),
-  
+
+    WINDOW_SET: 'file://' + path.join(__dirname, 'renderer', 'settings.html'),
+
   CA_FILE_PATH: path.join(__dirname, 'common/keys/ca-cert.pem')
 };
 

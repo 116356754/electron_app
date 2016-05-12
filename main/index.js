@@ -13,8 +13,8 @@ var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
-
-app.commandLine.appendSwitch('register-pepper-plugins', config.PLUGINS_PATH+'/hello_nacl.dll;application/x-ppapi-hello');
+log(config.PPAPI_PATH);
+app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH+'/hello_nacl.dll;application/x-ppapi-hello');
 
 //测试chrome浏览器设置代理服务器，然后通过代理访问的url
 //chrome proxy setting

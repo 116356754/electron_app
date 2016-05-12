@@ -84,19 +84,16 @@ function getMenuItem (label) {
 function getAppMenuTemplate () {
   var fileMenu = [
     {
+      label: 'Setting',
+      accelerator: 'CmdOrCtrl+S',
+      click: windows.createSetWindow
+    },
+    {
       label: process.platform === 'windows' ? 'Close' : 'Close Window',
       accelerator: 'CmdOrCtrl+W',
       role: 'close'
     }
   ];
-
-  // File > Quit for Linux users with distros where the system tray is broken
-  if (process.platform === 'linux') {
-    fileMenu.push({
-      label: 'Quit',
-      click: () => app.quit()
-    })
-  }
 
   var template = [
     {

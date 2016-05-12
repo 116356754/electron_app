@@ -4,11 +4,13 @@ var windows = module.exports = {
     other: null,
     noti: null,
     tearout: null,
+    set:null,
     createAboutWindow,
     createMainWindow,
     createOtherWindow,
     createNotiWindow,
     createTearoutWindow,
+    createSetWindow,
     focusWindow
 };
 
@@ -106,7 +108,6 @@ function createMainWindow() {
     win.on('leave-full-screen', () => menu.onToggleFullScreen(false));
 
     win.on('close', function (e) {
-        mainWindowState.saveState(win);
         if (!electron.app.isQuitting) {
             e.preventDefault();
             win.send('dispatch', 'pause');
@@ -124,7 +125,7 @@ function createMainWindow() {
         }
     });
 
-    win.once('closed', function () {
+    win.on('closed', function () {
         windows.main = null;
     })
 }
@@ -272,6 +273,43 @@ function createTearoutWindow(url, dom) {
         //show sub dom
         windows.main.webContents.executeJavaScript("document.getElementById('tearout-container').style.display=''");
     });
+}
+
+function createSetWindow() {
+    if (windows.set) {
+        return focusWindow(windows.set)
+    }
+    var win = windows.set = new electron.BrowserWindow({
+        //backgroundColor: '#ECECEC',
+        show: false,
+        center: true,
+        resizable: false,
+        icon: config.APP_ICON + '.png',
+        title: process.platform !== 'darwin'
+            ? 'About ' + config.APP_WINDOW_TITLE
+            : '',
+        useContentSize: true, // Specify web page size without OS chrome
+        width: 500,
+        height: 550,
+        minimizable: false,
+        maximizable: false,
+        fullscreen: false,
+        skipTaskbar: false
+    });
+
+    win.loadURL(config.WINDOW_SET);
+
+    // No window menu
+    win.setMenu(null);
+    console.log('about windows id is:' + win.id);
+
+    win.webContents.on('did-finish-load', function () {
+        win.show()
+    });
+
+    win.once('closed', function () {
+        windows.set = null;
+    })
 }
 
 function focusWindow(win) {

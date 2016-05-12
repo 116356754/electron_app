@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" type="image/png" href="../resources/IconLogo.png">
+    <title>Taitan Settings</title>
     <style>
         body {
             font-family: "Arial", "Helvetica", sans-serif;
@@ -88,13 +89,16 @@
     </style>
     <script>
         window.onbeforeunload = save;
+
         var fs = require("fs");
         var path = require("path");
-        var locale = require("../resources/lang.json");
-        var settings = require("../settings.json");
-        var lang = settings.lang;
-        var settingsPath = path.join(__dirname, "../", "settings.json");
-        var settingsFile = {"lang": "en", "min_alert": "35", "first_run": false, "night_mode": true, "dev_mode": true};
+        var locale = require("../static/lang.json");
+        var app = require("remote").app;
+        var settingsPath = path.join(app.getPath('userData'), 'settings.json');
+        var settings ={'lang':'en'};//默认值
+
+        if(fs.existsSync(settingsPath))
+            settings = require(settingsPath);
 
         function save() {
             try {
@@ -106,19 +110,16 @@
                 alert("There was an error saving your settings: " + err);
                 console.error("Error: " + err);
             } finally {
-                alert(locale[lang].setup.restart);
-                console.log("Success: Settings Saved.")
+                alert(locale[settings["lang"]].restart);
+                console.log("Success: Settings Saved.");
                 window.close();
             }
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+            var lang = settings.lang;
             if (lang === "en") document.getElementById("lang_en").checked = true;
             else if (lang === "cn") document.getElementById("lang_cn").checked = true;
-          
-            document.getElementById("lang_eng").innerHTML = locale[lang].setup.english;
-            document.getElementById("lang_zhcn").innerHTML = locale[lang].setup.chinese;
-           
         });
     </script>
 </head>
@@ -127,10 +128,10 @@
     <hr>
 
     <form action="javascript:save()" id="settings">
-        <h4><span id="lang_title">Language</a></h4>
+        <h4><span id="lang_title">Language</span></h4>
         <blockquote>
-            <label><input type="radio" name="lang" id="lang_en" value="en"> <span id="lang_eng">English</span></label><br>
-            <label><input type="radio" name="lang" id="lang_cn" value="cn"> <span id="lang_zhcn">中文</span></label>
+            <label><input type="radio" name="lang" id="lang_en" value="en"> English</label><br>
+            <label><input type="radio" name="lang" id="lang_cn" value="cn">中文</label>
         </blockquote>
     </form>
 </body>

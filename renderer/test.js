@@ -203,7 +203,7 @@ function showpdf(pdfurl){
         autoHideMenuBar:true
     });
 
-    win.loadURL(config.PDF_PLUGINURL+pdfurl);
+    win.loadURL(config.PDF_PDFURL+pdfurl);
 
     win.on('closed', function() {
         win = null;
