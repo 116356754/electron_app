@@ -17,7 +17,7 @@ var windows = module.exports = {
 var electron = require('electron');
 
 var config = require('../config');
-var configStore = require('./user-config');
+var configStore = require('./usersetting');
 
 var menu = require('./menu');
 var fs = require('fs');
@@ -116,6 +116,7 @@ function createMainWindow() {
         }
 
         var setts = global.sharedObj.setts;
+        console.log(setts['closeToTray']);
         if (!setts['closeToTray']) {
             setTimeout(() => electron.app.quit(), 1000);
         }
@@ -123,6 +124,7 @@ function createMainWindow() {
 
     win.on('minimize', () => {
         var setts = global.sharedObj.setts;
+        console.log(setts['minimizeToTray']);
         if (setts['minimizeToTray']) {
             win.hide();
         }
@@ -306,7 +308,7 @@ function createSetWindow() {
 
     win.webContents.on('did-finish-load', function () {
         win.show();
-        win.toggleDevTools();
+        //win.toggleDevTools();
     });
 
     win.once('closed', function () {

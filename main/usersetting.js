@@ -10,7 +10,7 @@ function readConfigFile() {
     try {
         con = JSON.parse(fs.readFileSync(configFile));
     } catch (err) {
-        con = {'lang': 'en', "minimizeToTray": false, "closeToTray": false};
+        con = {'lang': 'en', "minimizeToTray": false, "closeToTray": false};//默认用户的配置
     }
     //console.log(JSON.stringify(con));
     return con;

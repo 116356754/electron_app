@@ -11,13 +11,26 @@
         },
         "error": "Error",
         "menu": {
-            "about": "About",
+            "file":"File",
+            "setting":"Setting",
+            "minimize":"Minimize",
+            "close":"Close",
+
+
+            "view":"View",
+            "full":"Full Screen",
+            "top":"Float to Top",
+            "develop":"Develop Tools",
+
             "help": "Support",
-            "contribute": "Contribute",
-            "bug": "Report a Bug",
-            "devtools": "Debug Tools",
-            "settings": "Preferences",
-            "quit": "Quit"
+            "learn":"Learn more about ",
+            "bug": "Report a Bug ...",
+            "about": "About "
+        },
+        "tray":{
+            "hide":"Hide to tray",
+            "show":"Show",
+            "quit":"Quit"
         }
     },
 
@@ -33,11 +46,25 @@
         },
         "error": "错误",
         "menu": {
-            "about": "关于",
+            "file":"文件",
+            "setting":"设置",
+            "minimize":"最小化",
+            "close":"关闭",
+
+            "view":"显示",
+            "full":"全屏",
+            "top":"总在前端显示",
+            "develop":"调试工具",
+
             "help": "帮助",
+            "learn":"更多帮助信息",
             "bug": "缺陷报告",
-            "devtools": "调试工具",
-            "quit": "退出"
+            "about": "关于"
+        },
+        "tray":{
+            "hide":"隐藏到托盘",
+            "show":"显示主界面",
+            "quit":"退出"
         }
     }
 }

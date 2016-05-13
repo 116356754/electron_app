@@ -13,8 +13,7 @@ var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
-
-var setting = require("./user-config");
+var setting = require("./usersetting");
 
 
 log(config.PPAPI_PATH);
@@ -50,7 +49,7 @@ function init() {
     app.isQuitting = false;
 
     global.sharedObj.setts =setting.init();//加载配置
-    console.log(JSON.stringify(global.sharedObj.setts));
+    //console.log(JSON.stringify(global.sharedObj.setts));
     ipc.init();
     app.on('will-finish-launching', function (e) {
         log('will-finish-launching');

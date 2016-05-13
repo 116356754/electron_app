@@ -4,6 +4,7 @@ module.exports = {
 
 var path = require('path');
 var electron = require('electron');
+var locale =require("../static/lang.json");
 
 var app = electron.app;
 var Menu = electron.Menu;
@@ -28,15 +29,16 @@ function init () {
 
 function updateTrayMenu () {
   console.log('updateTrayMenu ' +windows.main.isVisible());
+  var lang = global.sharedObj.setts['lang'];
   var showHideMenuItem;
   if (windows.main.isVisible()) {
-    showHideMenuItem = { label: 'Hide to tray', click: hideApp }
+    showHideMenuItem = { label: locale[lang].tray.hide, click: hideApp }
   } else {
-    showHideMenuItem = { label: 'Show', click: showApp }
+    showHideMenuItem = { label: locale[lang].tray.show, click: showApp }
   }
   var contextMenu = Menu.buildFromTemplate([
     showHideMenuItem,
-    { label: 'Quit', click: () => app.quit() }
+    { label:  locale[lang].tray.quit, click: () => app.quit() }
   ]);
   trayIcon.setContextMenu(contextMenu)
 }

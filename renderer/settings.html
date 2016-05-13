@@ -90,7 +90,7 @@
     <script>
         window.onbeforeunload = save;
 
-        var setting = require("../main/user-config");
+        var setting = require("../main/usersetting");
         var locale =require("../static/lang.json");
         var remote = require('electron').remote;
         var setts = remote.getGlobal('sharedObj').setts;

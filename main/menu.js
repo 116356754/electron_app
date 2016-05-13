@@ -13,16 +13,24 @@ var app = electron.app;
 var config = require('../config');
 var log = require('./log');
 var windows = require('./windows');
-//var configStore = require('./user-config');
+var locale = require("../static/lang.json");
 
 var appMenu;
-
+var lang;
 function init() {
     appMenu = electron.Menu.buildFromTemplate(getAppMenuTemplate());
     electron.Menu.setApplicationMenu(appMenu);
 
+
     //dockMenu = electron.Menu.buildFromTemplate(getDockMenuTemplate())
     //if (app.dock) app.dock.setMenu(dockMenu)
+}
+
+function toggleReload(){
+    log('toggleReload');
+    if (windows.main) {
+        windows.main.reload();
+    }
 }
 
 function toggleFullScreen(flag) {
@@ -39,7 +47,7 @@ function toggleFloatOnTop(flag) {
     if (windows.main) {
         flag = flag != null ? flag : !windows.main.isAlwaysOnTop();
         windows.main.setAlwaysOnTop(flag);
-        getMenuItem('Float on Top').checked = flag
+        getMenuItem(locale[lang].menu.top).checked = flag
     }
 }
 
@@ -54,21 +62,21 @@ function toggleDevTools() {
 
 function onWindowShow() {
     log('onWindowShow');
-    getMenuItem('Full Screen').enabled = true;
-    getMenuItem('Float on Top').enabled = true
+    getMenuItem(locale[lang].menu.full).enabled = true;
+    getMenuItem(locale[lang].menu.top).enabled = true
 }
 
 function onWindowHide() {
     log('onWindowHide');
-    getMenuItem('Full Screen').enabled = false;
-    getMenuItem('Float on Top').enabled = false
+    getMenuItem(locale[lang].menu.full).enabled = false;
+    getMenuItem(locale[lang].menu.top).enabled = false
 }
 
 
 function onToggleFullScreen(isFullScreen) {
     isFullScreen = isFullScreen != null ? isFullScreen : windows.main.isFullScreen();
     windows.main.setMenuBarVisibility(!isFullScreen);
-    getMenuItem('Full Screen').checked = isFullScreen;
+    getMenuItem(locale[lang].menu.full).checked = isFullScreen;
     windows.main.send('fullscreenChanged', isFullScreen)
 }
 
@@ -82,14 +90,23 @@ function getMenuItem(label) {
 }
 
 function getAppMenuTemplate() {
+    lang = global.sharedObj.setts['lang'];
     var fileMenu = [
         {
-            label: 'Setting',
+            label: locale[lang].menu.setting,
             accelerator: 'CmdOrCtrl+S',
             click: windows.createSetWindow
         },
         {
-            label: process.platform === 'windows' ? 'Close' : 'Close Window',
+            type: 'separator'
+        },
+        {
+            label: locale[lang].menu.minimize,
+            accelerator: 'CmdOrCtrl+M',
+            role: 'minimize'
+        },
+        {
+            label: locale[lang].menu.close,
             accelerator: 'CmdOrCtrl+W',
             role: 'close'
         }
@@ -97,14 +114,23 @@ function getAppMenuTemplate() {
 
     var template = [
         {
-            label: 'File',
+            label: locale[lang].menu.file,
             submenu: fileMenu
         },
         {
-            label: 'View',
+            label: locale[lang].menu.view,
             submenu: [
                 {
-                    label: 'Full Screen',
+                    label: 'Reload',
+                    accelerator: 'CmdOrCtrl+R',
+                    click: () => toggleReload()
+                    //click: function(item, focusedWindow) {
+                    //    if (focusedWindow)
+                    //        focusedWindow.reload();
+                    //}
+                },
+                {
+                    label: locale[lang].menu.full,
                     type: 'checkbox',
                     accelerator: process.platform === 'darwin'
                         ? 'Ctrl+Command+F'
@@ -112,7 +138,10 @@ function getAppMenuTemplate() {
                     click: () => toggleFullScreen()
                 },
                 {
-                    label: 'Float on Top',
+                    type: 'separator'
+                },
+                {
+                    label: locale[lang].menu.top,
                     type: 'checkbox',
                     click: () => toggleFloatOnTop()
                 },
@@ -120,70 +149,35 @@ function getAppMenuTemplate() {
                     type: 'separator'
                 },
                 {
-                    label: 'Developer',
-                    submenu: [
-                        {
-                            label: 'Developer Tools',
-                            accelerator: process.platform === 'darwin'
-                                ? 'Alt+Command+I'
-                                : 'Ctrl+Shift+I',
-                            click: toggleDevTools
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Window',
-            role: 'window',
-            submenu: [
-                {
-                    label: 'Minimize',
-                    accelerator: 'CmdOrCtrl+M',
-                    role: 'minimize'
-                }
-                // ,{
-                //    type: 'separator'
-                //},
-                //{
-                //    label: 'Minimize to tray',
-                //    type: 'checkbox',
-                //    checked: configStore.get('minimizeToTray'),
-                //    click(item) {
-                //        configStore.set('minimizeToTray', item.checked);
-                //    }
-                //},
-                //{
-                //    label: 'Close to tray',
-                //    type: 'checkbox',
-                //    checked: configStore.get('closeToTray'),
-                //    click(item) {
-                //        configStore.set('closeToTray', item.checked);
-                //    }
-                //}
+                    label: locale[lang].menu.develop,
+                    accelerator: process.platform === 'darwin'
+                        ? 'Alt+Command+I'
+                        : 'Ctrl+Shift+I',
+                    click: toggleDevTools
 
+                }
             ]
         },
         {
-            label: 'Help',
+            label: locale[lang].menu.help,
             role: 'help',
             submenu: [
                 {
-                    label: 'Learn more about ' + config.APP_NAME,
+                    label: locale[lang].menu.learn + config.APP_NAME,
                     click: () => electron.shell.openExternal(config.INC_URL)
                 },
                 {
                     type: 'separator'
                 },
                 {
-                    label: 'Report an Issue...',
+                    label: locale[lang].menu.bug,
                     click: () => electron.shell.openExternal(config.ISSUE_URL + '/issues')
                 },
                 {
                     type: 'separator'
                 },
                 {
-                    label: 'About ' + config.APP_NAME,
+                    label: locale[lang].menu.about + config.APP_NAME,
                     click: windows.createAboutWindow
                 }
 
