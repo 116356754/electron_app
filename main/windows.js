@@ -2,13 +2,11 @@ var windows = module.exports = {
     about: null,
     main: null,
     other: null,
-    noti: null,
     tearout: null,
     set:null,
     createAboutWindow,
     createMainWindow,
     createOtherWindow,
-    createNotiWindow,
     createTearoutWindow,
     createSetWindow,
     focusWindow
@@ -170,61 +168,7 @@ function createOtherWindow(url) {
     })
 };
 
-var Positioner = require('electron-positioner');
-function createNotiWindow(content) {
-    if (windows.noti) {
-        return focusWindow(windows.noti);
-    }
-    var win = windows.noti = new electron.BrowserWindow({
-        //backgroundColor: '#ECECEC',
-        show: false,
-        //center: false,
-        resizable: false,
-        icon: config.APP_ICON + '.png',
-        title: config.APP_WINDOW_TITLE + '-noti',
-        useContentSize: true, // Specify web page size without OS chrome
-        width: 300,
-        height: 150,
-        minimizable: false,
-        maximizable: false,
-        fullscreen: false,
-        skipTaskbar: true,
-        movable: false,
-        frame: true
-    });
-    win.loadURL(config.WINDOW_NOTI);
-
-    // No window menu
-    win.setMenu(null);
-
-    console.log('notify windows id is:' + win.id);
-
-    var positioner = new Positioner(win);
-
-    // Moves the window top right on the screen.
-    positioner.move('bottomRight');
-
-    win.webContents.on('did-finish-load', function () {
-        win.show();
-        win.webContents.insertCSS("body{ background-color: #404041; color: #fff;}");
-    });
-
-    win.webContents.on('dom-ready', function () {
-        var jscode = "document.getElementById('noti-msg').value='" + content + "'";
-        console.log(jscode);
-        win.webContents.executeJavaScript(jscode);
-    });
-
-    //阻止修改通知窗口的标题
-    win.on('page-title-updated', function (event) {
-        event.preventDefault();
-    });
-
-    win.once('closed', function () {
-        windows.noti = null;
-    });
-}
-
+var log = require('./log');
 function createTearoutWindow(url, dom) {
     "use strict";
     if (windows.tearout) {
@@ -272,7 +216,6 @@ function createTearoutWindow(url, dom) {
 
     win.once('closed', function () {
         windows.tearout = null;
-
         //show sub dom
         windows.main.webContents.executeJavaScript("document.getElementById('tearout-container').style.display=''");
     });

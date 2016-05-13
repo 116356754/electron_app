@@ -1,18 +1,16 @@
 {
   "name": "taitan-desktop",
-  "description": "taitan, the HTML5 Taitan client. For Windows.",
+  "description": "HTML5 Taitan client For Windows.",
   "version": "1.5.0",
   "author": "kaiyuan wang <wangky@erayt.com> (http://www.erayt.com/)",
   "bugs": {
-    "url": "https://github.com/feross/webtorrent-desktop/issues"
+    "url": "https://github.com/116356754/electron_app/issues"
   },
   "dependencies": {
-    "application-config": "^0.2.1",
-    "application-config-path": "^0.1.0",
     "async": "^1.5.2",
     "download-http": "0.0.4",
     "electron-localshortcut": "^0.6.0",
-    "electron-positioner": "^2.0.3",
+    "electron-toaster": "^2.0.1",
     "electron-window-state": "^2.1.0",
     "fast-csv": "^2.0.0",
     "hash-dir-contents": "0.0.2",
@@ -21,7 +19,6 @@
     "mime": "^1.3.4",
     "mkdirp": "^0.5.1",
     "request": "^2.72.0",
-    "winreg": "^1.2.0",
     "ws": "^1.1.0"
   },
   "homepage": "http://www.erayt.com",

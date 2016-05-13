@@ -9,12 +9,12 @@ var sound = require('./sound');
 var version = require('./version');
 var ipcRenderer = require('electron').ipcRenderer;
 
-function html5noti(content)
+function html5noti(title,content)
 {
      if (window.Notification){
         if(Notification.Permission==='granted'){
             console.log('granted');
-            var notification = new Notification('Notification',{body:content});
+            var notification = new Notification(title,{body:content});
              notification.onclick = function () {
                 ipcRenderer.send('focusWindow', 'main')
             };
@@ -39,24 +39,31 @@ function html5noti(content)
         };
     }else alert('你的浏览器不支持此特性，请下载谷歌浏览器试用该功能');
 }
-function showNotification (usenative,content) {
+
+function showNotification(title,content) {
     console.log('show notification');
 
-    if(usenative)
-    {
-        
-        if(version.isWin8plusOS())//win 8以上的系统使用html5的提示        
-            html5noti(content);
-        
-        else                  
-            ipcRenderer.send('create-notiwindow',content);        
-    }
+    var setts = remote.getGlobal('sharedObj').setts;
+    var notilang ;
+    if(setts['lang']=='en')
+        notilang = 'Notification';
     else
-    {
-        //jquery notification
-        $.messager.lays(300, 200);
-        $.messager.show(0, '<a href="http://www.baidu.com">访问百度</a><br>提示内容：<br>'+content);
-    }
+        notilang = '通知';
 
+    //if (version.isWin8plusOS())//win 8以上的系统使用html5的提示
+    //    html5noti(content);
+    //else {
+        var ipc = require("electron").ipcRenderer;
+        var msg = {
+            title: notilang,
+            message: title,
+            detail: content,
+            width: 440,
+            // height : 160, window will be autosized
+            //timeout: 6000,
+            focus: true // set focus back to main window
+        };
+        ipc.send('electron-toaster-message', msg);
+    //}
     sound.play('DONE');
 }

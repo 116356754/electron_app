@@ -10,9 +10,6 @@
             border: 1px solid #aaaaaa;
         }
     </style>
-
-    <script src="./3rd/jquery-1.2.6.pack.js"></script>
-    <script src="./3rd/jquery.messager.js"></script>
 </head>
 <body>
 <script async src="index.js"></script>
@@ -52,8 +49,7 @@ Electron平台版本信息：
     <legend>UI</legend>
 
     <button onclick="createOtherWindow()">新建窗口</button>
-    <button onclick="shownoti(true,'hello world')">建立原生窗口消息提示</button>
-    <button onclick="shownoti(false,'hello world')">建立JQuery弹出层消息提示</button>
+    <button onclick="shownoti('sir, you got a message','you will have a meeting 5 minutes later.')">消息提示</button>
 </fieldset>
 
 <br/>
@@ -113,8 +109,7 @@ Electron平台版本信息：
     <button onclick="https_get('https://127.0.0.1:8088')">https get请求</button>
     
     <button onclick="http_ecas('192.168.10.136',8087,'cert2/login.action','erayt','aaa111')">ECAS登录</button>
-    </br>
-    
+
     <button onclick="http_proxy('http://101.226.249.237:80')">http代理</button>
     </br>
 

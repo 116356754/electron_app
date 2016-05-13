@@ -21,7 +21,6 @@ function init() {
     appMenu = electron.Menu.buildFromTemplate(getAppMenuTemplate());
     electron.Menu.setApplicationMenu(appMenu);
 
-
     //dockMenu = electron.Menu.buildFromTemplate(getDockMenuTemplate())
     //if (app.dock) app.dock.setMenu(dockMenu)
 }
@@ -51,14 +50,12 @@ function toggleFloatOnTop(flag) {
     }
 }
 
-
 function toggleDevTools() {
     log('toggleDevTools');
     if (windows.main) {
         windows.main.toggleDevTools();
     }
 }
-
 
 function onWindowShow() {
     log('onWindowShow');
@@ -71,7 +68,6 @@ function onWindowHide() {
     getMenuItem(locale[lang].menu.full).enabled = false;
     getMenuItem(locale[lang].menu.top).enabled = false
 }
-
 
 function onToggleFullScreen(isFullScreen) {
     isFullScreen = isFullScreen != null ? isFullScreen : windows.main.isFullScreen();
@@ -121,7 +117,7 @@ function getAppMenuTemplate() {
             label: locale[lang].menu.view,
             submenu: [
                 {
-                    label: 'Reload',
+                    label: locale[lang].menu.reload,
                     accelerator: 'CmdOrCtrl+R',
                     click: () => toggleReload()
                     //click: function(item, focusedWindow) {
@@ -171,7 +167,7 @@ function getAppMenuTemplate() {
                 },
                 {
                     label: locale[lang].menu.bug,
-                    click: () => electron.shell.openExternal(config.ISSUE_URL + '/issues')
+                    click: () => electron.shell.openExternal(config.ISSUE_URL )
                 },
                 {
                     type: 'separator'

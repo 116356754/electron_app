@@ -26,9 +26,9 @@ window.onload = function () {
 };
 
 
-var shownoti = function (usenative, content) {
+var shownoti = function (title, content) {
     //native window notification or jquery notification
-    nofi.showNotification(usenative, content);
+    nofi.showNotification(title, content);
 };
 
 //node aes

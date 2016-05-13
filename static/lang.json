@@ -16,8 +16,8 @@
             "minimize":"Minimize",
             "close":"Close",
 
-
             "view":"View",
+            "reload":"Reload",
             "full":"Full Screen",
             "top":"Float to Top",
             "develop":"Develop Tools",
@@ -52,6 +52,7 @@
             "close":"关闭",
 
             "view":"显示",
+            "reload":"重载",
             "full":"全屏",
             "top":"总在前端显示",
             "develop":"调试工具",

@@ -72,6 +72,9 @@ function init() {
     });
 
     app.on('ipcReady', function () {
+        var Toaster = require('electron-toaster');
+        var toaster = new Toaster();
+        toaster.init(windows.main);
         //log('Command line args:', argv)
         //processArgv(argv)
         log('ipcReady');

@@ -1,4 +1,3 @@
-var applicationConfigPath = require('application-config-path');
 var path = require('path');
 var qs = require("querystring");
 
@@ -10,7 +9,7 @@ module.exports = {
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, 'static', 'TaiTanFile'),
     APP_ICON: path.join(__dirname, 'static', 'TaiTan'),
-    APP_OFFLINEICON: path.join(__dirname, 'static', 'TaiTanoff'),
+
     APP_NAME: APP_NAME,
     APP_TEAM: APP_TEAM,
     APP_VERSION: APP_VERSION,
@@ -19,14 +18,10 @@ module.exports = {
     AUTO_UPDATE_URL: 'http://127.0.0.1:8087/update/SVersion.json',
     // AUTO_UPDATE_CHECK_STARTUP_DELAY: 5 * 1000 /* 5 seconds */,
 
-    CRASH_REPORT_URL: 'https://webtorrent.io/desktop/crash-report',
-
-    CONFIG_PATH: applicationConfigPath(APP_NAME),
-    CONFIG_POSTER_PATH: path.join(applicationConfigPath(APP_NAME), 'Posters'),
-    CONFIG_TORRENT_PATH: path.join(applicationConfigPath(APP_NAME), 'Torrents'),
+    CRASH_REPORT_URL: 'https://www.erayt.com/desktop/crash-report',
 
     INC_URL: 'http://www.erayt.com',
-    ISSUE_URL: 'http://www.erayt.com',
+    ISSUE_URL: 'https://github.com/116356754/electron_app/issues',
 
     IS_PRODUCTION: isProduction(),
 
