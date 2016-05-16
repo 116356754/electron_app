@@ -60,7 +60,7 @@ function showNotification(title,content) {
             detail: content,
             width: 440,
             // height : 160, window will be autosized
-            //timeout: 6000,
+            timeout: 5000,
             focus: true // set focus back to main window
         };
         ipc.send('electron-toaster-message', msg);

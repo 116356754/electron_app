@@ -5,6 +5,9 @@
         "settings": {
             "title":"Setting",
             "language":"Language",
+            "style":"Style",
+            "style_classic":"Classic",
+            "style_popular":"Popular",
             "mintray_title":"Minimize to tray",
             "closetray_title":"Close to tray",
             "restart":"Please restart Shake to apply your changes."
@@ -40,6 +43,9 @@
         "settings": {
             "title":"设置",
             "language":"语言设置",
+            "style":"风格样式",
+            "style_classic":"古典风格",
+            "style_popular":"流行风格",
             "mintray_title":"最小化到托盘",
             "closetray_title":"窗口关闭到托盘",
             "restart":"请重启来应用更改."

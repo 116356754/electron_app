@@ -6,7 +6,6 @@ var nofi = require('./lib/noti.js');
 
 var ws = require('../common/websocket.js');
 var wss = require('../common/wss.js');
-var csv = require('../common/csv.js');
 
 window.onload = function () {
 
@@ -124,6 +123,8 @@ var sendAllMessage = function (content) {
     ipc.send('wt-msg', 'all', content);
 };
 
+const saveFiledlg = require('./lib/savefile.js');
+
 var exCSV = function () {
     var jsobjs = [
         {
@@ -137,14 +138,15 @@ var exCSV = function () {
             Year: '2014'
         }
     ];
-    csv.exportcsv(jsobjs,'C:/my.csv',function(result){
-        "use strict";
-        if(result)
-            console.log('导出成功');
-        else
-            console.log('导出失败');
-    });
+    saveFiledlg.saveCSVFileAs(jsobjs);
 };
+
+
+function expdf() {
+    var win = remote.getCurrentWindow();
+
+    saveFiledlg.savePDFFileAs();
+}
 
 var tearout =function()
 {

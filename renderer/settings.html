@@ -100,6 +100,7 @@
                 var form = document.getElementById("settings");
                 var sets={};
                 sets["lang"]=form["lang"].value;
+                sets["style"]=form["style"].value;
                 sets["minimizeToTray"]= form["mintray_mode"].checked;
                 sets["closeToTray"]=form["closetray_mode"].checked;
                 remote.getGlobal('sharedObj').setts =sets;
@@ -121,6 +122,16 @@
             if (lang === "en") document.getElementById("lang_en").checked = true;
             else if (lang === "cn") document.getElementById("lang_cn").checked = true;
 
+            var style = setts["style"];
+            document.getElementById("style_title").innerHTML = locale[lang].settings.style;
+            document.getElementById("classic").innerHTML = locale[lang].settings.style_classic;
+            document.getElementById("popular").innerHTML = locale[lang].settings.style_popular;
+            //alert( JSON.stringify(locale[lang]));
+            //alert( locale[lang].settings.style);
+
+            if (style == "classic") document.getElementById("style_classic").checked = true;
+            else if (style == "popular") document.getElementById("style_popular").checked = true;
+
             document.getElementById("mintray_title").innerHTML = locale[lang].settings.mintray_title;
             if (setts["minimizeToTray"]) document.getElementById("mintray_mode").checked = true;
 
@@ -139,6 +150,14 @@
         <blockquote>
             <label><input type="radio" name="lang" id="lang_en" value="en"> English</label><br>
             <label><input type="radio" name="lang" id="lang_cn" value="cn">中文</label>
+        </blockquote>
+
+        <br><hr>
+
+        <h4><span id="style_title">Style</span></h4>
+        <blockquote>
+            <label><input type="radio" name="style" id="style_classic" value="classic">  <span id="classic">古典风格</span></label><br>
+            <label><input type="radio" name="style" id="style_popular" value="popular"><span id="popular">流行风格</span></label>
         </blockquote>
 
         <br><hr>
