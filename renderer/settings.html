@@ -92,8 +92,27 @@
 
         var setting = require("../main/usersetting");
         var locale =require("../static/lang.json");
-        var remote = require('electron').remote;
+        var electron = require('electron');
+        var remote = electron.remote;
         var setts = remote.getGlobal('sharedObj').setts;
+
+        //语言和样式发生变化，通知所有渲染窗口
+        function notifyWindow(sets)
+        {
+            if(sets["lang"]!==setts["lang"])
+            {
+                remote.BrowserWindow.getAllWindows().forEach(function(wins){
+                    wins.send('changeLanguage', sets["lang"]);
+                });
+            }
+
+            if(sets["style"]!==setts["style"])
+            {
+                remote.BrowserWindow.getAllWindows().forEach(function(wins){
+                    wins.send('changeStyle', sets["style"]);
+                });
+            }
+        }
 
         function save() {
             try {
@@ -103,6 +122,7 @@
                 sets["style"]=form["style"].value;
                 sets["minimizeToTray"]= form["mintray_mode"].checked;
                 sets["closeToTray"]=form["closetray_mode"].checked;
+                notifyWindow(sets);
                 remote.getGlobal('sharedObj').setts =sets;
             } catch(err) {
                 alert("There was an error saving your settings: " + err);
@@ -126,8 +146,8 @@
             document.getElementById("style_title").innerHTML = locale[lang].settings.style;
             document.getElementById("classic").innerHTML = locale[lang].settings.style_classic;
             document.getElementById("popular").innerHTML = locale[lang].settings.style_popular;
+
             //alert( JSON.stringify(locale[lang]));
-            //alert( locale[lang].settings.style);
 
             if (style == "classic") document.getElementById("style_classic").checked = true;
             else if (style == "popular") document.getElementById("style_popular").checked = true;
@@ -137,6 +157,7 @@
 
             document.getElementById("closetray_title").innerHTML = locale[lang].settings.closetray_title;
             if (setts["closeToTray"]) document.getElementById("closetray_mode").checked = true;
+
         });
     </script>
 </head>
@@ -163,12 +184,12 @@
         <br><hr>
 
         <h4 id="mintray_title">mintray_title</h4>
-        <label><input type="checkbox" name="mintray_mode" id="mintray_mode"> <span id="enable1">Enable</span></label>
+        <label><input type="checkbox" name="mintray_mode" id="mintray_mode"> Enable</label>
 
         <br>
 
         <h4 id="closetray_title">closetray_title</h4>
-        <label><input type="checkbox" name="closetray_mode" id="closetray_mode"> <span id="enable2">Enable</span></label>
+        <label><input type="checkbox" name="closetray_mode" id="closetray_mode">Enable</label>
 
         <br>
 

@@ -80,17 +80,29 @@ function dispatch (action, ...args) {
   }
 }
 
-function setupIpc () {
-  ipcRenderer.send('ipcReady');
+function langChanged(newlang)
+{
+    console.log('current language is '+newlang);
+}
 
-  ipcRenderer.on('log', (e, ...args) => console.log(...args));
-  ipcRenderer.on('error', (e, ...args) => console.error(...args));
+function styleChanged(newstyle){
+    console.log('current style is '+newstyle);
+}
 
-  ipcRenderer.on('dispatch', (e, ...args) => dispatch(...args));
+function setupIpc() {
+    ipcRenderer.send('ipcReady');
 
-  ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
-      windowState.isFullScreen = isFullScreen;
-  })
+    ipcRenderer.on('log', (e, ...args) => console.log(...args));
+    ipcRenderer.on('error', (e, ...args) => console.error(...args));
+
+    ipcRenderer.on('dispatch', (e, ...args) => dispatch(...args));
+
+    ipcRenderer.on('changeLanguage', (e, ...args) => langChanged(...args));
+    ipcRenderer.on('changeStyle', (e, ...args) => styleChanged(...args));
+
+    ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
+        windowState.isFullScreen = isFullScreen;
+    })
 }
 
 // Set window dimensions to match video dimensions or fill the screen
