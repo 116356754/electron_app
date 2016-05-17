@@ -110,11 +110,11 @@ function init() {
             electron.BrowserWindow.getAllWindows().forEach(wins => {
                 if(target=='all')
                 {
-                    if(sourceTitle!=wins.getTitle())//排除发送给自己
+                    if(sourceTitle.toUpperCase()!=wins.getTitle().toUpperCase())//排除发送给自己
                         wins.send(name, ...args);
                 }
                 else{
-                    if(wins.getTitle()==target)
+                    if(wins.getTitle().toUpperCase()==target.toUpperCase())
                         wins.send(name, ...args);
                 }
             });
