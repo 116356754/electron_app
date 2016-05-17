@@ -2,6 +2,7 @@
 <html>
 <head>
     <!--link rel="stylesheet" href="tearout.css"-->
+    <meta http-equiv="Content-Type" content="text/html" , charset="utf-8"/>
     <style>
         body {
             padding: 0;
@@ -16,6 +17,15 @@
             pointer-events: all;
         }
     </style>
+    <script>
+        window.onbeforeunload = function(e) {
+            var config = require('../config');
+
+            var domobj = document.body.innerHTML;
+            var ipc =require('electron').ipcRenderer;
+            ipc.send('wt-tear_close',  config.APP_WINDOW_TITLE, JSON.stringify(domobj));
+        };
+    </script>
 </head>
 <body>
 <!--div class="tearout-container gold" id="tearout-container">
@@ -24,5 +34,7 @@
     Email
     <input type="text">
 </div-->
+
+<!--button onclick="sendDom()">发送dom元素</button-->
 </body>
 </html>

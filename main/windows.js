@@ -190,6 +190,8 @@ function createTearoutWindow(url, dom) {
         fullscreen: false,
         skipTaskbar: false
     });
+    win.parentwnd = windows.main;
+
     win.loadURL(url);
 
     // No window menu
@@ -214,7 +216,12 @@ function createTearoutWindow(url, dom) {
         win.webContents.insertCSS(tearout_css);
     });
 
+    win.on('tear_close',function(result){
+        log(result);
+    });
+
     win.once('closed', function () {
+        win = null;
         windows.tearout = null;
         //show sub dom
         windows.main.webContents.executeJavaScript("document.getElementById('tearout-container').style.display=''");

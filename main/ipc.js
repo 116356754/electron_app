@@ -111,11 +111,11 @@ function init() {
                 if(target=='all')
                 {
                     if(sourceTitle!=wins.getTitle())//排除发送给自己
-                        wins.send('wt-msg', ...args);
+                        wins.send(name, ...args);
                 }
                 else{
                     if(wins.getTitle()==target)
-                        wins.send('wt-msg', ...args);
+                        wins.send(name, ...args);
                 }
             });
             return;

@@ -97,12 +97,15 @@ function setupIpc() {
 
     ipcRenderer.on('dispatch', (e, ...args) => dispatch(...args));
 
+    //对于语言和风格样式变化时的通知消息
     ipcRenderer.on('changeLanguage', (e, ...args) => langChanged(...args));
     ipcRenderer.on('changeStyle', (e, ...args) => styleChanged(...args));
 
     ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
         windowState.isFullScreen = isFullScreen;
     })
+
+
 }
 
 // Set window dimensions to match video dimensions or fill the screen

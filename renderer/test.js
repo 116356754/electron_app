@@ -106,13 +106,6 @@ var createOtherWindow = function () {
     ipcRenderer.send('create-window', config.WINDOW_OTHER);
 };
 
-//create tearout window
-var createTearoutWindow = function (dom) {
-    var config = require('../config');
-    const ipcRenderer = require('electron').ipcRenderer;
-    ipcRenderer.send('tearout-window', config.WINDOW_TEAROUT,dom);
-};
-
 var sendMessage = function (target, content) {
     var ipc = require('electron').ipcRenderer;
     ipc.send('wt-msg', target, content);
@@ -152,8 +145,19 @@ var tearout =function()
 {
     "use strict";
     console.log(JSON.stringify(document.getElementById('tearout-container').outerHTML));
-    createTearoutWindow(JSON.stringify(document.getElementById('tearout-container').outerHTML));
+
+    var config = require('../config');
+    const ipcRenderer = require('electron').ipcRenderer;
+    ipcRenderer.send('tearout-window', config.WINDOW_TEAROUT,JSON.stringify(document.getElementById('tearout-container').outerHTML));
+
     document.getElementById('tearout-container').style.display='none';
+
+    //分离出去的dom元素窗体的关闭时候，恢复父窗体的dom元素，并重新复制上修改后的dom
+    ipcRenderer.once('wt-tear_close',function(e,msg){
+        console.log('main window recv wt-tear_close:' + msg);
+        var oldnode = document.getElementById('tearout-container');
+        oldnode.outerHTML =JSON.parse(msg);
+    })
 };
 
 var callcppaddon = function()
