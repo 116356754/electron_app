@@ -41,18 +41,26 @@ var decryptiontxt = function (enctext) {
 };
 
 //md5 file
-var path = require('path');
-var md5file = function (filename) {
-    var filepath = path.join(__dirname, filename);
+//var path = require('path');
+var md5file = function () {
+    var filepath = process.execPath;
+    //59120c11e494586ef09277942066184c
+    console.time('md5-file');
     console.log(filepath);
-    return encry.md5file(filepath);
+    var signature = encry.md5file(filepath);
+    console.timeEnd('md5-file');
+    return signature;
 };
 
 //md5 dir
 var md5dir = function () {
-    var filepath = __dirname;
+    var filepath =path.join(process.cwd(),"resources",'app_bak.asar');
+    //45b83d98593ba8425e59d125d45bb053
+    console.time('md5-dir');
     console.log(filepath);
-    return encry.md5dir(filepath);
+    var signature =  encry.md5dir(filepath);
+
+    return signature;
 };
 
 //ws_client
@@ -209,7 +217,7 @@ function showpdf(pdfurl){
         autoHideMenuBar:true
     });
 
-    win.loadURL(config.PDF_PDFURL+pdfurl);
+    win.loadURL(config.PDF_URL+pdfurl);
 
     win.on('closed', function() {
         win = null;

@@ -59,6 +59,7 @@ function md5dir(dirpath)
         algorithm: 'md5'
     }, function(error, hash) {
         console.log(hash);
+        console.timeEnd('md5-dir');
         return hash;
     });
 }
