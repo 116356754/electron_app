@@ -3,10 +3,9 @@ var EventEmitter = require('events');
 var fs = require('fs');
 var path = require('path');
 var remote = require('remote');
+console.log(process.cwd());
 
-var rootpath = process.cwd();
-var config = require(path.join(rootpath,'config.js'));
-
+var config = require(path.join(process.cwd(),'resources','app','config.js'));
 var crashReporter = require(path.join(config.ROOT_PATH,'crash-reporter.js'));
 var {setDispatch} = require(path.join(config.RENDER_PATH,'lib/dispatcher'));
 setDispatch(dispatch);

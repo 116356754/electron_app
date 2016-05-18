@@ -19,7 +19,7 @@
     </style>
     <script>
         window.onbeforeunload = function(e) {
-            var config = require('../config');
+            var config = require('../../config');
 
             var domobj = document.body.innerHTML;
             var ipc =require('electron').ipcRenderer;

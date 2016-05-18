@@ -4,7 +4,6 @@ var qs = require("querystring");
 var APP_NAME = 'Taitan';
 var APP_TEAM = 'The HTML5 Project';
 var APP_VERSION = require('./package.json').version;
-
 module.exports = {
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, 'static', 'TaiTanFile'),
@@ -34,15 +33,17 @@ module.exports = {
 
     WINDOW_ABOUT: 'file://' + path.join(__dirname, 'renderer', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'main.html'),
-    //WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', '/login/html/login.html'),
+    //WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'views/login/html/login.html'),
     //WINDOW_MAIN: 'http://www.codeproject.com',
     //WINDOW_ABOUT: 'http://www.codeproject.com/Lounge.aspx',
 
     WINDOW_OTHER: 'file://' + path.join(__dirname, 'renderer', 'other.html'),
     WINDOW_NOTI: 'file://' + path.join(__dirname, 'renderer', 'noti.html'),
 
-    WINDOW_TEAROUT: 'file://' + path.join(__dirname, 'renderer', 'tearout.html'),
-    TEAROUT_CSS: path.join(__dirname, 'renderer', 'tearout.css'),
+    WINDOW_TEAROUT: 'file://' + path.join(__dirname, 'renderer','tearout', 'tearout.html'),
+
+    TEAROUT_JS: path.join(__dirname, 'renderer','tearout' ,'tearout.js'),
+    TEAROUT_CSS: path.join(__dirname, 'renderer','tearout', 'tearout.css'),
 
     WINDOW_SET: 'file://' + path.join(__dirname, 'renderer', 'settings.html'),
 
@@ -58,4 +59,3 @@ function isProduction() {
         return false;
     }
 }
-

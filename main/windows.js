@@ -210,6 +210,11 @@ function createTearoutWindow(url, dom) {
         //console.log(jscode);
         win.webContents.executeJavaScript(jscode);
 
+        //insert js
+        jscode='var script = document.createElement("script");script.src = "./tearout.js";'+'document.body.appendChild(script);';
+        console.log(jscode);
+        win.webContents.executeJavaScript(jscode);
+
         //insert css
         console.log(config.TEAROUT_CSS);
         var tearout_css = fs.readFileSync(config.TEAROUT_CSS).toString();

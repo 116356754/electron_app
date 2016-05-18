@@ -24,7 +24,6 @@ window.onload = function () {
     });
 };
 
-
 var shownoti = function (title, content) {
     //native window notification or jquery notification
     nofi.showNotification(title, content);

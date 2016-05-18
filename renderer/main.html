@@ -10,6 +10,11 @@
             border: 1px solid #aaaaaa;
         }
     </style>
+    <!--script>
+        document.addEventListener("visibilitychange", function() {
+            console.log( document.visibilityState );
+        });
+    </script-->
 </head>
 <body>
 <script async src="index.js"></script>
@@ -71,7 +76,8 @@ Electron平台版本信息：
 </br>
 <fieldset>
     <legend>剥离子窗口</legend>
-    <link rel="stylesheet" href="tearout.css">
+    <link rel="stylesheet" href="tearout/tearout.css">
+    <script src="tearout/tearout.js"></script>
     <div class="tearout-container gold" id="tearout-container">
         Name
         <input type="text"  onchange="this.setAttribute('value', this.value);">
@@ -79,6 +85,7 @@ Electron平台版本信息：
         <input type="text" onchange="this.setAttribute('value', this.value);">
         </br>
         <a href="http://www.baidu.com">百度</a>
+        <button onclick="testinsertjs();">事件测试</button>
     </div>
     <button onclick="tearout();">剥离</button>
     <!--button onclick="document.getElementById('tearout-container').style.display=''">显示</button-->

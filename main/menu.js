@@ -120,10 +120,6 @@ function getAppMenuTemplate() {
                     label: locale[lang].menu.reload,
                     accelerator: 'CmdOrCtrl+R',
                     click: () => toggleReload()
-                    //click: function(item, focusedWindow) {
-                    //    if (focusedWindow)
-                    //        focusedWindow.reload();
-                    //}
                 },
                 {
                     label: locale[lang].menu.full,
