@@ -6,7 +6,6 @@ module.exports={
 };
 
 var sound = require('./sound');
-var version = require('./version');
 var ipcRenderer = require('electron').ipcRenderer;
 
 function html5noti(title,content)

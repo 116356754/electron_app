@@ -4,12 +4,14 @@ var fs = require('fs');
 var path = require('path');
 var remote = require('remote');
 
-var config = require('../config');
-var crashReporter = require('../crash-reporter');
-var {setDispatch} = require('./lib/dispatcher');
+var rootpath = process.cwd();
+var config = require(path.join(rootpath,'config.js'));
+
+var crashReporter = require(path.join(config.ROOT_PATH,'crash-reporter.js'));
+var {setDispatch} = require(path.join(config.RENDER_PATH,'lib/dispatcher'));
 setDispatch(dispatch);
 
-var sound = require('./lib/sound');
+var sound = require(path.join(config.RENDER_PATH,'lib/sound'));
 
 var windowState = {
     bounds: null, /* {x, y, width, height } */
@@ -104,8 +106,6 @@ function setupIpc() {
     ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
         windowState.isFullScreen = isFullScreen;
     })
-
-
 }
 
 // Set window dimensions to match video dimensions or fill the screen

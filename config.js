@@ -27,14 +27,14 @@ module.exports = {
 
     ROOT_PATH: __dirname,
     STATIC_PATH: path.join(__dirname, 'static'),
-
+    RENDER_PATH:path.join(__dirname, 'renderer'),
     PPAPI_PATH: path.join(process.cwd(), 'ppapi'),
 
     PDF_URL: 'file://' + path.join(__dirname, 'renderer', 'lib', 'pdfjs/web/viewer.html?file='),
 
     WINDOW_ABOUT: 'file://' + path.join(__dirname, 'renderer', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'main.html'),
-
+    //WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', '/login/html/login.html'),
     //WINDOW_MAIN: 'http://www.codeproject.com',
     //WINDOW_ABOUT: 'http://www.codeproject.com/Lounge.aspx',
 
