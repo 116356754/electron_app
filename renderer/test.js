@@ -6,15 +6,17 @@ var nofi = require('./lib/noti.js');
 
 var ws = require('../common/websocket.js');
 var wss = require('../common/wss.js');
+var controlwnd= require('./lib/controlwnd.js');
 
 window.onload = function () {
-
     document.getElementById("content").innerHTML = JSON.stringify(ver.getProcessVersion());
 
     document.getElementById("mfversion").innerHTML = JSON.stringify(ver.getElectronVersion());
 
     document.getElementById("appversion").innerHTML = JSON.stringify(ver.getAppVersion());
-    
+
+    controlwnd.init();
+
     net_state.init();
 
     ipcRenderer.on('wt-msg', function (e, msg) {
@@ -154,7 +156,6 @@ var exCSV = function () {
     saveFiledlg.saveCSVFileAs(jsobjs);
 };
 
-
 function expdf() {
     var win = remote.getCurrentWindow();
 
@@ -197,8 +198,8 @@ function createPlugin() {
 
     var hwndhex=remote.getCurrentWindow().getNativeWindowHandle().reverse().toString('hex');
     plugin.setAttribute('hwnd',hwndhex);
-    //plugin.setAttribute('exe',"E:/ppapi/sub.exe");
-    plugin.setAttribute('exe',"C:/windows/system32/mspaint.exe");
+    plugin.setAttribute('exe',"E:/ppapi/sub.exe");
+    //plugin.setAttribute('exe',"C:/windows/system32/mspaint.exe");
 
     var container = document.getElementById("pluginContainer");
     container.appendChild(plugin);

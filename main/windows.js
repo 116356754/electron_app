@@ -69,7 +69,7 @@ function createMainWindow() {
     });
 
     var win = windows.main = new electron.BrowserWindow({
-        //backgroundColor: '#1E1E1E',
+        backgroundColor: '#1E1E1E',
         darkTheme: true, // Forces dark theme (GTK+3)
         icon: config.APP_ICON + '.png',
         minWidth: 425,
@@ -82,11 +82,13 @@ function createMainWindow() {
         y: mainWindowState.y,
         width: mainWindowState.width,
         height: mainWindowState.height,
+
         //width: 1000,
         //height: 800,
         webPreferences: {
             plugins: true
-        }
+        },
+        frame:config.HAVE_FRAME
     });
 
     mainWindowState.manage(win);
@@ -252,7 +254,8 @@ function createSetWindow() {
         minimizable: false,
         maximizable: false,
         fullscreen: false,
-        skipTaskbar: false
+        skipTaskbar: false,
+        frame:config.HAVE_FRAME
     });
 
     win.loadURL(config.WINDOW_SET);

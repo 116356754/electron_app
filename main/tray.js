@@ -38,6 +38,7 @@ function updateTrayMenu () {
   }
   var contextMenu = Menu.buildFromTemplate([
     showHideMenuItem,
+    {label:  locale[lang].settings.title,click:() =>windows.createSetWindow()},
     { label:  locale[lang].tray.quit, click: () => app.quit() }
   ]);
   trayIcon.setContextMenu(contextMenu)

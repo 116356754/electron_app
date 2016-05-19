@@ -1,32 +1,24 @@
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html" , charset="utf-8"/>
+    <meta charset="utf-8"/>
+    <link href="common.css" rel="stylesheet" type="text/css">
 
-    <style type="text/css">
-        #div1 {
-            width: 488px;
-            height: 70px;
-            padding: 10px;
-            border: 1px solid #aaaaaa;
-        }
-    </style>
-    <!--script>
-        document.addEventListener("visibilitychange", function() {
-            console.log( document.visibilityState );
-        });
-    </script-->
+    <script async src="index.js"></script>
+    <script src="test.js"></script>
+
 </head>
 <body>
-<script async src="index.js"></script>
+<div class="min">Min</div>
+<div class="max">Max</div>
+<div class="close">Close</div>
 
-<script src="test.js"></script>
 Electron平台版本信息：
 <p id='content'></p>
 
 框架版本：
-<div id='mfversion'></div>
+<span id='mfversion'></span>
 程序版本：
-<div id='appversion'></div>
+<span id='appversion'></span>
 
 <fieldset>
     <legend>PPAPI</legend>
@@ -63,18 +55,18 @@ Electron平台版本信息：
 <fieldset>
     <legend>窗口间交互</legend>
     接收的信息：<input type="text" id='recwt-msg' width="200px"/>
-    </br>
+    <br>
     目标窗口标题：<input type="text" id='target-title' width="200px"/>
     发送消息内容<input type="text" id='msg'/>
     <button onclick="sendMessage(document.getElementById('target-title').value,document.getElementById('msg').value)">
         发送消息给指定标题的窗口
     </button>
 
-    </br>
+    <br>
     <button onclick="sendAllMessage(document.getElementById('msg').value)">发送消息给所有窗口</button>
 </fieldset>
 
-</br>
+<br>
 <fieldset>
     <legend>剥离子窗口</legend>
     <link rel="stylesheet" href="tearout/tearout.css">
@@ -85,7 +77,7 @@ Electron平台版本信息：
         <input type="text"  onchange="this.setAttribute('value', this.value);">
         Email
         <input type="text" onchange="this.setAttribute('value', this.value);">
-        </br>
+        <br>
         <a href="http://www.baidu.com">百度</a>
         <button onclick="testinsertjs();">事件测试</button>
     </div>
@@ -96,35 +88,35 @@ Electron平台版本信息：
 <fieldset>
     <legend>通讯</legend>
 
-<!--textarea id='networkinfo' readonly
-          style="resize:none;border:1px solid #00f;width:600px;height:150px;overflow-x:visible;overflow-y:visible;">
-</textarea-->
-    </br>
+    <!--textarea id='networkinfo' readonly
+              style="resize:none;border:1px solid #00f;width:600px;height:150px;overflow-x:visible;overflow-y:visible;">
+    </textarea-->
+    <br>
     <button onclick="ws_connect('127.0.0.1',8088)">连接websocket</button>
     <button onclick="ws_send('hello websocket server')">发送数据</button>
     <button onclick="ws_disconnect()">停止websocket</button>
-    </br>
+    <br>
 
     <button onclick="wss_connect('127.0.0.1',8088)">连接websocket SSL</button>
     <button onclick="wss_send('hello websocket server')">发送数据</button>
     <button onclick="wss_disconnect()">停止websocket SSL</button>
 
-    </br>
+    <br>
     <script src="../common/request.js"></script>
     <button onclick="http_get('http://localhost:8088')">http get请求</button>
     <button onclick="http_post('http://localhost:8088')">http post 请求</button>
 
-    </br>
+    <br>
     <button onclick="https_get('https://127.0.0.1:8088')">https get请求</button>
-    
+
     <button onclick="http_ecas('192.168.10.136',8087,'cert2/login.action','erayt','aaa111')">ECAS登录</button>
 
     <button onclick="http_proxy('http://101.226.249.237:80')">http代理</button>
-    </br>
+    <br>
 
     网络状态：
     <span id='netStatus'> </span>
-    </br>
+    <br>
 
 </fieldset>
 
@@ -151,7 +143,7 @@ Electron平台版本信息：
     <legend>其他</legend>
     <button onclick="shareobj_set('count',1000)">设置共享值</button>
     <button onclick="shareobj_get('count')">获取共享值</button>
-    </br>
+    <br>
 
     <!--button>导出xls文件</button-->
     <button onclick="exCSV()">导出CSV文本</button>

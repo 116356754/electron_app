@@ -7,6 +7,7 @@ var electron = require('electron');
 var app = electron.app;
 var ipcMain = electron.ipcMain;
 var powerSaveBlocker = electron.powerSaveBlocker;
+var BrowserWindow = electron.BrowserWindow;
 
 var log = require('./log');
 var menu = require('./menu');
@@ -59,6 +60,12 @@ function init() {
 
     //新建tearout窗口
     ipcMain.on('tearout-window', onCreateTearoutWindow);
+
+    ipcMain.on('min-window', onMinimize);
+
+    ipcMain.on('max-window', onMaxmize);
+
+    ipcMain.on('close-window', onClose);
 
     /*
     // Capture all events
@@ -220,4 +227,31 @@ function onCreateTearoutWindow(event, argurl,dom) {
     setTimeout(function () {
         windows.focusWindow(windows.tearout);
     }, 100);
+}
+
+function onMinimize(e,winid)
+{
+    log(winid+ ' Min');
+    var win  = BrowserWindow.fromId(winid);
+    if(win.isMinimized())
+        return;
+
+    win.minimize();
+}
+
+function onMaxmize(e,winid)
+{
+    log(winid+ ' Max');
+    var win  = BrowserWindow.fromId(winid);
+    if(win.isMaximized())
+        win.unmaximize();
+    else
+        win.maximize();
+}
+
+function onClose(e,winid)
+{
+    log(winid+ ' Close');
+    var win= BrowserWindow.fromId(winid);
+    win.close();
 }

@@ -15,7 +15,9 @@ var sound = require(path.join(config.RENDER_PATH, 'lib/sound'));
 var windowState = {
     bounds: null, /* {x, y, width, height } */
     isFocused: true,
-    isFullScreen: false
+    isFullScreen: false,
+    isMaximized:false,
+    isMinimized:false,
 };
 // This dependency is the slowest-loading, so we lazy load it
 //var Cast = null
@@ -159,6 +161,7 @@ function saveState () {
     //处理一些关闭前需要保存的数据
     ipcRenderer.send('savedState');
 }
+
 
 function onError(err) {
     console.error(err.stack || err)

@@ -4,8 +4,15 @@ const electron = require('electron');
 const dialog = electron.dialog;
 const app = electron.app;
 var config = require('../config');
+var log =require('./log');
 /**
  * Created by Administrator on 2016/4/21.
+ *  autoUpdater.on('checking-for-update', () => log('Checking for app update'))
+    autoUpdater.on('update-available', () => log('App update available'))
+    autoUpdater.on('update-not-available', () => log('App update not available'))
+    autoUpdater.on('update-downloaded', function (e, releaseNotes, releaseName, releaseDate, updateURL) {
+    log('App update downloaded: ', releaseName, updateURL)
+  })
  */
 
 var async = require('async');
@@ -21,9 +28,9 @@ var EMAutoupdateResult =
 var http = require('http');
 var url = require('url');
 //get服务器上的json的版本信息文件，然后获取的对象传给版本比较函数
-var http_getversion = function (arg, callback) {
-    console.log('http get from url:' + arg);
-    var urlobj = url.parse(arg);
+var checking_for_update = function (argurl, callback) {
+    console.log('http get from url:' + argurl);
+    var urlobj = url.parse(argurl);
 
     var versionJson = {};
 
@@ -33,7 +40,7 @@ var http_getversion = function (arg, callback) {
         path: urlobj.path,
         method: 'GET'
     };
-    console.log(options);
+    //console.log(options);
     var req = http.request(options, function (res) {
         var data = '';
         res.setEncoding('utf8');
@@ -80,12 +87,12 @@ var compareMainFrameVersion = function (versionJsonObj) {
     var ver = require('process');
     var mainframever = ver.versions.electron;
     //var mainframever= '0.36.3';
-    console.log('current main framework Version ' + mainframever);
+    log('current main framework Version ' + mainframever);
 
-    console.log('remote main framework Version ' + versionJsonObj.windows.Version);
+    log('remote main framework Version ' + versionJsonObj.windows.Version);
     var isneed = needUpdate(mainframever, versionJsonObj.windows.Version);
 
-    console.log(isneed ? "we need update main framework " : "we don't need update main framework ");
+    log(isneed ? "we need update main framework " : "we don't need update main framework ");
 
     return isneed;
 };
@@ -93,11 +100,11 @@ var compareMainFrameVersion = function (versionJsonObj) {
 //资源文件版本比较
 var compareAppVersion = function (versionJsonObj) {
     // var appversion='1.5.0';
-    console.log('start  compare Version ' + versionJsonObj.windows.resourceVersion);
+    log('start  compare Version ' + versionJsonObj.windows.resourceVersion);
     var isneed = needUpdate(app.getVersion(), versionJsonObj.windows.resourceVersion);
     //var isneed = needUpdate(appversion,versionJsonObj.windows.resourceVersion);
 
-    console.log(isneed ? "we need update app resource " : "we don't need update app resource ");
+    log(isneed ? "we need update app resource " : "we don't need update app resource ");
 
     return isneed;
 };
@@ -133,7 +140,7 @@ var wait = function (mils) {
 var excuteExe = function (exefilepath, callback) {
     console.log(exefilepath);
     if (!fs.existsSync(exefilepath)) {
-        console.log('exe is not exist!');
+        log('exe is not exist!');
         return callback('exe is not exist!', EMAutoupdateResult.UpdateErr);
     }
     setTimeout(function () {
@@ -197,18 +204,23 @@ var subcomparewaterfall = function (verJsonObj, callback) {
         });
 };
 
-function init (cb)
+function checkForUpdates(cb)
 {
     async.waterfall([
         async.constant(config.AUTO_UPDATE_URL),
-        http_getversion,
+        checking_for_update,
         subcomparewaterfall
     ], function (err, results) {
         if (err)
-            console.log('ERR: auto update is failed: ' + err);
+            log('ERR: auto update is failed: ' + err);
 
-        console.log('waterfall result is:' + results);
+        log('waterfall result is:' + results);
         cb(results);
     });
+}
+function init (cb)
+{
+    setTimeout(checkForUpdates, config.AUTO_UPDATE_CHECK_STARTUP_DELAY,cb);
+
 }
 

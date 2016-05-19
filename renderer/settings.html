@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" type="image/png" href="../resources/IconLogo.png">
     <title>Taitan Settings</title>
+    <link href="common.css" rel="stylesheet" type="text/css">
+
     <style>
         body {
             font-family: "Arial", "Helvetica", sans-serif;
@@ -82,33 +84,33 @@
             display: inline-block;
         }
 
-        button:hover,button:active {
+        button:hover, button:active {
             border: 1px solid #4cae4c;
             background: #63bb63;
         }
     </style>
     <script>
+        var controlwnd= require('./lib/controlwnd.js');
+        window.onload =function(){controlwnd.init()};
+
         window.onbeforeunload = save;
 
         var setting = require("../main/usersetting");
-        var locale =require("../static/lang.json");
+        var locale = require("../static/lang.json");
         var electron = require('electron');
         var remote = electron.remote;
         var setts = remote.getGlobal('sharedObj').setts;
 
         //语言和样式发生变化，通知所有渲染窗口
-        function notifyWindow(sets)
-        {
-            if(sets["lang"]!==setts["lang"])
-            {
-                remote.BrowserWindow.getAllWindows().forEach(function(wins){
+        function notifyWindow(sets) {
+            if (sets["lang"] !== setts["lang"]) {
+                remote.BrowserWindow.getAllWindows().forEach(function (wins) {
                     wins.send('changeLanguage', sets["lang"]);
                 });
             }
 
-            if(sets["style"]!==setts["style"])
-            {
-                remote.BrowserWindow.getAllWindows().forEach(function(wins){
+            if (sets["style"] !== setts["style"]) {
+                remote.BrowserWindow.getAllWindows().forEach(function (wins) {
                     wins.send('changeStyle', sets["style"]);
                 });
             }
@@ -117,14 +119,14 @@
         function save() {
             try {
                 var form = document.getElementById("settings");
-                var sets={};
-                sets["lang"]=form["lang"].value;
-                sets["style"]=form["style"].value;
-                sets["minimizeToTray"]= form["mintray_mode"].checked;
-                sets["closeToTray"]=form["closetray_mode"].checked;
+                var sets = {};
+                sets["lang"] = form["lang"].value;
+                sets["style"] = form["style"].value;
+                sets["minimizeToTray"] = form["mintray_mode"].checked;
+                sets["closeToTray"] = form["closetray_mode"].checked;
                 notifyWindow(sets);
-                remote.getGlobal('sharedObj').setts =sets;
-            } catch(err) {
+                remote.getGlobal('sharedObj').setts = sets;
+            } catch (err) {
                 alert("There was an error saving your settings: " + err);
                 console.error("Error: " + err);
             } finally {
@@ -134,7 +136,7 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var lang = setts["lang"];
             document.getElementById("title").innerHTML = locale[lang].settings.title;
             //alert(setts);
@@ -159,41 +161,50 @@
             document.getElementById("closetray_title").innerHTML = locale[lang].settings.closetray_title;
             if (setts["closeToTray"]) document.getElementById("closetray_mode").checked = true;
 
+
+
         });
     </script>
 </head>
 <body>
-    <h2 id="title">Settings</h2>
+<div class="min">Min</div>
+<div class="max">Max</div>
+<div class="close">Close</div>
+<h2 id="title">Settings</h2>
+<hr>
+
+<form action="javascript:save()" id="settings">
+
+    <h4><span id="lang_title">Language</span></h4>
+    <blockquote>
+        <label><input type="radio" name="lang" id="lang_en" value="en"> English</label><br>
+        <label><input type="radio" name="lang" id="lang_cn" value="cn">中文</label>
+    </blockquote>
+
+    <br>
     <hr>
 
-    <form action="javascript:save()" id="settings">
+    <h4><span id="style_title">Style</span></h4>
+    <blockquote>
+        <label><input type="radio" name="style" id="style_classic" value="classic"> <span
+                id="classic">古典风格</span></label><br>
+        <label><input type="radio" name="style" id="style_popular" value="popular"><span
+                id="popular">流行风格</span></label>
+    </blockquote>
 
-        <h4><span id="lang_title">Language</span></h4>
-        <blockquote>
-            <label><input type="radio" name="lang" id="lang_en" value="en"> English</label><br>
-            <label><input type="radio" name="lang" id="lang_cn" value="cn">中文</label>
-        </blockquote>
+    <br>
+    <hr>
 
-        <br><hr>
+    <h4 id="mintray_title">mintray_title</h4>
+    <label><input type="checkbox" name="mintray_mode" id="mintray_mode"> Enable</label>
 
-        <h4><span id="style_title">Style</span></h4>
-        <blockquote>
-            <label><input type="radio" name="style" id="style_classic" value="classic">  <span id="classic">古典风格</span></label><br>
-            <label><input type="radio" name="style" id="style_popular" value="popular"><span id="popular">流行风格</span></label>
-        </blockquote>
+    <br>
 
-        <br><hr>
+    <h4 id="closetray_title">closetray_title</h4>
+    <label><input type="checkbox" name="closetray_mode" id="closetray_mode">Enable</label>
 
-        <h4 id="mintray_title">mintray_title</h4>
-        <label><input type="checkbox" name="mintray_mode" id="mintray_mode"> Enable</label>
+    <br>
 
-        <br>
-
-        <h4 id="closetray_title">closetray_title</h4>
-        <label><input type="checkbox" name="closetray_mode" id="closetray_mode">Enable</label>
-
-        <br>
-
-    </form>
+</form>
 </body>
 </html>

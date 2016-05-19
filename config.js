@@ -5,6 +5,8 @@ var APP_NAME = 'Titan';
 var APP_TEAM = 'The HTML5 Project';
 var APP_VERSION = require('./package.json').version;
 module.exports = {
+    HAVE_FRAME:false,//所有的窗体是否含有frame
+
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, 'static', 'TaiTanFile'),
     APP_ICON: path.join(__dirname, 'static', 'TaiTan'),
@@ -15,7 +17,7 @@ module.exports = {
     APP_WINDOW_TITLE: APP_NAME,
 
     AUTO_UPDATE_URL: 'http://127.0.0.1:8087/update/SVersion.json',
-    // AUTO_UPDATE_CHECK_STARTUP_DELAY: 5 * 1000 /* 5 seconds */,
+    AUTO_UPDATE_CHECK_STARTUP_DELAY: 5 * 1000 /* 5 seconds */,
 
     CRASH_REPORT_URL: 'https://www.erayt.com/desktop/crash-report',
 
