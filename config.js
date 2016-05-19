@@ -1,7 +1,7 @@
 var path = require('path');
 var qs = require("querystring");
 
-var APP_NAME = 'Taitan';
+var APP_NAME = 'Titan';
 var APP_TEAM = 'The HTML5 Project';
 var APP_VERSION = require('./package.json').version;
 module.exports = {
@@ -38,7 +38,6 @@ module.exports = {
     //WINDOW_ABOUT: 'http://www.codeproject.com/Lounge.aspx',
 
     WINDOW_OTHER: 'file://' + path.join(__dirname, 'renderer', 'other.html'),
-    WINDOW_NOTI: 'file://' + path.join(__dirname, 'renderer', 'noti.html'),
 
     WINDOW_TEAROUT: 'file://' + path.join(__dirname, 'renderer','tearout', 'tearout.html'),
 

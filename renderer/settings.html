@@ -136,6 +136,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             var lang = setts["lang"];
+            document.getElementById("title").innerHTML = locale[lang].settings.title;
             //alert(setts);
             document.getElementById("lang_title").innerHTML = locale[lang].settings.language;
 

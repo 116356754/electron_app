@@ -24,9 +24,22 @@ window.onload = function () {
     });
 };
 
-var shownoti = function (title, content) {
+var showtoaster = function (title, content) {
     //native window notification or jquery notification
     nofi.showNotification(title, content);
+};
+
+var notifier = require('electron-notifications');
+var count =1;
+var shownoti =function()
+{
+// Full Options
+    count++;
+    notifier.notify('Notification', {
+        message: 'Event begins in 10 minutes'+count,
+        //icon: 'http://cl.ly/J49B/3951818241085781941.png',
+        //buttons: ['close']
+    });
 };
 
 //node aes
@@ -190,7 +203,7 @@ function createPlugin() {
     var container = document.getElementById("pluginContainer");
     container.appendChild(plugin);
 
-    setTimeout(function(){remote.getCurrentWindow().focus();},1000);
+    //setTimeout(function(){remote.getCurrentWindow().focus();},1000);
 }
 
 function deletePlugin() {

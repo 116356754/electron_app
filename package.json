@@ -10,6 +10,7 @@
     "async": "^1.5.2",
     "download-http": "0.0.4",
     "electron-localshortcut": "^0.6.0",
+    "electron-notifications": "0.0.3",
     "electron-toaster": "^2.0.1",
     "electron-window-state": "^2.1.0",
     "fast-csv": "^2.0.0",

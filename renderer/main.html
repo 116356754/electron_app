@@ -54,7 +54,8 @@ Electron平台版本信息：
     <legend>UI</legend>
 
     <button onclick="createOtherWindow()">新建窗口</button>
-    <button onclick="shownoti('sir, you got a message','you will have a meeting 5 minutes later.')">消息提示</button>
+    <button onclick="showtoaster('sir, you got a message','you will have a meeting 5 minutes later.')">消息提示</button>
+    <button onclick="shownoti()">消息提示</button>
 </fieldset>
 
 <br/>
@@ -78,6 +79,7 @@ Electron平台版本信息：
     <legend>剥离子窗口</legend>
     <link rel="stylesheet" href="tearout/tearout.css">
     <script src="tearout/tearout.js"></script>
+
     <div class="tearout-container gold" id="tearout-container">
         Name
         <input type="text"  onchange="this.setAttribute('value', this.value);">

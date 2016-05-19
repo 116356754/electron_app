@@ -109,8 +109,8 @@ function init() {
         /* try to save state on exit */
         ipcMain.once('savedState', () => app.quit());
 
-        setTimeout(() => app.quit(), 1000);
-        /* quit after 1 secs, at most */
+        setTimeout(() => app.quit(), 2000);
+        /* quit after 2 secs, at most */
     });
 }
 

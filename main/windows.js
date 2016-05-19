@@ -26,7 +26,7 @@ function createAboutWindow() {
         return focusWindow(windows.about)
     }
     var win = windows.about = new electron.BrowserWindow({
-        backgroundColor: '#ECECEC',
+        //backgroundColor: '#ECECEC',
         show: false,
         center: true,
         resizable: false,
