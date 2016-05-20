@@ -52,7 +52,7 @@ function md5file(filepath){
 }
 
 var hasher = require('hash-dir-contents');
-function md5dir(dirpath)
+function md5dir(dirpath,cb)
 {
     hasher({
         directory: dirpath,
@@ -60,6 +60,7 @@ function md5dir(dirpath)
     }, function(error, hash) {
         console.log(hash);
         console.timeEnd('md5-dir');
-        return hash;
+        cb(hash);
+        //return hash;
     });
 }

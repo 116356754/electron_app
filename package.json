@@ -7,7 +7,6 @@
     "url": "https://github.com/116356754/electron_app/issues"
   },
   "dependencies": {
-    "async": "^1.5.2",
     "download-http": "0.0.4",
     "electron-localshortcut": "^0.6.0",
     "electron-notifications": "0.0.3",

@@ -3,7 +3,7 @@ var electron = require('electron');
 var app = electron.app;
 var ipcMain = electron.ipcMain;
 
-var autoUpdater = require('./auto-update');
+//var autoUpdater = require('./auto-update');
 
 var config = require('../config');
 var crashReporter = require('../crash-reporter');
@@ -14,10 +14,13 @@ var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
 var setting = require("./usersetting");
-
+var appcheck = require('./checksum');
+var dialog = electron.dialog;
+var auto = require('./auto-updater/autoupdater');
+var path =require('path');
 
 log(config.PPAPI_PATH);
-app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH+'/hello_nacl.dll;application/x-ppapi-hello');
+app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/hello_nacl.dll;application/x-ppapi-hello');
 
 //测试chrome浏览器设置代理服务器，然后通过代理访问的url
 //chrome proxy setting
@@ -26,7 +29,7 @@ app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH+'/hell
 
 //全局共享数据测试，将数据存在主进程的某个全局变量中，然后在多个渲染进程中使用 remote 模块来访问它
 //share object in render process and main process
-global.sharedObj = {count: '',setts:{}};
+global.sharedObj = {count: '', setts: {}};
 
 var shouldQuit = false;
 if (!shouldQuit) {
@@ -48,19 +51,55 @@ function init() {
     app.ipcReady = false; // main window has finished loading and IPC is ready
     app.isQuitting = false;
 
-    global.sharedObj.setts =setting.init();//加载配置
+    global.sharedObj.setts = setting.init();//加载配置
     //console.log(JSON.stringify(global.sharedObj.setts));
     ipc.init();
     app.on('will-finish-launching', function (e) {
         log('will-finish-launching');
         //crashReporter.init()
-        autoUpdater.init(function(result)
-        {
-            if ((result == 2) || (result == 3))//更新过程中任何错误都忽略，并创建启动窗口
-                return app.quit();
+        auto.setFeedURL({
+            updateURL:'http://localhost:8087/update/SVersion.json',
+            frameVer:process.versions.electron,
+            appVer:app.getVersion(),
+            downloadPath:app.getPath('downloads')
         });
-
         //createWindow();
+        setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
+    });
+
+    auto.on('error',(err)=>console.log(err));
+    //auto.on('checking-for-update',()=>console.log('checking-for-update'));
+    auto.on('update-available',(version,downloadurl)=>console.log('update-available'+version,downloadurl));
+
+    //当没有更新的时候校验框架和app的哈希值
+    auto.on('update-not-available',(frameMD5,appMD5)=>{
+        console.log('update-not-available '+frameMD5+appMD5);
+        appcheck.start(frameMD5, appMD5);//检查程序是否有效的md5值
+        appcheck.frameSign(process.execPath);
+        appcheck.appSign(path.join(process.cwd(),"resources",'app_bak.asar'));
+    });
+
+    //安装更新程序
+    auto.on('update-downloaded',(localpath)=>{
+        console.log('update-downloaded'+localpath);
+        setTimeout(()=> {
+            auto.quitAndInstall(localpath);
+            return app.quit();
+        },1000);
+    });
+
+    appcheck.on('check-validate', ()=> console.log('check app and frame is validate!'));
+
+    appcheck.on('check-not-validate', ()=> {
+        console.log('check app or frame is not validate!')
+        var index = dialog.showMessageBox({
+            type: "none",
+            title: 'checksum is not correct',
+            message: 'you should reinstall application later',
+            buttons: ['OK']
+        });
+        //if (index == 0)
+        //   return app.quit();
     });
 
     app.on('ready', function () {
@@ -80,25 +119,6 @@ function init() {
         log('ipcReady');
         //broadCastWSInfo();
     });
-
-    //测试通讯在主进程，然后通过ipc发送给所有窗口
-    // var broadCastWSInfo =function()
-    // {
-    //     var ws = require('../common/websocket.js');
-    //     var ws_cli = new ws('localhost', 8088);
-
-    //     ws_cli.ws_connect();
-    //     ws_cli.ws_.on('message', function (data) {
-    //         log(data.toString());
-    //         electron.BrowserWindow.getAllWindows().forEach(wins => {
-    //             wins.send('wt-msg',data);
-    //         });
-    //     });
-
-    //     setTimeout(function () {
-    //         ws_cli.ws_stop();
-    //     }, 1000 * 100);
-    // };
 
     app.on('before-quit', function (e) {
         if (app.isQuitting) return;
@@ -128,4 +148,3 @@ function onAppOpen(newArgv) {
         }, 100);
     }
 }
-
