@@ -13,7 +13,7 @@ var options={
     },
     'file-version':'1.5.0',
     'product-version':'1.5.0',
-    'icon':'E:/enginer/resources/app/static/TaiTan.ico'
+    'icon':'E:/enginer/resources/app/static/Titan.ico'
 };
 nodercedit("E:/enginer/Titan.exe", options, function(error)
 {

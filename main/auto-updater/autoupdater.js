@@ -5,7 +5,6 @@
 
 //const app = require('electron').app;
 const EventEmitter = require('events').EventEmitter;
-var childprocess = require('child_process');
 var fs = require('fs');
 const spawn = require('child_process').spawn;
 const updatewin = require('./update-internal');

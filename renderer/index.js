@@ -17,7 +17,7 @@ var windowState = {
     isFocused: true,
     isFullScreen: false,
     isMaximized:false,
-    isMinimized:false,
+    isMinimized:false
 };
 // This dependency is the slowest-loading, so we lazy load it
 //var Cast = null

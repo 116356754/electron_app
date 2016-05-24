@@ -23,57 +23,47 @@ CheckSumer.prototype.start = function(remoteFrameSign,remoteAppSign)
 {
     this.remoteFrameSign = remoteFrameSign;
     this.remoteAppSign = remoteAppSign;
-    //if(this.frameSign())
-   //     this.appSign();
 };
 
 CheckSumer.prototype.frameSign = function (filepath)
 {
+    var self = this;
     //59120c11e494586ef09277942066184c
     console.time('md5-file');
     //log(filepath);
-    var signature = md5File(filepath);
-    console.log(signature);
-    console.timeEnd('md5-file');
-    if(this.remoteFrameSign != signature)
-        this.emit('check-not-validate');
+    var signature = md5File(filepath,function (err, hash) {
+        console.log('frame hash result is '+hash);
+        console.timeEnd('md5-file');
+
+        if(self.remoteFrameSign != hash)
+            self.emit('check-not-validate');
+        else
+            self.emit('check-validate');
+    });
 };
 
 CheckSumer.prototype.appSign = function (dirpath)
 {
     var self = this;
     //var dirpath =path.join(process.cwd(),"resources",'app_bak.asar');
-    console.log(dirpath);
+    //console.log(dirpath);
     //45b83d98593ba8425e59d125d45bb053
     console.time('md5-dir');
     hasher({
         directory: dirpath,
         algorithm: 'md5'
     }, function(error, signature) {
-        console.log(self.remoteAppSign);
+        //console.log(self.remoteAppSign);
         if (self.remoteAppSign != signature)
             self.emit('check-not-validate');
         else
             self.emit('check-validate');
 
-        console.log(signature);
+        console.log('app hash result is '+signature);
         console.timeEnd('md5-dir');
     });
 };
 
 module.exports = new CheckSumer();
 
-//var appcheck = require('./checksum');
-//
-//appcheck.on('check-validate', ()=> console.log('check app and frame is validate!'));
-//
-//appcheck.on('check-not-validate', ()=> {
-//console.log('not validate!');
-//});
-//
-//appcheck.start('123', '456');//检查程序是否有效的md5值
-//appcheck.appSign(path.join('E:/electron_app/resources','app_bak.asar'));
-//
-//setInterval(()=>{
-//    console.log('alive');
-//}, 300);
+

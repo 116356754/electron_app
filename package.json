@@ -1,6 +1,6 @@
 {
-  "name": "taitan-desktop",
-  "description": "HTML5 Taitan client For Windows.",
+  "name": "titan-desktop",
+  "description": "HTML5 Titan client For Windows.",
   "version": "1.5.0",
   "author": "kaiyuan wang <wangky@erayt.com> (http://www.erayt.com/)",
   "bugs": {
@@ -15,7 +15,7 @@
     "fast-csv": "^2.0.0",
     "hash-dir-contents": "0.0.2",
     "iconv-lite": "^0.4.13",
-    "md5-file": "^2.0.4",
+    "md5-file": "^3.1.0",
     "mime": "^1.3.4",
     "mkdirp": "^0.5.1",
     "request": "^2.72.0",
@@ -26,10 +26,10 @@
     "desktop",
     "electron",
     "electron-app",
-    "taitan"
+    "titan"
   ],
   "main": "index.js",
-  "productName": "Taitan",
+  "productName": "Titan",
   "devDependencies": {
     "rcedit": "^0.5.0"
   },

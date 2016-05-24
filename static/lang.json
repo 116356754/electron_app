@@ -1,6 +1,6 @@
 {
     "en": {
-        "title": "TaiTan",
+        "title": "Titan",
         "description": "HTML5 Client For Windows",
         "settings": {
             "title":"Setting",
@@ -38,7 +38,7 @@
     },
 
     "cn": {
-        "title": "TaiTan",
+        "title": "Titan",
         "description": "基于HTML5的客户端应用程序",
         "settings": {
             "title":"设置",

@@ -69,7 +69,7 @@ function createMainWindow() {
     });
 
     var win = windows.main = new electron.BrowserWindow({
-        backgroundColor: '#1E1E1E',
+        backgroundColor: '#FFF',
         darkTheme: true, // Forces dark theme (GTK+3)
         icon: config.APP_ICON + '.png',
         minWidth: 425,

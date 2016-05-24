@@ -14,7 +14,8 @@ var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
 var setting = require("./usersetting");
-var appcheck = require('./checksum');
+//var appcheck = require('./checksum');
+var cp = require('child_process');
 var dialog = electron.dialog;
 var auto = require('./auto-updater/autoupdater');
 var path =require('path');
@@ -58,13 +59,13 @@ function init() {
         log('will-finish-launching');
         //crashReporter.init()
         auto.setFeedURL({
-            updateURL:'http://localhost:8087/update/SVersion.json',
+            updateURL:config.AUTO_UPDATE_URL,
             frameVer:process.versions.electron,
             appVer:app.getVersion(),
             downloadPath:app.getPath('downloads')
         });
         //createWindow();
-        setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
+        //setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
     auto.on('error',(err)=>console.log(err));
@@ -74,9 +75,33 @@ function init() {
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',(frameMD5,appMD5)=>{
         console.log('update-not-available '+frameMD5+appMD5);
-        appcheck.start(frameMD5, appMD5);//检查程序是否有效的md5值
-        appcheck.frameSign(process.execPath);
-        appcheck.appSign(path.join(process.cwd(),"resources",'app_bak.asar'));
+        var child = cp.fork(config.MAIN_PATH+'/checksum/forkChild.js');
+
+        //发送文件路径
+        child.send({frameSum:frameMD5,appSum:appMD5,
+            exepath:process.execPath,
+            dirpath:path.join(process.cwd(),"resources",'app_bak.asar')
+        });
+
+        //收到哈希的结果
+        child.on('message', function(m) {
+            console.log('hash result is :'+m.result);
+            child.kill('SIGTERM');
+            if(!m.result)
+            {
+                console.log('check app or frame is not validate!');
+                var index = dialog.showMessageBox({
+                    type: "none",
+                    title: 'checksum is not correct',
+                    message: 'your Titan application checksum is not correct, should reinstall application later!',
+                    buttons: ['OK']
+                });
+                if (index == 0)
+                   return app.quit();
+            }
+            else
+                console.log('check app and frame is validate!');
+        });
     });
 
     //安装更新程序
@@ -86,20 +111,6 @@ function init() {
             auto.quitAndInstall(localpath);
             return app.quit();
         },1000);
-    });
-
-    appcheck.on('check-validate', ()=> console.log('check app and frame is validate!'));
-
-    appcheck.on('check-not-validate', ()=> {
-        console.log('check app or frame is not validate!')
-        var index = dialog.showMessageBox({
-            type: "none",
-            title: 'checksum is not correct',
-            message: 'you should reinstall application later',
-            buttons: ['OK']
-        });
-        //if (index == 0)
-        //   return app.quit();
     });
 
     app.on('ready', function () {

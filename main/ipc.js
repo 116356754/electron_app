@@ -85,7 +85,7 @@ function init() {
      // Relay messages between the main window and the WebTorrent hidden window
      if (name.startsWith('wt-')) {
      console.log(e.sender.browserWindowOptions.title);
-     if (e.sender.browserWindowOptions.title === 'Taitan-other') {  //给主窗口发消息
+     if (e.sender.browserWindowOptions.title === 'Titan-other') {  //给主窗口发消息
      // Send message to main window
      windows.main.send(name, ...args);
      console.log('main window: got %s content : %s', name, args);

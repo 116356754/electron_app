@@ -5,11 +5,11 @@ var APP_NAME = 'Titan';
 var APP_TEAM = 'The HTML5 Project';
 var APP_VERSION = require('./package.json').version;
 module.exports = {
-    HAVE_FRAME:false,//所有的窗体是否含有frame
+    HAVE_FRAME:true,//所有的窗体是否含有frame
 
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
-    APP_FILE_ICON: path.join(__dirname, 'static', 'TaiTanFile'),
-    APP_ICON: path.join(__dirname, 'static', 'TaiTan'),
+    APP_FILE_ICON: path.join(__dirname, 'static', 'TitanFile'),
+    APP_ICON: path.join(__dirname, 'static', 'Titan'),
 
     APP_NAME: APP_NAME,
     APP_TEAM: APP_TEAM,
@@ -27,6 +27,7 @@ module.exports = {
     IS_PRODUCTION: isProduction(),
 
     ROOT_PATH: __dirname,
+    MAIN_PATH:path.join(__dirname, 'main'),
     STATIC_PATH: path.join(__dirname, 'static'),
     RENDER_PATH:path.join(__dirname, 'renderer'),
     PPAPI_PATH: path.join(process.cwd(), 'ppapi'),

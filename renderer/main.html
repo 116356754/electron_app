@@ -2,7 +2,6 @@
 <head>
     <meta charset="utf-8"/>
     <link href="common.css" rel="stylesheet" type="text/css">
-
     <script async src="index.js"></script>
     <script src="test.js"></script>
 
@@ -19,7 +18,8 @@ Electron平台版本信息：
 <span id='mfversion'></span>
 程序版本：
 <span id='appversion'></span>
-
+<button onclick="showpdf('https://www.canon.com.cn/products/printer/pixma-fax/images/speedtest.pdf')">阅读pdf文件</button>
+<button onclick="tearout();">剥离</button>
 <fieldset>
     <legend>PPAPI</legend>
 
@@ -35,19 +35,9 @@ Electron平台版本信息：
     </div>
     <br>
 
-    <button onclick="showpdf('http://www.orimi.com/pdf-test.pdf')">阅读pdf文件</button>
+    <button onclick="showpdf('https://www.canon.com.cn/products/printer/pixma-fax/images/speedtest.pdf')">阅读pdf文件</button>
     <!--button onclick="showpdf('E:/11.pdf')">阅读pdf文件</button-->
     <!--webview src='E:\enginer\resources\app\plugins\pdfjs\web\viewer.html?file=E:/11.pdf'></webview-->
-</fieldset>
-
-
-
-<fieldset>
-    <legend>AutoUpdater</legend>
-
-    <button onclick="quitInstall()">quitInstall</button>
-    <button onclick="setUrl()">download</button>
-    <button onclick="shownoti()">消息提示</button>
 </fieldset>
 
 <fieldset>
@@ -58,11 +48,11 @@ Electron平台版本信息：
     <button onclick="shownoti()">消息提示</button>
 </fieldset>
 
-<br/>
+<br>
 
 <fieldset>
     <legend>窗口间交互</legend>
-    接收的信息：<input type="text" id='recwt-msg' width="200px"/>
+    <label for="recwt-msg">接收的信息：</label><input type="text" id='recwt-msg' width="200px"/>
     <br>
     目标窗口标题：<input type="text" id='target-title' width="200px"/>
     发送消息内容<input type="text" id='msg'/>
@@ -73,7 +63,6 @@ Electron平台版本信息：
     <br>
     <button onclick="sendAllMessage(document.getElementById('msg').value)">发送消息给所有窗口</button>
 </fieldset>
-
 <br>
 <fieldset>
     <legend>剥离子窗口</legend>
@@ -83,6 +72,7 @@ Electron平台版本信息：
     <div class="tearout-container gold" id="tearout-container">
         Name
         <input type="text"  onchange="this.setAttribute('value', this.value);">
+        <br>
         Email
         <input type="text" onchange="this.setAttribute('value', this.value);">
         <br>
@@ -90,16 +80,13 @@ Electron平台版本信息：
         <button onclick="testinsertjs();">事件测试</button>
     </div>
     <button onclick="tearout();">剥离</button>
-    <!--button onclick="document.getElementById('tearout-container').style.display=''">显示</button-->
+
 </fieldset>
-<br/>
+
+<br>
 <fieldset>
     <legend>通讯</legend>
 
-    <!--textarea id='networkinfo' readonly
-              style="resize:none;border:1px solid #00f;width:600px;height:150px;overflow-x:visible;overflow-y:visible;">
-    </textarea-->
-    <br>
     <button onclick="ws_connect('127.0.0.1',8088)">连接websocket</button>
     <button onclick="ws_send('hello websocket server')">发送数据</button>
     <button onclick="ws_disconnect()">停止websocket</button>
@@ -140,7 +127,7 @@ Electron平台版本信息：
 
 </fieldset>
 
-<br/>
+<br>
 <fieldset>
     <legend>C++ 组件</legend>
     <button onclick="callcppaddon()">调用原生C++组件导出的函数</button>
@@ -157,10 +144,6 @@ Electron平台版本信息：
     <button onclick="exCSV()">导出CSV文本</button>
     <button onclick="expdf()">导出pdf</button>
 </fieldset>
-
-
-<!--object type="application/npdemo-plugin" id="pluginId" width=100% height=150  ></object-->
-<!--embed id="plugin" type="application/x-hello" width="600" height="480"-->
 
 </body>
 </html>
