@@ -1,12 +1,9 @@
 module.exports={
     encryptiontxt,
-    decryptiontxt,
-    md5file,
-    md5dir
+    decryptiontxt
 };
 
 var nodeCrypto  = require('crypto');
-
 var ENCRYPT_MODE ='aes-128-ecb';
 var ENCRYPT_KEY = '12345678901erayt';
 
@@ -41,26 +38,4 @@ function decryptiontxt(data) {
 	var decry = cipherChunks.join('');
 	console.log(decry);
     return decry;
-}
-
-var md5File = require('md5-file');
-// sync (no callback)
-function md5file(filepath){
-    var signature = md5File(filepath);
-    console.log(signature);
-    return signature;
-}
-
-var hasher = require('hash-dir-contents');
-function md5dir(dirpath,cb)
-{
-    hasher({
-        directory: dirpath,
-        algorithm: 'md5'
-    }, function(error, hash) {
-        console.log(hash);
-        console.timeEnd('md5-dir');
-        cb(hash);
-        //return hash;
-    });
 }

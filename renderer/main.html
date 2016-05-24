@@ -1,15 +1,20 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <link href="common.css" rel="stylesheet" type="text/css">
     <script async src="index.js"></script>
     <script src="test.js"></script>
 
 </head>
 <body>
-<div class="min">Min</div>
-<div class="max">Max</div>
-<div class="close">Close</div>
+<div class="title">
+    <h6 id="win-title"><font color="white">TiTan</font></h6>
+</div>
+
+<script>
+    var controlwnd= require('./lib/controlwnd.js');
+    controlwnd.init();
+</script>
+
 
 Electron平台版本信息：
 <p id='content'></p>
@@ -121,9 +126,6 @@ Electron平台版本信息：
     <button onclick="decryptiontxt('rbiEHxpBXNBO38Y8UbT9sXj5qqh/pbdYl1WJWiWvteXE5kSdbW7XJjS5dlOpI7/zCo8E20NzTGoMoVYDjdXlmbX4h2HEkKZtrR2FDbagUaKaVHBCoX4wiR2CHV3lmEg9Iup442PLb2y5CSDnAIhqiQ==')">
         AES解密
     </button>
-
-    <button onclick='md5file()'>外壳哈希</button>
-    <button onclick='md5dir()'>资源包哈希</button>
 
 </fieldset>
 

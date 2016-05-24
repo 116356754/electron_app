@@ -245,9 +245,7 @@ function createSetWindow() {
         center: true,
         resizable: false,
         icon: config.APP_ICON + '.png',
-        title: process.platform !== 'darwin'
-            ? 'About ' + config.APP_WINDOW_TITLE
-            : '',
+        title: config.APP_WINDOW_TITLE+' Settings' ,
         useContentSize: true, // Specify web page size without OS chrome
         width: 500,
         height: 550,

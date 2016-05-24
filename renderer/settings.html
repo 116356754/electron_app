@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" type="image/png" href="../resources/IconLogo.png">
     <title>Titan Settings</title>
-    <link href="common.css" rel="stylesheet" type="text/css">
 
     <style>
         body {
@@ -90,9 +89,6 @@
         }
     </style>
     <script>
-        var controlwnd= require('./lib/controlwnd.js');
-        window.onload =function(){controlwnd.init()};
-
         window.onbeforeunload = save;
 
         var setting = require("../main/usersetting");
@@ -138,8 +134,9 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             var lang = setts["lang"];
-            document.getElementById("title").innerHTML = locale[lang].settings.title;
-            //alert(setts);
+            console.log(JSON.stringify(setts));
+            //document.getElementById("title").innerHTML = locale[lang].settings.title;
+
             document.getElementById("lang_title").innerHTML = locale[lang].settings.language;
 
             if (lang === "en") document.getElementById("lang_en").checked = true;
@@ -161,16 +158,20 @@
             document.getElementById("closetray_title").innerHTML = locale[lang].settings.closetray_title;
             if (setts["closeToTray"]) document.getElementById("closetray_mode").checked = true;
 
-
-
         });
     </script>
 </head>
 <body>
-<div class="min">Min</div>
-<div class="max">Max</div>
-<div class="close">Close</div>
-<h2 id="title">Settings</h2>
+
+<div class="title">
+    <h6 id="win-title"><font color="white">TiTan Settings</font></h6>
+</div>
+
+<script>
+    var controlwnd= require('./lib/controlwnd.js');
+    controlwnd.init();
+</script>
+
 <hr>
 
 <form action="javascript:save()" id="settings">

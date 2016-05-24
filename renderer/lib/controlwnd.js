@@ -4,6 +4,7 @@
 var electron = require('electron');
 var ipcRenderer = electron.ipcRenderer;
 var remote = require('remote');
+var titlebar = require('titlebar');
 
 module.exports={
     init
@@ -11,9 +12,12 @@ module.exports={
 
 function init() {
 
-    document.querySelector('.min').addEventListener('click',  ()=>{ipcRenderer.send('min-window',remote.getCurrentWindow().id)});
+    var t = titlebar();
+    t.appendTo(document.body);
 
-    document.querySelector('.max').addEventListener('click',  ()=>{ipcRenderer.send('max-window',remote.getCurrentWindow().id)});
+    t.on('minimize', ()=>{ipcRenderer.send('min-window',remote.getCurrentWindow().id)});
 
-    document.querySelector('.close').addEventListener('click', ()=>{ipcRenderer.send('close-window',remote.getCurrentWindow().id)});
+    t.on('fullscreen',  ()=>{ipcRenderer.send('max-window',remote.getCurrentWindow().id)});
+
+    t.on('close', ()=>{ipcRenderer.send('close-window',remote.getCurrentWindow().id)});
 }

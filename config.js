@@ -5,7 +5,7 @@ var APP_NAME = 'Titan';
 var APP_TEAM = 'The HTML5 Project';
 var APP_VERSION = require('./package.json').version;
 module.exports = {
-    HAVE_FRAME:true,//所有的窗体是否含有frame
+    HAVE_FRAME:false,//所有的窗体是否含有frame
 
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, 'static', 'TitanFile'),
