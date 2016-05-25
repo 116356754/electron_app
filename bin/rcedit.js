@@ -14,7 +14,7 @@ var options={
     },
     'file-version':'1.5.0',
     'product-version':'1.5.0',
-    'icon':path.join(__dirname,'..','static/Titan.ico')
+    'icon':path.join(__dirname,'..','static/logo.ico')
 };
 console.log(__dirname);
 nodercedit(path.join(__dirname,'..','..','..','Titan.exe'), options, function(error)

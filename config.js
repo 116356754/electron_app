@@ -9,7 +9,7 @@ module.exports = {
 
     APP_COPYRIGHT: 'Copyright © 2015-2016 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, 'static', 'TitanFile'),
-    APP_ICON: path.join(__dirname, 'static', 'Titan'),
+    APP_ICON: path.join(__dirname, 'static', 'logo'),
 
     APP_NAME: APP_NAME,
     APP_TEAM: APP_TEAM,

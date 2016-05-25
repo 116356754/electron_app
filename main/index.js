@@ -55,7 +55,7 @@ function init() {
     global.sharedObj.setts = setting.init();//加载配置
     console.log(JSON.stringify(global.sharedObj.setts));
     ipc.init();
-
+    log(path.join(process.cwd(),"resources",'app.asar'));
     app.on('will-finish-launching', function (e) {
         log('will-finish-launching');
         //crashReporter.init()
@@ -81,7 +81,7 @@ function init() {
         //发送文件路径
         child.send({frameSum:frameMD5,appSum:appMD5,
             exepath:process.execPath,
-            dirpath:path.join(process.cwd(),"resources",'app_bak.asar')
+            dirpath:path.join(process.cwd(),"resources",'app.asar')
         });
 
         //收到哈希的结果
@@ -108,6 +108,7 @@ function init() {
     //安装更新程序
     auto.on('update-downloaded',(localpath)=>{
         console.log('update-downloaded'+localpath);
+
         setTimeout(()=> {
             auto.quitAndInstall(localpath);
             return app.quit();

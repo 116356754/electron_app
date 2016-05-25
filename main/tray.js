@@ -15,8 +15,8 @@ var windows = require('./windows');
 var trayIcon;
 
 function init () {
-  trayIcon = new Tray(path.join(__dirname, '..', 'static', 'TiTanSmall.png'));
-
+  trayIcon = new Tray(path.join(__dirname, '..', 'static', 'logo-tray.png'));
+  trayIcon.setPressedImage(path.join(__dirname, '..', 'static', 'logo-tray-white.png'));
   // On Windows, left click to open the app, right click for context menu
   // On Linux, any click (right or left) opens the context menu
   trayIcon.on('click', showApp);
