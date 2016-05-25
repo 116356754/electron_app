@@ -79,8 +79,10 @@ AutoUpdater.prototype.quitAndInstall = function (exepath) {
     var error, spawnedProcess;
     try {
         spawnedProcess = spawn(exepath, [], {
-            detached: true
-        })
+            detached: true,
+            stdio: ['ignore', 'ignore', 'ignore']
+        });
+        spawnedProcess.unref();
     } catch (error1) {
         error = error1;
         return this.emitError(error);

@@ -5,7 +5,7 @@ var path = require('path');
 var remote = require('remote');
 console.log(process.cwd());
 
-var config = require(path.join(process.cwd(), 'resources', 'app', 'config.js'));
+var config = require(path.join(__dirname, '..', 'config.js'));
 var crashReporter = require(path.join(config.ROOT_PATH, 'crash-reporter.js'));
 var {setDispatch} = require(path.join(config.RENDER_PATH, 'lib/dispatcher'));
 setDispatch(dispatch);

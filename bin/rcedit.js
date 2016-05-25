@@ -2,6 +2,7 @@
  * Created by Administrator on 2016/5/4.
  */
 var nodercedit = require('rcedit');
+var path = require('path');
 
 var options={
     'version-string':{
@@ -13,9 +14,10 @@ var options={
     },
     'file-version':'1.5.0',
     'product-version':'1.5.0',
-    'icon':'E:/enginer/resources/app/static/Titan.ico'
+    'icon':path.join(__dirname,'..','static/Titan.ico')
 };
-nodercedit("E:/enginer/Titan.exe", options, function(error)
+console.log(__dirname);
+nodercedit(path.join(__dirname,'..','..','..','Titan.exe'), options, function(error)
 {
     if(error)
         console.log(error);

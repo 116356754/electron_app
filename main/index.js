@@ -55,6 +55,7 @@ function init() {
     global.sharedObj.setts = setting.init();//加载配置
     console.log(JSON.stringify(global.sharedObj.setts));
     ipc.init();
+
     app.on('will-finish-launching', function (e) {
         log('will-finish-launching');
         //crashReporter.init()
@@ -65,7 +66,7 @@ function init() {
             downloadPath:app.getPath('downloads')
         });
         //createWindow();
-        //setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
+        setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
     auto.on('error',(err)=>console.log(err));

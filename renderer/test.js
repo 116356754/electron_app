@@ -1,6 +1,7 @@
 var config = require('../config');
+var path =require('path');
+var ver = require(path.join(config.COMM_PATH,'version'));
 
-var ver = require('./lib/version.js');
 var net_state = require('./lib/networkStatus.js');
 var nofi = require('./lib/noti.js');
 

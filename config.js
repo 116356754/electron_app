@@ -30,6 +30,7 @@ module.exports = {
     MAIN_PATH:path.join(__dirname, 'main'),
     STATIC_PATH: path.join(__dirname, 'static'),
     RENDER_PATH:path.join(__dirname, 'renderer'),
+    COMM_PATH:path.join(__dirname, 'common'),
     PPAPI_PATH: path.join(process.cwd(), 'ppapi'),
 
     PDF_URL: 'file://' + path.join(__dirname, 'renderer', 'lib', 'pdfjs/web/viewer.html?file='),

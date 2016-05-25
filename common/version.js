@@ -3,30 +3,38 @@
  */
 "use strict";
 
-const ver=require('process');
-const remote = require('electron').remote;
+var electron = require('electron');
+var app = electron.app;
+
+var process=require('process');
 var os = require('os');
+
+var isrender =require('./is-renderer');
 
 module.exports = {
     getProcessVersion,
     getElectronVersion,
     getAppVersion,
-    isWin7plusOS,
-    isWin8plusOS,
+    isWin7plusOS
 };
 
 function getProcessVersion () {
-    return ver.versions;
+    return process.versions;
 }
 
 function getElectronVersion()
 {
-    return ver.versions.electron
+    return process.versions.electron
 }
 
 function getAppVersion()
 {
-    return remote.app.getVersion();
+    if(isrender) {
+        var remote = electron.remote;
+        return remote.app.getVersion();
+    }
+    else
+        return electron.app.getVersion();
 }
 
 function isWin7plusOS()
@@ -45,26 +53,6 @@ function isWin7plusOS()
     else
     {
       console.log('win 7-');
-      return false;
-    }        
-}
-
-function isWin8plusOS()
-{    
-    var os_ver = os.release();
-    //var os_ver = '6.2.7601';
-    console.log('the release of the os is: ' + os_ver);
-    var ver = parseFloat(os_ver);
-    console.log(ver);
-    
-    if(ver>=6.2)
-    {
-      console.log('win 7+');
-      return true;
-    }        
-    else
-    {
-      console.log('win 7');
       return false;
     }        
 }
