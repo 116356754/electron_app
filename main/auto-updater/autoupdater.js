@@ -9,7 +9,7 @@ var fs = require('fs');
 const spawn = require('child_process').spawn;
 const updatewin = require('./update-internal');
 const util = require('util');
-
+const notifier = require('./updateNotifier');
 /*五个事件
  事件：'error'
  当更新发生错误的时候触发。
@@ -58,10 +58,12 @@ AutoUpdater.prototype.checkForUpdates = function () {
             return this.emit('update-not-available', update.frameMD5, update.appMD5);
         }
         this.emit('update-available', update.version, update.downloadurl);
+        notifier.createUpdateNotifier(update.version);
 
         updatewin.download(update.downloadurl, this.downloadPath, (error, exepath)=> {
             if (error != null)
                 return this.emitError(error);
+            notifier.updateNofierResult('update downloaded! we will install update app');
             this.emit('update-downloaded', exepath);
         });
     })
@@ -69,6 +71,8 @@ AutoUpdater.prototype.checkForUpdates = function () {
 
 AutoUpdater.prototype.quitAndInstall = function (exepath) {
     //squirrelUpdate.processStart()
+    notifier.closeUpdateNotifier();
+
     console.log(exepath);
 
     //启动更新程序程序，退出安装
@@ -92,6 +96,10 @@ AutoUpdater.prototype.quitAndInstall = function (exepath) {
 // Private: Emit both error object and message, this is to keep compatibility
 // with Old APIs.
 AutoUpdater.prototype.emitError = function (message) {
+    notifier.updateNofierResult('update fail:'+message);
+    setTimeout(()=>{
+        notifier.closeUpdateNotifier();
+    },2000);
     return this.emit('error', new Error(message), message)
 };
 

@@ -14,18 +14,9 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "app/static/TiTan.ico"
+!define MUI_ICON "app/static/logo.ico"
 
 !insertmacro MUI_PAGE_INSTFILES
-
-; Welcome page
-;!insertmacro MUI_PAGE_WELCOME
-; License page
-;!insertmacro MUI_PAGE_LICENSE "c:\path\to\licence\YourSoftwareLicence.txt"
-; Directory page
-;!insertmacro MUI_PAGE_DIRECTORY
-; Instfiles page
-;!insertmacro MUI_PAGE_INSTFILES
 
 !define MUI_FINISHPAGE_RUN "$PROGRAMFILES\Titan\Titan.exe"
 ; Finish page

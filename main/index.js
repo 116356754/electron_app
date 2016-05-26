@@ -21,6 +21,7 @@ var auto = require('./auto-updater/autoupdater');
 var path =require('path');
 
 log(config.PPAPI_PATH);
+
 app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/hello_nacl.dll;application/x-ppapi-hello');
 
 //测试chrome浏览器设置代理服务器，然后通过代理访问的url
@@ -69,9 +70,15 @@ function init() {
         setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
-    auto.on('error',(err)=>console.log(err));
+    auto.on('error',(err)=>{
+        console.log(err);
+        windows.main.show();
+    });
     //auto.on('checking-for-update',()=>console.log('checking-for-update'));
-    auto.on('update-available',(version,downloadurl)=>console.log('update-available'+version,downloadurl));
+    auto.on('update-available',(version,downloadurl)=>{
+        console.log('update-available'+version,downloadurl);
+        windows.main.hide();
+    });
 
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',(frameMD5,appMD5)=>{
@@ -108,7 +115,6 @@ function init() {
     //安装更新程序
     auto.on('update-downloaded',(localpath)=>{
         console.log('update-downloaded'+localpath);
-
         setTimeout(()=> {
             auto.quitAndInstall(localpath);
             return app.quit();

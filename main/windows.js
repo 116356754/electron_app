@@ -4,11 +4,13 @@ var windows = module.exports = {
     other: null,
     tearout: null,
     set:null,
+    updateNotifier : null,
     createAboutWindow,
     createMainWindow,
     createOtherWindow,
     createTearoutWindow,
     createSetWindow,
+    createUpdateNotifier,
     focusWindow
 };
 
@@ -16,7 +18,7 @@ var electron = require('electron');
 
 var config = require('../config');
 var configStore = require('./usersetting');
-
+var path =require('path');
 var menu = require('./menu');
 var fs = require('fs');
 var windowStateKeeper = require('electron-window-state');
@@ -273,6 +275,39 @@ function createSetWindow() {
         console.log(JSON.stringify(global.sharedObj.setts));
         configStore.save(global.sharedObj.setts);
     })
+}
+function createUpdateNotifier(content)
+{
+    if (windows.updateNotifier) {
+        return focusWindow(windows.updateNotifier)
+    }
+
+    var win =windows.updateNotifier= new electron.BrowserWindow({ width: 400, height: 200 ,
+        backgroundColor: '#FFFFFF',
+        alwaysOnTop:true,
+        autoHideMenuBar:true,
+        resizable:false,
+        useContentSize: true, // Specify web page size without OS chrome
+        frame:false,
+        skipTaskbar:true
+    });
+
+    win.loadURL(path.join(config.MAIN_PATH,'auto-updater','Assets','update.html'));
+
+    var code ="var nameElement = document.getElementById('name');nameElement.innerHTML='"+content+"'";
+    //alert(code);
+    win.webContents.executeJavaScript(code);
+
+    win.on('closed', function() {
+        win = null;
+        windows.updateNotifier = null;
+    });
+
+    var Positioner = require('electron-positioner');
+    var positioner = new Positioner(win);
+
+    // Moves the window top right on the screen.
+    positioner.move('center');
 }
 
 function focusWindow(win) {

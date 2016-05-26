@@ -9,7 +9,9 @@
   "dependencies": {
     "download-http": "0.0.4",
     "electron-localshortcut": "^0.6.0",
+    "electron-log": "^1.0.8",
     "electron-notifications": "0.0.3",
+    "electron-positioner": "^3.0.0",
     "electron-toaster": "^2.0.1",
     "electron-window-state": "^2.1.0",
     "fast-csv": "^2.0.0",
@@ -36,7 +38,8 @@
     "rcedit": "^0.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "rcedit": "node ./bin/rcedit.js",
+    "pack": "node ./bin/asar-pack.js"
   },
   "license": "ISC"
 }
