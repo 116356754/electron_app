@@ -17,7 +17,7 @@ var windows = module.exports = {
 var electron = require('electron');
 var log = require('./../common/logger');
 var config = require('../config');
-var configStore = require('./usersetting');
+var configStore = require('./userset');
 var path =require('path');
 var menu = require('./menu');
 var fs = require('fs');

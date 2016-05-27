@@ -10,6 +10,8 @@ const spawn = require('child_process').spawn;
 const updatewin = require('./update-internal');
 const util = require('util');
 const notifier = require('./updateNotifier');
+const electron =require('electron');
+const dialog = electron.dialog;
 /*五个事件
  事件：'error'
  当更新发生错误的时候触发。
@@ -57,14 +59,27 @@ AutoUpdater.prototype.checkForUpdates = function () {
         if (update.neeedUpdate == false) {
             return this.emit('update-not-available', update.frameMD5, update.appMD5);
         }
+        var index = dialog.showMessageBox({
+            type: "none",
+            title: 'update available',
+            message: 'Do you want to update application?',
+            buttons: ['Yes Now','Next Time']
+        });
+        if (index == 1)
+            return this.emitError("user don't want to update now");
+
         this.emit('update-available', update.version, update.downloadurl);
+
         notifier.createUpdateNotifier(update.version);
         notifier.updateNofierResult('Update application downloading...');
         updatewin.download(update.downloadurl, this.downloadPath, (error, exepath)=> {
             if (error != null)
                 return this.emitError(error);
             notifier.updateNofierResult('update downloaded! we will install update app');
-            this.emit('update-downloaded', exepath);
+
+            setTimeout(()=>{
+                this.emit('update-downloaded', exepath);
+            },5000);
         });
     })
 };
@@ -96,10 +111,10 @@ AutoUpdater.prototype.quitAndInstall = function (exepath) {
 // Private: Emit both error object and message, this is to keep compatibility
 // with Old APIs.
 AutoUpdater.prototype.emitError = function (message) {
-    notifier.updateNofierResult('update fail:'+message);
+    notifier.updateError(message);
     setTimeout(()=>{
         notifier.closeUpdateNotifier();
-    },2000);
+    },5000);
     return this.emit('error', new Error(message), message)
 };
 
