@@ -3,15 +3,14 @@
  */
 'use strict'
 
-//const app = require('electron').app;
+const util = require('util');
 const EventEmitter = require('events').EventEmitter;
 var fs = require('fs');
 const spawn = require('child_process').spawn;
+
 const updatewin = require('./update-internal');
-const util = require('util');
 const notifier = require('./updateNotifier');
-const electron =require('electron');
-const dialog = electron.dialog;
+
 /*五个事件
  事件：'error'
  当更新发生错误的时候触发。
@@ -59,14 +58,9 @@ AutoUpdater.prototype.checkForUpdates = function () {
         if (update.neeedUpdate == false) {
             return this.emit('update-not-available', update.frameMD5, update.appMD5);
         }
-        var index = dialog.showMessageBox({
-            type: "none",
-            title: 'update available',
-            message: 'Do you want to update application?',
-            buttons: ['Yes Now','Next Time']
-        });
-        if (index == 1)
-            return this.emitError("user don't want to update now");
+        var response =notifier.updateConfirm();
+        if (response == 1)//取消更新
+            return;
 
         this.emit('update-available', update.version, update.downloadurl);
 

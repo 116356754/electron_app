@@ -2,13 +2,28 @@
  * Created by Administrator on 2016/5/26.
  */
 var windows = require('../windows');
+const electron =require('electron');
+const dialog = electron.dialog;
+
 var path =require('path');
 module.exports = {
+    updateConfirm,
     updateNofierResult,
     createUpdateNotifier,
     updateError,
     closeUpdateNotifier
 };
+
+function updateConfirm(cb)
+{
+    return dialog.showMessageBox(windows.main,{
+        type: "question",
+        icon: __dirname+'/Assets/logo.ico',
+        title: 'update available',
+        message: 'Do you want to update application?',
+        buttons: ['Yes Now','Next Time']
+    });
+}
 
 function updateNofierResult(result)
 {
@@ -27,7 +42,7 @@ function updateError(err)
 {
     if(!windows.updateNotifier)
         windows.createUpdateNotifier('Update fail');
-    
+
     windows.updateNotifier.webContents.loadURL(path.join(__dirname,'Assets','error.html'));
     var code ="var resultElement = document.getElementById('error-info');resultElement.innerHTML='"+err+"'";
     windows.updateNotifier.webContents.executeJavaScript(code);
