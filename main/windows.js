@@ -15,7 +15,7 @@ var windows = module.exports = {
 };
 
 var electron = require('electron');
-
+var log = require('./../common/logger');
 var config = require('../config');
 var configStore = require('./usersetting');
 var path =require('path');
@@ -172,7 +172,7 @@ function createOtherWindow(url) {
     })
 };
 
-var log = require('./log');
+
 function createTearoutWindow(url, dom) {
     "use strict";
     if (windows.tearout) {

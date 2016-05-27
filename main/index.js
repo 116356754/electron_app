@@ -8,7 +8,7 @@ var ipcMain = electron.ipcMain;
 var config = require('../config');
 var crashReporter = require('../crash-reporter');
 var ipc = require('./ipc');
-var log = require('./log');
+//var console = require('./../common/log');
 var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
@@ -20,7 +20,7 @@ var dialog = electron.dialog;
 var auto = require('./auto-updater/autoupdater');
 var path =require('path');
 
-log(config.PPAPI_PATH);
+console.log(config.PPAPI_PATH);
 
 app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/hello_nacl.dll;application/x-ppapi-hello');
 
@@ -53,12 +53,14 @@ function init() {
     app.ipcReady = false; // main window has finished loading and IPC is ready
     app.isQuitting = false;
 
-    global.sharedObj.setts = setting.init();//加载配置
+    global.sharedObj.setts = setting.init();//加载用户配置
     console.log(JSON.stringify(global.sharedObj.setts));
+
     ipc.init();
-    log(path.join(process.cwd(),"resources",'app.asar'));
+
+    console.log(path.join(process.cwd(),"resources",'app.asar'));
     app.on('will-finish-launching', function (e) {
-        log('will-finish-launching');
+        console.log('will-finish-launching');
         //crashReporter.init()
         auto.setFeedURL({
             updateURL:config.AUTO_UPDATE_URL,
@@ -69,6 +71,7 @@ function init() {
         //createWindow();
         setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
+
 
     auto.on('error',(err)=>{
         console.log(err);
@@ -122,7 +125,7 @@ function init() {
     });
 
     app.on('ready', function () {
-        log('ready');
+        console.log('ready');
         menu.init();
         windows.createMainWindow();
         shortcuts.init();
@@ -135,7 +138,7 @@ function init() {
         toaster.init(windows.main);
         //log('Command line args:', argv)
         //processArgv(argv)
-        log('ipcReady');
+        console.log('ipcReady');
         //broadCastWSInfo();
     });
 
@@ -158,7 +161,7 @@ function onAppOpen(newArgv) {
     //newArgv = sliceArgv(newArgv)
 
     if (app.ipcReady) {
-        log('Second app instance opened, but was prevented:', newArgv);
+        console.log('Second app instance opened, but was prevented:', newArgv);
         windows.focusWindow(windows.main);
     }
     else {

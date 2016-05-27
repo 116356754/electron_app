@@ -11,7 +11,7 @@ var electron = require('electron');
 var app = electron.app;
 
 var config = require('../config');
-var log = require('./log');
+//var console = require('./../common/log');
 var windows = require('./windows');
 var locale = require("../static/lang.json");
 
@@ -26,14 +26,14 @@ function init() {
 }
 
 function toggleReload(){
-    log('toggleReload');
+    console.log('toggleReload');
     if (windows.main) {
         windows.main.reload();
     }
 }
 
 function toggleFullScreen(flag) {
-    log('toggleFullScreen %s', flag);
+    console.log('toggleFullScreen %s', flag);
     if (windows.main && windows.main.isVisible()) {
         flag = flag != null ? flag : !windows.main.isFullScreen();
         windows.main.setFullScreen(flag)
@@ -42,7 +42,7 @@ function toggleFullScreen(flag) {
 
 // Sets whether the window should always show on top of other windows
 function toggleFloatOnTop(flag) {
-    log('toggleFloatOnTop %s', flag);
+    console.log('toggleFloatOnTop %s', flag);
     if (windows.main) {
         flag = flag != null ? flag : !windows.main.isAlwaysOnTop();
         windows.main.setAlwaysOnTop(flag);
@@ -51,20 +51,20 @@ function toggleFloatOnTop(flag) {
 }
 
 function toggleDevTools() {
-    log('toggleDevTools');
+    console.log('toggleDevTools');
     if (windows.main) {
         windows.main.toggleDevTools();
     }
 }
 
 function onWindowShow() {
-    log('onWindowShow');
+    //log('onWindowShow');
     getMenuItem(locale[lang].menu.full).enabled = true;
     getMenuItem(locale[lang].menu.top).enabled = true
 }
 
 function onWindowHide() {
-    log('onWindowHide');
+    //log('onWindowHide');
     getMenuItem(locale[lang].menu.full).enabled = false;
     getMenuItem(locale[lang].menu.top).enabled = false
 }

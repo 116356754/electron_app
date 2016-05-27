@@ -9,7 +9,7 @@ var ipcMain = electron.ipcMain;
 var powerSaveBlocker = electron.powerSaveBlocker;
 var BrowserWindow = electron.BrowserWindow;
 
-var log = require('./log');
+//var console = require('./../common/log');
 var menu = require('./menu');
 var windows = require('./windows');
 var shortcuts = require('./shortcuts');
@@ -144,7 +144,7 @@ function init() {
 function setBounds(bounds, maximize) {
     // Do nothing in fullscreen
     if (!windows.main || windows.main.isFullScreen()) {
-        log('setBounds: not setting bounds because we\'re in full screen');
+        console.log('setBounds: not setting bounds because we\'re in full screen');
         return;
     }
 
@@ -152,13 +152,13 @@ function setBounds(bounds, maximize) {
     var willBeMaximized;
     if (maximize === true) {
         if (!windows.main.isMaximized()) {
-            log('setBounds: maximizing');
+            console.log('setBounds: maximizing');
             windows.main.maximize();
         }
         willBeMaximized = true
     } else if (maximize === false) {
         if (windows.main.isMaximized()) {
-            log('setBounds: unmaximizing');
+            console.log('setBounds: unmaximizing');
             windows.main.unmaximize();
         }
         willBeMaximized = false;
@@ -168,15 +168,15 @@ function setBounds(bounds, maximize) {
 
     // Assuming we're not maximized or maximizing, set the window size
     if (!willBeMaximized) {
-        log('setBounds: setting bounds to ' + JSON.stringify(bounds));
+        console.log('setBounds: setting bounds to ' + JSON.stringify(bounds));
         windows.main.setBounds(bounds, true);
     } else {
-        log('setBounds: not setting bounds because of window maximization');
+        console.log('setBounds: not setting bounds because of window maximization');
     }
 }
 
 function setAspectRatio(aspectRatio, extraSize) {
-    log('setAspectRatio %o %o', aspectRatio, extraSize);
+    console.log('setAspectRatio %o %o', aspectRatio, extraSize);
     if (windows.main) {
         windows.main.setAspectRatio(aspectRatio, extraSize);
     }
@@ -184,7 +184,7 @@ function setAspectRatio(aspectRatio, extraSize) {
 
 // Show progress bar. Valid range is [0, 1]. Remove when < 0; indeterminate when > 1.
 function setProgress(progress) {
-    log('setProgress %s', progress);
+    console.log('setProgress %s', progress);
     if (windows.main) {
         windows.main.setProgressBar(progress);
     }
@@ -192,13 +192,13 @@ function setProgress(progress) {
 
 function blockPowerSave() {
     powerSaveBlockID = powerSaveBlocker.start('prevent-display-sleep');
-    log('blockPowerSave %d', powerSaveBlockID);
+    console.log('blockPowerSave %d', powerSaveBlockID);
 }
 
 function unblockPowerSave() {
     if (powerSaveBlocker.isStarted(powerSaveBlockID)) {
         powerSaveBlocker.stop(powerSaveBlockID);
-        log('unblockPowerSave %d', powerSaveBlockID);
+        console.log('unblockPowerSave %d', powerSaveBlockID);
     }
 }
 
@@ -231,7 +231,7 @@ function onCreateTearoutWindow(event, argurl,dom) {
 
 function onMinimize(e,winid)
 {
-    log(winid+ ' Min');
+    console.log(winid+ ' Min');
     var win  = BrowserWindow.fromId(winid);
     if(win.isMinimized())
         return;
@@ -241,7 +241,7 @@ function onMinimize(e,winid)
 
 function onMaxmize(e,winid)
 {
-    log(winid+ ' Max');
+    console.log(winid+ ' Max');
     var win  = BrowserWindow.fromId(winid);
     if(win.isMaximized())
         win.unmaximize();
@@ -251,7 +251,7 @@ function onMaxmize(e,winid)
 
 function onClose(e,winid)
 {
-    log(winid+ ' Close');
+    console.log(winid+ ' Close');
     var win= BrowserWindow.fromId(winid);
     win.close();
 }

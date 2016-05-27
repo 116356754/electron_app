@@ -59,7 +59,7 @@ AutoUpdater.prototype.checkForUpdates = function () {
         }
         this.emit('update-available', update.version, update.downloadurl);
         notifier.createUpdateNotifier(update.version);
-
+        notifier.updateNofierResult('Update application downloading...');
         updatewin.download(update.downloadurl, this.downloadPath, (error, exepath)=> {
             if (error != null)
                 return this.emitError(error);
