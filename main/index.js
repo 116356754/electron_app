@@ -17,7 +17,7 @@ var setting = require("./userset");
 //var appcheck = require('./checksum');
 var cp = require('child_process');
 var dialog = electron.dialog;
-var auto = require('./auto-updater/autoupdater');
+var auto = require('elupdater');
 var path =require('path');
 
 console.log(config.PPAPI_PATH);
