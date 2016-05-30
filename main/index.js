@@ -14,8 +14,7 @@ var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
 var setting = require("./userset");
-//var appcheck = require('./checksum');
-var cp = require('child_process');
+var elcheck = require('elchecksum');
 var dialog = electron.dialog;
 var auto = require('elupdater');
 var path =require('path');
@@ -84,34 +83,23 @@ function init() {
     });
 
     //当没有更新的时候校验框架和app的哈希值
-    auto.on('update-not-available',(frameMD5,appMD5)=>{
-        console.log('update-not-available '+frameMD5+appMD5);
-        var child = cp.fork(config.MAIN_PATH+'/checksum/forkChild.js');
+    auto.on('update-not-available',(frameMD5,appMD5)=> {
+        console.log('update-not-available ' + frameMD5 + appMD5);
+        elcheck.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.cwd(),"resources",'electron'));
+        elcheck.checksumForRemote();
 
-        //发送文件路径
-        child.send({frameSum:frameMD5,appSum:appMD5,
-            exepath:process.execPath,
-            dirpath:path.join(process.cwd(),"resources",'app.asar')
-        });
+        elcheck.on('elcheck-validate',()=>console.log('check app and frame is validate!'));
 
-        //收到哈希的结果
-        child.on('message', function(m) {
-            console.log('hash result is :'+m.result);
-            child.kill('SIGTERM');
-            if(!m.result)
-            {
-                console.log('check app or frame is not validate!');
-                var index = dialog.showMessageBox({
-                    type: "none",
-                    title: 'checksum is not correct',
-                    message: 'your Titan application checksum is not correct, should reinstall application later!',
-                    buttons: ['OK']
-                });
-                if (index == 0)
-                   return app.quit();
-            }
-            else
-                console.log('check app and frame is validate!');
+        elcheck.on('elcheck-invalidate',()=>{
+            console.log('check app or frame is not validate!');
+            var index = dialog.showMessageBox({
+                type: "none",
+                title: 'checksum is not correct',
+                message: 'your Titan application checksum is not correct, should reinstall application later!',
+                buttons: ['OK']
+            });
+            if (index == 0)
+                return app.quit();
         });
     });
 
