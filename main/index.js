@@ -1,25 +1,24 @@
 var electron = require('electron');
-
 var app = electron.app;
+var dialog = electron.dialog;
 var ipcMain = electron.ipcMain;
 
-//var autoUpdater = require('./auto-update');
+var checksum = require('elchecksum');
+var auto = require('elupdater');
+var path =require('path');
 
 var config = require('../config');
 var crashReporter = require('../crash-reporter');
 var ipc = require('./ipc');
-//var console = require('./../common/log');
+var logger = require('ellog');
 var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
 var setting = require("./userset");
-var elcheck = require('elchecksum');
-var dialog = electron.dialog;
-var auto = require('elupdater');
-var path =require('path');
 
-console.log(config.PPAPI_PATH);
+logger.info('====================================');
+logger.info(config.PPAPI_PATH);
 
 app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/hello_nacl.dll;application/x-ppapi-hello');
 
@@ -53,13 +52,13 @@ function init() {
     app.isQuitting = false;
 
     global.sharedObj.setts = setting.init();//加载用户配置
-    console.log(JSON.stringify(global.sharedObj.setts));
+    logger.info(JSON.stringify(global.sharedObj.setts));
 
     ipc.init();
 
-    console.log(path.join(process.cwd(),"resources",'app.asar'));
+    logger.info(path.join(process.cwd(),"resources",'app.asar'));
     app.on('will-finish-launching', function (e) {
-        console.log('will-finish-launching');
+        logger.info('will-finish-launching');
         //crashReporter.init()
         auto.setFeedURL({
             updateURL:config.AUTO_UPDATE_URL,
@@ -67,45 +66,43 @@ function init() {
             appVer:app.getVersion(),
             downloadPath:app.getPath('downloads')
         });
-        //createWindow();
         setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
-
     auto.on('error',(err)=>{
-        console.log(err);
+        logger.error(err);
         windows.main.show();
     });
-    //auto.on('checking-for-update',()=>console.log('checking-for-update'));
+    //auto.on('checking-for-update',()=>logger('checking-for-update'));
     auto.on('update-available',(version,downloadurl)=>{
-        console.log('update-available'+version,downloadurl);
+        logger.info('update-available'+version,downloadurl);
         windows.main.hide();
     });
 
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',(frameMD5,appMD5)=> {
-        console.log('update-not-available ' + frameMD5 + appMD5);
-        elcheck.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.cwd(),"resources",'electron'));
-        elcheck.checksumForRemote();
+        logger.info('update-not-available ' + frameMD5 + appMD5);
+        checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.cwd(),"resources",'electron'));
+        checksum.checksumForRemote();
+    });
 
-        elcheck.on('elcheck-validate',()=>console.log('check app and frame is validate!'));
+    checksum.on('elcheck-validate',()=>logger('check app and frame is validate!'));
 
-        elcheck.on('elcheck-invalidate',()=>{
-            console.log('check app or frame is not validate!');
-            var index = dialog.showMessageBox({
-                type: "none",
-                title: 'checksum is not correct',
-                message: 'your Titan application checksum is not correct, should reinstall application later!',
-                buttons: ['OK']
-            });
-            if (index == 0)
-                return app.quit();
+    checksum.on('elcheck-invalidate',()=>{
+        logger.error('check app or frame is not validate!');
+        var index = dialog.showMessageBox({
+            type: "none",
+            title: 'checksum is not correct',
+            message: 'your Titan application checksum is not correct, should reinstall application later!',
+            buttons: ['OK']
         });
+        if (index == 0)
+            return app.quit();
     });
 
     //安装更新程序
     auto.on('update-downloaded',(localpath)=>{
-        console.log('update-downloaded'+localpath);
+        logger.info('update-downloaded'+localpath);
         setTimeout(()=> {
             auto.quitAndInstall(localpath);
             return app.quit();
@@ -113,7 +110,7 @@ function init() {
     });
 
     app.on('ready', function () {
-        console.log('ready');
+        logger.info('ready');
         menu.init();
         windows.createMainWindow();
         shortcuts.init();
@@ -124,10 +121,7 @@ function init() {
         var Toaster = require('electron-toaster');
         var toaster = new Toaster();
         toaster.init(windows.main);
-        //log('Command line args:', argv)
-        //processArgv(argv)
-        console.log('ipcReady');
-        //broadCastWSInfo();
+        logger.info('ipcReady');
     });
 
     app.on('before-quit', function (e) {
@@ -149,7 +143,7 @@ function onAppOpen(newArgv) {
     //newArgv = sliceArgv(newArgv)
 
     if (app.ipcReady) {
-        console.log('Second app instance opened, but was prevented:', newArgv);
+        logger.info('Second app instance opened, but was prevented:', newArgv);
         windows.focusWindow(windows.main);
     }
     else {

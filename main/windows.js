@@ -13,7 +13,7 @@ var windows = module.exports = {
 };
 
 var electron = require('electron');
-var log = require('./../common/logger');
+var log = require('ellog');
 var config = require('../config');
 var configStore = require('./userset');
 var path =require('path');
@@ -224,7 +224,7 @@ function createTearoutWindow(url, dom) {
     });
 
     win.on('tear_close',function(result){
-        log(result);
+        log.info(result);
     });
 
     win.once('closed', function () {
