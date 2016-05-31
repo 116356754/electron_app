@@ -61,12 +61,6 @@ function init() {
     //新建tearout窗口
     ipcMain.on('tearout-window', onCreateTearoutWindow);
 
-    ipcMain.on('min-window', onMinimize);
-
-    ipcMain.on('max-window', onMaxmize);
-
-    ipcMain.on('close-window', onClose);
-
     /*
     // Capture all events
     var messageQueueMainToWebTorrent = [];
@@ -227,31 +221,4 @@ function onCreateTearoutWindow(event, argurl,dom) {
     setTimeout(function () {
         windows.focusWindow(windows.tearout);
     }, 100);
-}
-
-function onMinimize(e,winid)
-{
-    console.log(winid+ ' Min');
-    var win  = BrowserWindow.fromId(winid);
-    if(win.isMinimized())
-        return;
-
-    win.minimize();
-}
-
-function onMaxmize(e,winid)
-{
-    console.log(winid+ ' Max');
-    var win  = BrowserWindow.fromId(winid);
-    if(win.isMaximized())
-        win.unmaximize();
-    else
-        win.maximize();
-}
-
-function onClose(e,winid)
-{
-    console.log(winid+ ' Close');
-    var win= BrowserWindow.fromId(winid);
-    win.close();
 }

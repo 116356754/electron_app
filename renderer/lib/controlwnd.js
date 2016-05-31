@@ -15,9 +15,19 @@ function init() {
     var t = titlebar();
     t.appendTo(document.body);
 
-    t.on('minimize', ()=>{ipcRenderer.send('min-window',remote.getCurrentWindow().id)});
+    t.on('close', function () {
+        remote.getCurrentWindow().close();
+    });
 
-    t.on('fullscreen',  ()=>{ipcRenderer.send('max-window',remote.getCurrentWindow().id)});
+    t.on('minimize', function () {
+        remote.getCurrentWindow().minimize();
+    });
 
-    t.on('close', ()=>{ipcRenderer.send('close-window',remote.getCurrentWindow().id)});
+    t.on('fullscreen', function () {
+        var win = remote.getCurrentWindow();
+        if (win.isMaximized())
+            win.unmaximize();
+        else
+            win.maximize();
+    });
 }
