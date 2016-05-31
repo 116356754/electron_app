@@ -30,4 +30,3 @@ var updateOnlineStatus = function() {
     
     ipcRenderer.send('online-status-changed', navigator.onLine);
 };
-

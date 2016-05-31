@@ -39,7 +39,27 @@ function savePDFFileAs () {
     })
 }
 
-var csv = require('../../common/csv.js');
+var csv = require('fast-csv');
+function exportcsv(jsonobj,filepath,cb)
+{
+    var csvStream = csv.createWriteStream({headers: true});
+
+    var writableStream = fs.createWriteStream(filepath);
+    writableStream.on("finish", function(){
+        console.log("DONE!");
+        cb(true);
+    });
+
+    writableStream.on('error',function(e){
+        console.log(e);
+        cb(false);
+    });
+
+    csv.write(jsonobj).pipe(writableStream);
+
+    csvStream.end();
+}
+
 function saveCSVFileAs(jsobj)
 {
     var opts = {
@@ -52,7 +72,7 @@ function saveCSVFileAs(jsobj)
     };
 
     dialog.showSaveDialog(remote.getCurrentWindow(), opts, function (savePath) {
-        csv.exportcsv(jsobj,savePath,function(result){
+        exportcsv(jsobj,savePath,function(result){
             "use strict";
             if(result)
                 alert('导出成功');
