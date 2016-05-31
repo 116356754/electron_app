@@ -86,7 +86,7 @@ function init() {
         checksum.checksumForRemote();
     });
 
-    checksum.on('elcheck-validate',()=>logger('check app and frame is validate!'));
+    checksum.on('elcheck-validate',()=>logger.info('check app and frame is validate!'));
 
     checksum.on('elcheck-invalidate',()=>{
         logger.error('check app or frame is not validate!');
@@ -141,7 +141,6 @@ function init() {
 // 当另一个实例运行的时候，这里将会被调用，我们需要激活应用的窗口
 function onAppOpen(newArgv) {
     //newArgv = sliceArgv(newArgv)
-
     if (app.ipcReady) {
         logger.info('Second app instance opened, but was prevented:', newArgv);
         windows.focusWindow(windows.main);
