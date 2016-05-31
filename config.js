@@ -33,7 +33,7 @@ module.exports = {
     COMM_PATH:path.join(__dirname, 'common'),
     PPAPI_PATH: path.join(process.cwd(), 'ppapi'),
 
-    PDF_URL: 'file://' + path.join(__dirname, 'renderer', 'lib', 'pdfjs/web/viewer.html?file='),
+    //PDF_URL: 'file://' + path.join(__dirname, 'renderer', 'lib', 'pdfjs/web/viewer.html?file='),
 
     WINDOW_ABOUT: 'file://' + path.join(__dirname, 'renderer', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'main.html'),

@@ -191,23 +191,8 @@ function deletePlugin() {
 }
 
 function showpdf(pdfurl){
-    "use strict";
-    console.log(pdfurl);
-    const remote = require('electron').remote;
-    const BrowserWindow = remote.BrowserWindow;
-
-    var win = new BrowserWindow({ width: 800, height: 600 ,
-        webPreferences: {
-            nodeIntegration: false,
-            webSecurity: false
-        },
-        title: 'PDF Viewer',
-        autoHideMenuBar:true
-    });
-
-    win.loadURL(config.PDF_URL+pdfurl);
-
-    win.on('closed', function() {
-        win = null;
-    });
+    //"use strict";
+    //console.log(pdfurl);
+    var pdfview = require('elpdfview');
+    pdfview.showpdf(pdfurl);
 }

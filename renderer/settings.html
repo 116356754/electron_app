@@ -169,8 +169,9 @@
 </div>
 
 <script>
-    var controlwnd= require('./lib/controlwnd.js');
-    controlwnd.init();
+    var titlebar = require('eltitlebar');
+    var t = titlebar();
+    t.appendTo(document.body);
 </script>
 
 <hr>
