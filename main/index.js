@@ -118,9 +118,6 @@ function init() {
     });
 
     app.on('ipcReady', function () {
-        var Toaster = require('electron-toaster');
-        var toaster = new Toaster();
-        toaster.init(windows.main);
         logger.info('ipcReady');
     });
 

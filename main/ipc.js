@@ -45,9 +45,6 @@ function init() {
     //新建窗口
     ipcMain.on('create-window', onCreateWindow);
 
-    //新建提示窗口
-    ipcMain.on('create-notiwindow', onCreateNotiWindow);
-
     //新建tearout窗口
     ipcMain.on('tearout-window', onCreateTearoutWindow);
 
@@ -111,14 +108,6 @@ function onCreateWindow(event, argurl) {
     setTimeout(function () {
         windows.focusWindow(windows.other);
     }, 100);
-}
-
-function onCreateNotiWindow(event, content) {
-    console.log('create notify window ' + content);
-    windows.createNotiWindow(content);
-    setTimeout(function () {
-     windows.focusWindow(windows.noti);
-     }, 100);
 }
 
 function onCreateTearoutWindow(event, argurl,dom) {

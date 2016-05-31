@@ -3,8 +3,6 @@ var path =require('path');
 var ver = require(path.join(config.COMM_PATH,'version'));
 
 var net_state = require('./lib/networkStatus.js');
-var nofi = require('./lib/noti.js');
-
 var ws = require('../common/websocket.js');
 var wss = require('../common/wss.js');
 
@@ -24,12 +22,8 @@ window.onload = function () {
     });
 };
 
-var showtoaster = function (title, content) {
-    //native window notification or jquery notification
-    nofi.showNotification(title, content);
-};
-
-var notifier = require('electron-notifications');
+var notifier = require('elnotifier');
+var sound = require('./lib/sound');
 var count =1;
 var shownoti =function()
 {
@@ -40,6 +34,7 @@ var shownoti =function()
         //icon: 'http://cl.ly/J49B/3951818241085781941.png',
         //buttons: ['close']
     });
+    sound.play('DONE');
 };
 
 //node aes
