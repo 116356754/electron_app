@@ -6,9 +6,6 @@
 const ipcRenderer = require('electron').ipcRenderer;
 const nativeImage = require('electron').nativeImage;
 
-// var config = require('../../config')
-// var windows = require('../../main/windows');
-
 module.exports = {
     init,
     isOnline
@@ -32,13 +29,5 @@ var updateOnlineStatus = function() {
     document.getElementById("netStatus").innerHTML = navigator.onLine ? 'online' : 'offline';
     
     ipcRenderer.send('online-status-changed', navigator.onLine);
-    
-    // if(isOnline())
-    // {
-    //     windows.main.setOverlayIcon(nativeImage.createEmpty(),'online');
-    // }
-    // else{
-    //     windows.main.setOverlayIcon(nativeImage.createEmpty(),'offline');
-    // }
 };
 

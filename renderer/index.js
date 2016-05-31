@@ -3,7 +3,6 @@ var EventEmitter = require('events');
 var fs = require('fs');
 var path = require('path');
 var remote = require('remote');
-console.log(process.cwd());
 
 var config = require(path.join(__dirname, '..', 'config.js'));
 var crashReporter = require(path.join(config.ROOT_PATH, 'crash-reporter.js'));
@@ -27,23 +26,18 @@ var windowState = {
 // and this IPC channel receives from and sends messages to the main process
 var ipcRenderer = electron.ipcRenderer;
 
-var clipboard = electron.clipboard;
-var dialog = remote.require('dialog');
-
 //var vdomLoop
 
 // Report crashes back to our server.
 // Not global JS exceptions, not like Rollbar, handles segfaults/core dumps only
 //crashReporter.init()
 
-init();
-
 /**
  * Called once when the application loads. (Not once per window.)
  * Connects to the torrent networks, sets up the UI and OS integrations like
  * the dock icon and drag+drop.
  */
-function init() {
+(function init() {
     // ...keyboard shortcuts
     document.addEventListener('keydown', function (e) {
         if (e.which === 27) { /* ESC means either exit fullscreen or go back */
@@ -62,7 +56,7 @@ function init() {
     window.setTimeout(delayedInit, 5000);
 
     console.timeEnd('init');
-}
+})();
 
 //预加载音频文件
 function delayedInit() {
@@ -74,10 +68,6 @@ function dispatch(action, ...args) {
     // Log dispatch calls, for debugging
 
     console.log('dispatch: %s %o', action, args);
-
-    if (action === 'setDimensions') {
-        setDimensions(args[0] /* dimensions */)
-    }
     if (action === 'toggleFullScreen') {
         ipcRenderer.send('toggleFullScreen', args[0] /* optional bool */)
     }
@@ -111,49 +101,6 @@ function setupIpc() {
     })
 }
 
-// Set window dimensions to match video dimensions or fill the screen
-function setDimensions(dimensions) {
-    // Don't modify the window size if it's already maximized
-    if (remote.getCurrentWindow().isMaximized()) {
-        windowState.bounds = null;
-        return
-    }
-
-    // Save the bounds of the window for later. See restoreBounds()
-    windowState.bounds = {
-        x: window.screenX,
-        y: window.screenY,
-        width: window.outerWidth,
-        height: window.outerHeight
-    };
-    windowState.wasMaximized = remote.getCurrentWindow().isMaximized;
-
-    // Limit window size to screen size
-    var screenWidth = window.screen.width;
-    var screenHeight = window.screen.height;
-    var aspectRatio = dimensions.width / dimensions.height;
-    var scaleFactor = Math.min(
-        Math.min(screenWidth / dimensions.width, 1),
-        Math.min(screenHeight / dimensions.height, 1)
-    );
-    var width = Math.floor(dimensions.width * scaleFactor);
-    var height = Math.floor(dimensions.height * scaleFactor);
-
-    // Center window on screen
-    var x = Math.floor((screenWidth - width) / 2);
-    var y = Math.floor((screenHeight - height) / 2);
-
-    ipcRenderer.send('setAspectRatio', aspectRatio);
-    ipcRenderer.send('setBounds', {x, y, width, height})
-}
-
-function restoreBounds() {
-    ipcRenderer.send('setAspectRatio', 0);
-    if (windowState.bounds) {
-        ipcRenderer.send('setBounds', windowState.bounds, false)
-    }
-}
-
 // Write state.saved to the JSON state file
 function saveState () {
     console.log('saving state');
@@ -161,7 +108,6 @@ function saveState () {
     //处理一些关闭前需要保存的数据
     ipcRenderer.send('savedState');
 }
-
 
 function onError(err) {
     console.error(err.stack || err)
