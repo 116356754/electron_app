@@ -4,11 +4,6 @@
 "use strict";
 
 var electron = require('electron');
-var app = electron.app;
-
-var process=require('process');
-var os = require('os');
-
 var is =require('elis');
 
 module.exports = {

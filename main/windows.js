@@ -15,7 +15,7 @@ var windows = module.exports = {
 var electron = require('electron');
 var log = require('ellog');
 var config = require('../config');
-var configStore = require('./userset');
+var configStore = require('./../common/userset');
 var path =require('path');
 var menu = require('./menu');
 var fs = require('fs');
@@ -276,6 +276,8 @@ function createSetWindow() {
 }
 
 function focusWindow(win) {
+    if(!win) return;
+
     if (win.isMinimized()) {
         win.restore();
     }

@@ -15,7 +15,7 @@ var menu = require('./menu');
 var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
-var setting = require("./userset");
+var setting = require("./../common/userset");
 
 logger.info('====================================');
 logger.info(config.PPAPI_PATH);

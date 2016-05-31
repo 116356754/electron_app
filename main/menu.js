@@ -20,9 +20,6 @@ var lang;
 function init() {
     appMenu = electron.Menu.buildFromTemplate(getAppMenuTemplate());
     electron.Menu.setApplicationMenu(appMenu);
-
-    //dockMenu = electron.Menu.buildFromTemplate(getDockMenuTemplate())
-    //if (app.dock) app.dock.setMenu(dockMenu)
 }
 
 function toggleReload(){

@@ -2,9 +2,9 @@ var config = require('../config');
 var path =require('path');
 var ver = require(path.join(config.COMM_PATH,'version'));
 
-var net_state = require('./lib/networkStatus.js');
-var ws = require('../common/websocket.js');
-var wss = require('../common/wss.js');
+var net_state = require('./../network/networkStatus.js');
+var ws = require('../network/websocket.js');
+var wss = require('../network/wss.js');
 
 window.onload = function () {
     document.getElementById("content").innerHTML = JSON.stringify(ver.getProcessVersion());
@@ -30,10 +30,13 @@ var shownoti =function()
 // Full Options
     count++;
     notifier.notify('Notification', {
-        message: 'Event begins in 10 minutes'+count,
-        //icon: 'http://cl.ly/J49B/3951818241085781941.png',
-        //buttons: ['close']
+        message: 'Event begins in 10 minutes'+count
+        //,icon: 'http://cl.ly/J49B/3951818241085781941.png'
+        //,buttons: ['close']
     });
+    //notifier.on('clicked', () => {
+    //    win.close();
+    //});
     sound.play('DONE');
 };
 
@@ -127,8 +130,6 @@ var exCSV = function () {
 };
 
 function expdf() {
-    var win = remote.getCurrentWindow();
-
     saveFiledlg.savePDFFileAs();
 }
 
@@ -168,8 +169,8 @@ function createPlugin() {
 
     var hwndhex=remote.getCurrentWindow().getNativeWindowHandle().reverse().toString('hex');
     plugin.setAttribute('hwnd',hwndhex);
-    plugin.setAttribute('exe',"E:/ppapi/sub.exe");
-    //plugin.setAttribute('exe',"C:/windows/system32/mspaint.exe");
+    //plugin.setAttribute('exe',"E:/ppapi/sub.exe");
+    plugin.setAttribute('exe',"C:/windows/system32/mspaint.exe");
 
     var container = document.getElementById("pluginContainer");
     container.appendChild(plugin);

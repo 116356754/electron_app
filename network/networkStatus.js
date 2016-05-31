@@ -3,6 +3,7 @@
  */
 "use strict";
 ///network status detect
+///used in render process
 const ipcRenderer = require('electron').ipcRenderer;
 const nativeImage = require('electron').nativeImage;
 

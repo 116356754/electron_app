@@ -1,11 +1,12 @@
 var electron = require('electron');
+var ipcRenderer = electron.ipcRenderer;
+var remote = electron.remote;
+
 var EventEmitter = require('events');
 var fs = require('fs');
 var path = require('path');
-var remote = require('remote');
 
 var config = require(path.join(__dirname, '..', 'config.js'));
-var crashReporter = require(path.join(config.ROOT_PATH, 'crash-reporter.js'));
 var {setDispatch} = require(path.join(config.RENDER_PATH, 'lib/dispatcher'));
 setDispatch(dispatch);
 
@@ -18,25 +19,12 @@ var windowState = {
     isMaximized:false,
     isMinimized:false
 };
-// This dependency is the slowest-loading, so we lazy load it
-//var Cast = null
-
-// Electron apps have two processes: a main process (node) runs first and starts
-// a renderer process (essentially a Chrome window). We're in the renderer process,
-// and this IPC channel receives from and sends messages to the main process
-var ipcRenderer = electron.ipcRenderer;
-
-//var vdomLoop
 
 // Report crashes back to our server.
 // Not global JS exceptions, not like Rollbar, handles segfaults/core dumps only
+//var crashReporter = require(path.join(config.ROOT_PATH, 'crash-reporter.js'));
 //crashReporter.init()
 
-/**
- * Called once when the application loads. (Not once per window.)
- * Connects to the torrent networks, sets up the UI and OS integrations like
- * the dock icon and drag+drop.
- */
 (function init() {
     // ...keyboard shortcuts
     document.addEventListener('keydown', function (e) {
@@ -84,6 +72,9 @@ function styleChanged(newstyle) {
     console.log('current style is ' + newstyle);
 }
 
+// Electron apps have two processes: a main process (node) runs first and starts
+// a renderer process (essentially a Chrome window). We're in the renderer process,
+// and this IPC channel receives from and sends messages to the main process
 function setupIpc() {
     ipcRenderer.send('ipcReady');
 
@@ -101,10 +92,9 @@ function setupIpc() {
     })
 }
 
-// Write state.saved to the JSON state file
+// save some thing before quite
 function saveState () {
     console.log('saving state');
-
     //处理一些关闭前需要保存的数据
     ipcRenderer.send('savedState');
 }

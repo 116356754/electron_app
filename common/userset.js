@@ -1,10 +1,17 @@
 'use strict';
-const app = require('electron').app;
+
 const fs = require('fs');
 const path = require('path');
-
+const electron = require('electron');
+const is =require('elis');
+var app;
 
 function readConfigFile() {
+    if(is.renderer())
+        app =electron.remote.app;
+    else
+        app =electron.app;
+
     var con ={};
     var configFile = path.join(app.getPath('userData'), 'settings.json');
     try {
@@ -17,6 +24,11 @@ function readConfigFile() {
 }
 
 function saveConfigFile(conf) {
+    if(is.renderer())
+        app =electron.remote.app;
+    else
+        app =electron.app;
+
     var configFile = path.join(app.getPath('userData'), 'settings.json');
     //console.log(JSON.stringify(conf));
     fs.writeFileSync(configFile, JSON.stringify(conf));
