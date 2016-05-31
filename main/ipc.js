@@ -23,24 +23,12 @@ function init() {
         console.timeEnd('init');
     });
 
-    ipcMain.on('setProgress', function (e, progress) {
-        setProgress(progress)
-    });
-
     ipcMain.on('toggleFullScreen', function (e, flag) {
         menu.toggleFullScreen(flag)
     });
 
-    ipcMain.on('setTitle', function (e, title) {
-        windows.main.setTitle(title)
-    });
-
     ipcMain.on('blockPowerSave', blockPowerSave);
     ipcMain.on('unblockPowerSave', unblockPowerSave);
-
-    ipcMain.on('focusWindow', function (e, windowName) {
-        windows.focusWindow(windows[windowName])
-    });
 
     //新建窗口
     ipcMain.on('create-window', onCreateWindow);
@@ -79,14 +67,6 @@ function init() {
          //if(!status)
          //   windows.main.setOverlayIcon(nativeImage.createFromPath(iconPath('dot.png')), total + ' items');
     });
-}
-
-// Show progress bar. Valid range is [0, 1]. Remove when < 0; indeterminate when > 1.
-function setProgress(progress) {
-    console.log('setProgress %s', progress);
-    if (windows.main) {
-        windows.main.setProgressBar(progress);
-    }
 }
 
 function blockPowerSave() {

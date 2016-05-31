@@ -108,11 +108,3 @@ function saveState () {
     //处理一些关闭前需要保存的数据
     ipcRenderer.send('savedState');
 }
-
-function onError(err) {
-    console.error(err.stack || err)
-}
-
-function onWarning(err) {
-    console.log('warning: %s', err.message || err)
-}
