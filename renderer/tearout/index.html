@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" , charset="utf-8"/>
+    <script src="tearout.js"></script>
+    <link rel="stylesheet" href="tearout.css">
+    <style>
+        body {
+            padding: 0;
+            overflow: hidden;
+            margin: 0;
+            pointer-events: all;
+        }
+
+        input {
+            pointer-events: all;
+        }
+    </style>
+    <script>
+        var electron =require('electron');
+        var  remote = electron.remote;
+        var ipc = electron.ipcRenderer;
+        var BrowserWindow = remote.BrowserWindow;
+
+        //获取父窗体的id
+        ipc.on('init',function(event,arg){
+            window.parentId = arg;
+            console.log(window.parentId);
+        });
+
+        //关闭时给父窗口返回dom对象
+        window.onbeforeunload = function(e) {
+            var domobj = document.body.innerHTML;
+            var parentBrowser = BrowserWindow.fromId(window.parentId);
+            console.log(parentBrowser.id);
+            parentBrowser.send('tear_close', remote.getCurrentWindow().id,JSON.stringify(domobj));
+        };
+    </script>
+</head>
+<body>
+<!--div class="tearout-container gold" id="tearout-container">
+    Name
+    <input type="text">
+    Email
+    <input type="text">
+</div-->
+
+<!--button onclick="sendDom()">发送dom元素</button-->
+</body>
+</html>

@@ -8,11 +8,7 @@ button,input,a,text,div {
 	width: 210px;
 	height: 210px;
 	margin:5px;
-}
-
-.tearout {
-	width: 210px;
-	height: 210px;
+	float:left
 }
 
 .steelblue {

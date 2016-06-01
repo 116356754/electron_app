@@ -18,6 +18,7 @@ var tray = require('./tray');
 var setting = require("./../common/userset");
 
 logger.info('====================================');
+
 logger.info(config.PPAPI_PATH);
 
 app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/hello_nacl.dll;application/x-ppapi-hello');

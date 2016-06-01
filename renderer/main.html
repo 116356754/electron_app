@@ -3,10 +3,9 @@
     <meta charset="utf-8"/>
     <script async src="index.js"></script>
     <script src="test.js"></script>
-
 </head>
 <body>
-<div class="title" style="display:inline-block; vertical-align:middle; padding: 3px">
+<!--div class="title" style="display:inline-block; vertical-align:middle; padding: 3px">
     <img src="../static/logo.ico" width="18" height="18">
     <span id="win-title"><font color="white">TiTan</font></span>
 </div>
@@ -15,7 +14,7 @@
     var titlebar = require('eltitlebar');
     var t = titlebar();
     t.appendTo(document.body);
-</script>
+</script-->
 <br>
 
 <div style="border:1px solid;">
@@ -37,14 +36,13 @@
             <!--object type="application/x-ppapi-hello" id="pluginId" style="border-style: solid;" width=480 height=300  >
                 <param name="parent" value="00123456" />
             </object-->
-
         </div>
         <br>
 
         <button onclick="showpdf('https://www.canon.com.cn/products/printer/pixma-fax/images/speedtest.pdf')">阅读网络pdf文件
         </button>
         <button onclick="showpdf('E:/11.pdf')">阅读本地pdf文件</button>
-        <!--webview src='E:\enginer\resources\app\plugins\pdfjs\web\viewer.html?file=E:/11.pdf'></webview-->
+        <!--webview src='http://www.baidu.com'></webview-->
     </fieldset>
 
     <fieldset>
@@ -74,7 +72,6 @@
         <legend>剥离子窗口</legend>
         <link rel="stylesheet" href="tearout/tearout.css">
         <script src="tearout/tearout.js"></script>
-
         <div class="tearout-container gold" id="tearout-container">
             Name
             <input type="text" onchange="this.setAttribute('value', this.value);">
@@ -85,7 +82,19 @@
             <a href="http://www.baidu.com">百度</a>
             <button onclick="testinsertjs();">事件测试</button>
         </div>
-        <button onclick="tearout();">剥离</button>
+        <button onclick="tearout('tearout-container');">剥离左边</button>
+
+        <div class="tearout-container gold" id="tearout-container2">
+            Name
+            <input type="text" onchange="this.setAttribute('value', this.value);">
+            <br>
+            Email
+            <input type="text" onchange="this.setAttribute('value', this.value);">
+            <br>
+            <a href="http://www.sina.com">sina</a>
+            <button onclick="testinsertjs();">事件测试</button>
+        </div>
+        <button onclick="tearout('tearout-container2');">剥离右边</button>
 
     </fieldset>
 

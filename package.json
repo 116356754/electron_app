@@ -12,7 +12,7 @@
     "electron-positioner": "^3.0.0",
     "electron-window-state": "^2.1.0",
     "elis": "^1.0.0",
-    "ellog": "^1.1.0",
+    "ellog": "^1.2.0",
     "elnotifier": "^1.0.0",
     "elpdfview": "^1.0.0",
     "eltitlebar": "^1.2.0",

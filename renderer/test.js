@@ -6,6 +6,8 @@ var net_state = require('./../network/networkStatus.js');
 var ws = require('../network/websocket.js');
 var wss = require('../network/wss.js');
 
+var logger = require('ellog');
+
 window.onload = function () {
     document.getElementById("content").innerHTML = JSON.stringify(ver.getProcessVersion());
 
@@ -97,8 +99,13 @@ var shareobj_get = function (key) {
 //create new window
 var createOtherWindow = function () {
     var config = require('../config');
-    const ipcRenderer = require('electron').ipcRenderer;
-    ipcRenderer.send('create-window', config.WINDOW_OTHER);
+
+    const remote = require('electron').remote;
+    const BrowserWindow = remote.BrowserWindow;
+
+    var win = new BrowserWindow({ width: 800, height: 600 });
+
+    win.loadURL(config.WINDOW_OTHER);
 };
 
 var sendMessage = function (target, content) {
@@ -133,23 +140,29 @@ function expdf() {
     saveFiledlg.savePDFFileAs();
 }
 
-var tearout =function()
+var tearoutWins ={};
+var tearout =function(domId)
 {
-    "use strict";
-    console.log(JSON.stringify(document.getElementById('tearout-container').outerHTML));
+    var tearout =require('./tearout/index');
+    var winid =tearout.createTearoutWindow(JSON.stringify(document.getElementById(domId).outerHTML),
+        remote.getCurrentWindow().id
+    );
 
-    var config = require('../config');
+    //保存创建的子窗口的id与对应的domid的关系
+    tearoutWins[winid] = domId;
+
+    //在父窗口中对该dom元素进行隐藏
+    document.getElementById(domId).style.display='none';
+
     const ipcRenderer = require('electron').ipcRenderer;
-    ipcRenderer.send('tearout-window', config.WINDOW_TEAROUT,JSON.stringify(document.getElementById('tearout-container').outerHTML));
-
-    document.getElementById('tearout-container').style.display='none';
-
     //分离出去的dom元素窗体的关闭时候，恢复父窗体的dom元素，并重新复制上修改后的dom
-    ipcRenderer.once('wt-tear_close',function(e,msg){
+    ipcRenderer.on('tear_close',function(e,id,msg){
         console.log('main window recv wt-tear_close:' + msg);
-        var oldnode = document.getElementById('tearout-container');
+        var oldnode = document.getElementById(tearoutWins[id]);
         oldnode.outerHTML =JSON.parse(msg);
-    })
+
+        delete  tearoutWins[id];
+    });
 };
 
 var callcppaddon = function()

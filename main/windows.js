@@ -1,19 +1,15 @@
 var windows = module.exports = {
     about: null,
     main: null,
-    other: null,
-    tearout: null,
     set:null,
     createAboutWindow,
     createMainWindow,
-    createOtherWindow,
-    createTearoutWindow,
     createSetWindow,
     focusWindow
 };
 
 var electron = require('electron');
-var log = require('ellog');
+var logger = require('ellog');
 var config = require('../config');
 var configStore = require('./../common/userset');
 var path =require('path');
@@ -40,7 +36,10 @@ function createAboutWindow() {
         minimizable: false,
         maximizable: false,
         fullscreen: false,
-        skipTaskbar: true
+        skipTaskbar: true,
+        webPreferences: {
+            preload:path.join(__dirname,'titlepreload.js')
+        }
     });
 
     win.loadURL(config.WINDOW_ABOUT);
@@ -87,6 +86,8 @@ function createMainWindow() {
         //height: 800,
         webPreferences: {
             plugins: true
+           // ,nodeIntegration:false
+            , preload:path.join(__dirname,'titlepreload.js')
         },
         frame:config.HAVE_FRAME
     });
@@ -109,16 +110,16 @@ function createMainWindow() {
     win.on('leave-full-screen', () => menu.onToggleFullScreen(false));
 
     win.on('close', function (e) {
+        logger.info('main window will close');
         if (!electron.app.isQuitting) {
             e.preventDefault();
-            win.send('dispatch', 'pause');
-            win.hide();
+            //win.hide();
         }
 
         var setts = global.sharedObj.setts;
         console.log(setts['closeToTray']);
         if (!setts['closeToTray']) {
-            setTimeout(() => electron.app.quit(), 1000);
+            setTimeout(() => electron.app.quit(), 200);
         }
     });
 
@@ -133,106 +134,6 @@ function createMainWindow() {
     win.on('closed', function () {
         windows.main = null;
     })
-}
-
-function createOtherWindow(url) {
-    if (windows.other) {
-        return focusWindow(windows.other)
-    }
-    var win = windows.other = new electron.BrowserWindow({
-        //backgroundColor: '#ECECEC',
-        show: false,
-        center: true,
-        resizable: false,
-        icon: config.APP_ICON + '.png',
-        title: config.APP_WINDOW_TITLE + '-other',
-        useContentSize: true, // Specify web page size without OS chrome
-        width: 600,
-        height: 480,
-        minimizable: false,
-        maximizable: false,
-        fullscreen: false,
-        skipTaskbar: false
-    });
-    win.loadURL(url);
-
-    // No window menu
-    win.setMenu(null);
-
-    console.log('other windows id is:' + win.id);
-
-    win.webContents.on('did-finish-load', function () {
-        win.show()
-    });
-
-    win.once('closed', function () {
-        windows.other = null;
-    })
-};
-
-
-function createTearoutWindow(url, dom) {
-    "use strict";
-    if (windows.tearout) {
-        return focusWindow(windows.tearout)
-    }
-
-    var win = windows.tearout = new electron.BrowserWindow({
-        //backgroundColor: '#ECECEC',
-        show: false,
-        center: true,
-        resizable: false,
-        icon: config.APP_ICON + '.png',
-        title: config.APP_WINDOW_TITLE + '-tearout' + Math.random(),
-        useContentSize: true, // Specify web page size without OS chrome
-        minimizable: false,
-        maximizable: false,
-        width: 230,
-        height: 210,
-        fullscreen: false,
-        skipTaskbar: false
-    });
-    win.parentwnd = windows.main;
-
-    win.loadURL(url);
-
-    // No window menu
-    win.setMenu(null);
-
-    console.log('tearout windows id is:' + win.id);
-    console.log('tearout windows hwnd is:' + win.getNativeWindowHandle().reverse().toString('hex'));
-    win.webContents.on('did-finish-load', function () {
-        win.show();
-        //win.toggleDevTools();
-    });
-
-    win.webContents.on('dom-ready', function () {
-        //execute js
-        var jscode = "var div = document.createElement('div');document.body.appendChild(div);div.outerHTML =" + dom;
-        //console.log(jscode);
-        win.webContents.executeJavaScript(jscode);
-
-        //insert js
-        jscode='var script = document.createElement("script");script.src = "./tearout.js";'+'document.body.appendChild(script);';
-        console.log(jscode);
-        win.webContents.executeJavaScript(jscode);
-
-        //insert css
-        console.log(config.TEAROUT_CSS);
-        var tearout_css = fs.readFileSync(config.TEAROUT_CSS).toString();
-        win.webContents.insertCSS(tearout_css);
-    });
-
-    win.on('tear_close',function(result){
-        log.info(result);
-    });
-
-    win.once('closed', function () {
-        win = null;
-        windows.tearout = null;
-        //show sub dom
-        windows.main.webContents.executeJavaScript("document.getElementById('tearout-container').style.display=''");
-    });
 }
 
 function createSetWindow() {
@@ -253,7 +154,10 @@ function createSetWindow() {
         maximizable: false,
         fullscreen: false,
         skipTaskbar: false,
-        frame:config.HAVE_FRAME
+        frame:config.HAVE_FRAME,
+        webPreferences: {
+            preload:path.join(__dirname,'titlepreload.js')
+        }
     });
 
     win.loadURL(config.WINDOW_SET);
