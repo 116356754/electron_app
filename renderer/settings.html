@@ -133,6 +133,9 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
+            //设置窗体的标题栏
+            //document.getElementById('win-title').innerText = 'TiTan Set';
+
             var lang = setts["lang"];
             console.log(JSON.stringify(setts));
             //document.getElementById("title").innerHTML = locale[lang].settings.title;
@@ -162,19 +165,6 @@
     </script>
 </head>
 <body>
-
-<!--div class="title" style="display:inline-block; vertical-align:middle;">
-    <img src="../static/logo.ico" width="18" height="18">
-    <span id="win-title"><font color="white">TiTan Settings</font></span>
-</div-->
-
-<!--script>
-    var titlebar = require('eltitlebar');
-    var t = titlebar();
-    t.appendTo(document.body);
-</script-->
-
-<hr>
 
 <form action="javascript:save()" id="settings">
 

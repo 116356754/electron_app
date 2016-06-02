@@ -7,6 +7,7 @@
     "url": "https://github.com/116356754/electron_app/issues"
   },
   "dependencies": {
+    "elbarpreload": "^1.1.0",
     "elchecksum": "^1.1.0",
     "electron-localshortcut": "^0.6.0",
     "electron-positioner": "^3.0.0",
@@ -15,7 +16,7 @@
     "ellog": "^1.2.0",
     "elnotifier": "^1.0.0",
     "elpdfview": "^1.0.0",
-    "eltitlebar": "^1.2.0",
+    "eltitlebar": "^1.3.0",
     "elupdater": "^1.3.0",
     "fast-csv": "^2.0.0",
     "iconv-lite": "^0.4.13",

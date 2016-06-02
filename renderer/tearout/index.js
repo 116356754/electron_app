@@ -25,10 +25,14 @@ function createTearoutWindow(dom, parentId) {
         minimizable: false,
         maximizable: false,
         width: 230,
-        height: 210,
+        height: 240,
         fullscreen: false,
         skipTaskbar: true,
-        alwaysOnTop:true
+        alwaysOnTop:true,
+        webPreferences: {
+            preload: require.resolve('elbarpreload')
+        },
+        frame:false
     });
     win.loadURL(path.join(__dirname, 'index.html'));
 

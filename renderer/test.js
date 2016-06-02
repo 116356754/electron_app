@@ -103,7 +103,11 @@ var createOtherWindow = function () {
     const remote = require('electron').remote;
     const BrowserWindow = remote.BrowserWindow;
 
-    var win = new BrowserWindow({ width: 800, height: 600 });
+    var win = new BrowserWindow({
+        width: 800, height: 600, webPreferences: {
+            preload: require.resolve('elbarpreload')
+        }
+    });
 
     win.loadURL(config.WINDOW_OTHER);
 };
@@ -162,6 +166,7 @@ var tearout =function(domId)
         oldnode.outerHTML =JSON.parse(msg);
 
         delete  tearoutWins[id];
+
     });
 };
 
@@ -205,3 +210,4 @@ function showpdf(pdfurl){
     var pdfview = require('elpdfview');
     pdfview.showpdf(pdfurl);
 }
+

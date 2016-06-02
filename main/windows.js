@@ -38,7 +38,7 @@ function createAboutWindow() {
         fullscreen: false,
         skipTaskbar: true,
         webPreferences: {
-            preload:path.join(__dirname,'titlepreload.js')
+            preload:require.resolve('elbarpreload')
         }
     });
 
@@ -87,7 +87,7 @@ function createMainWindow() {
         webPreferences: {
             plugins: true
            // ,nodeIntegration:false
-            , preload:path.join(__dirname,'titlepreload.js')
+            , preload:require.resolve('elbarpreload')
         },
         frame:config.HAVE_FRAME
     });
@@ -156,7 +156,7 @@ function createSetWindow() {
         skipTaskbar: false,
         frame:config.HAVE_FRAME,
         webPreferences: {
-            preload:path.join(__dirname,'titlepreload.js')
+            preload:require.resolve('elbarpreload')
         }
     });
 
