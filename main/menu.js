@@ -7,30 +7,31 @@ module.exports = {
 };
 
 var electron = require('electron');
-
 var app = electron.app;
 
+var logger =require('ellog');
+
 var config = require('../config');
-//var console = require('./../common/log');
 var windows = require('./windows');
 var locale = require("../static/lang.json");
 
 var appMenu;
 var lang;
 function init() {
+    logger.info('框架菜单栏开始初始化');
     appMenu = electron.Menu.buildFromTemplate(getAppMenuTemplate());
     electron.Menu.setApplicationMenu(appMenu);
 }
 
 function toggleReload(){
-    console.log('toggleReload');
+    logger.info('主界面刷新');
     if (windows.main) {
         windows.main.reload();
     }
 }
 
 function toggleFullScreen(flag) {
-    console.log('toggleFullScreen %s', flag);
+    logger.info('主界面是否全屏： %s', flag);
     if (windows.main && windows.main.isVisible()) {
         flag = flag != null ? flag : !windows.main.isFullScreen();
         windows.main.setFullScreen(flag)
@@ -39,7 +40,7 @@ function toggleFullScreen(flag) {
 
 // Sets whether the window should always show on top of other windows
 function toggleFloatOnTop(flag) {
-    console.log('toggleFloatOnTop %s', flag);
+    logger.info('主界面是否最前端显示: %s', flag);
     if (windows.main) {
         flag = flag != null ? flag : !windows.main.isAlwaysOnTop();
         windows.main.setAlwaysOnTop(flag);
@@ -48,7 +49,7 @@ function toggleFloatOnTop(flag) {
 }
 
 function toggleDevTools() {
-    console.log('toggleDevTools');
+    logger.info('主界面打开调试工具窗口');
     if (windows.main) {
         windows.main.toggleDevTools();
     }

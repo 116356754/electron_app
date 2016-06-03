@@ -7,46 +7,44 @@
         const ipcRenderer = require('electron').ipcRenderer;
 
         var remote = require('electron').remote;
-        var shareobj_set =function(key,value)
-        {
-            remote.getGlobal('sharedObj')[key] =value;
+        var shareobj_set = function (key, value) {
+            remote.getGlobal('sharedObj')[key] = value;
         };
 
-        var shareobj_get=function(key)
-        {
+        var shareobj_get = function (key) {
             "use strict";
             var value = remote.getGlobal('sharedObj')[key];
             alert(value);
             return value;
         };
 
-        window.onload =function()
-        {
+        window.onload = function () {
             ipcRenderer.send('ipcReadyOther');
-            ipcRenderer.on('wt-msg', function(e, msg){
+            ipcRenderer.on('wt-msg', function (e, msg) {
                 //alert('other window recv:'+msg);
-                document.getElementById('recwt-msg').value=msg;
+                document.getElementById('recwt-msg').value = msg;
             });
         };
 
-        var sendMessage=function(target,content)
-        {
-            var ipc =require('electron').ipcRenderer;
-            ipc.send('wt-msg',  target, content);
+        var sendMessage = function (target, content) {
+            var ipc = require('electron').ipcRenderer;
+            ipc.send('wt-msg', target, content);
         };
 
     </script>
 </head>
-<br>
+<body>
 接收的信息：<input type="text" id='recwt-msg' width="200px"/>
 </br>
 目标窗口标题：<input type="text" id='target-title' width="200px"/>
 <input type="text" id='msg'/>
-<button onclick="sendMessage(document.getElementById('target-title').value,document.getElementById('msg').value);">发送异步消息</button>
+<button onclick="sendMessage(document.getElementById('target-title').value,document.getElementById('msg').value);">
+    发送异步消息
+</button>
 </br>
 
 <button onclick="shareobj_set('count',2000)">设置共享值</button>
 <button onclick="shareobj_get('count')">获取共享值</button>
-
+<button onclick="window.close()">关闭</button>
 </body>
 </html>

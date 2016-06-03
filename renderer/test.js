@@ -104,7 +104,9 @@ var createOtherWindow = function () {
     const BrowserWindow = remote.BrowserWindow;
 
     var win = new BrowserWindow({
-        width: 800, height: 600, webPreferences: {
+        backgroundColor: '#FFF',
+        width: 800, height: 600, frame:false,
+        webPreferences: {
             preload: require.resolve('elbarpreload')
         }
     });
@@ -166,7 +168,6 @@ var tearout =function(domId)
         oldnode.outerHTML =JSON.parse(msg);
 
         delete  tearoutWins[id];
-
     });
 };
 
@@ -209,5 +210,12 @@ function showpdf(pdfurl){
     //console.log(pdfurl);
     var pdfview = require('elpdfview');
     pdfview.showpdf(pdfurl);
+}
+
+function webview()
+{
+    var webview = document.getElementById("foo");
+
+    alert(webview.getTitle());
 }
 

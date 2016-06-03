@@ -6,6 +6,7 @@
 </head>
 <body>
 
+
 <div style="border:1px solid;">
     Electron平台版本信息：
     <p id='content'></p>
@@ -27,11 +28,13 @@
             </object-->
         </div>
         <br>
-
+        <a href="other.html">页面跳转</a>
         <button onclick="showpdf('https://www.canon.com.cn/products/printer/pixma-fax/images/speedtest.pdf')">阅读网络pdf文件
         </button>
         <button onclick="showpdf('E:/11.pdf')">阅读本地pdf文件</button>
-        <!--webview src='http://www.baidu.com'></webview-->
+
+        <!--iframe src='http://www.baidu.com'></iframe-->
+        <button onclick="webview()">webview</button>
     </fieldset>
 
     <fieldset>

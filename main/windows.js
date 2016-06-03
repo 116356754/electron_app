@@ -8,14 +8,17 @@ var windows = module.exports = {
     focusWindow
 };
 
+var fs = require('fs');
+var path =require('path');
+
 var electron = require('electron');
+
+var windowStateKeeper = require('electron-window-state');
 var logger = require('ellog');
+
 var config = require('../config');
 var configStore = require('./../common/userset');
-var path =require('path');
 var menu = require('./menu');
-var fs = require('fs');
-var windowStateKeeper = require('electron-window-state');
 
 function createAboutWindow() {
     if (windows.about) {
@@ -62,6 +65,7 @@ function createMainWindow() {
         return focusWindow(windows.main)
     }
 
+    logger.info('创建主界面窗口');
     const mainWindowState = windowStateKeeper({
         defaultWidth: 1000,
         defaultHeight: 800
@@ -94,10 +98,11 @@ function createMainWindow() {
 
     mainWindowState.manage(win);
 
+    logger.info('主界面URL是:%s', config.WINDOW_MAIN);
     win.loadURL(config.WINDOW_MAIN);
 
-    console.log('main windows hwnd is:' + win.getNativeWindowHandle().reverse().toString('hex'));
-    console.log('other windows id is:' + win.id);
+    logger.info('主界面窗口句柄是:%s', win.getNativeWindowHandle().reverse().toString('hex'));
+    logger.info('主界面窗口ID是:%s', win.id);
 
     win.webContents.on('dom-ready', function () {
         menu.onToggleFullScreen()
@@ -110,7 +115,7 @@ function createMainWindow() {
     win.on('leave-full-screen', () => menu.onToggleFullScreen(false));
 
     win.on('close', function (e) {
-        logger.info('main window will close');
+        logger.info('主窗口接收到close事件');
         if (!electron.app.isQuitting) {
             e.preventDefault();
             //win.hide();
@@ -132,6 +137,7 @@ function createMainWindow() {
     });
 
     win.on('closed', function () {
+        logger.info('主窗口接收到closed事件');
         windows.main = null;
     })
 }

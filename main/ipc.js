@@ -8,15 +8,17 @@ var ipcMain = electron.ipcMain;
 var powerSaveBlocker = electron.powerSaveBlocker;
 var BrowserWindow = electron.BrowserWindow;
 
+var logger = require('ellog');
+
 var menu = require('./menu');
 var windows = require('./windows');
-
-var logger = require('ellog');
 
 // has to be a number, not a boolean, and undefined throws an error
 var powerSaveBlockID = 0;
 
 function init() {
+    logger.info('初始化主进程的IPC通讯接口,监听消息');
+
     ipcMain.on('ipcReady', function (e) {
         app.ipcReady = true;
         app.emit('ipcReady');
