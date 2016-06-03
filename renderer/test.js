@@ -111,7 +111,7 @@ var createOtherWindow = function () {
         }
     });
 
-    win.loadURL(config.WINDOW_OTHER);
+    win.loadURL(__dirname+'/other.html');
 };
 
 var sendMessage = function (target, content) {

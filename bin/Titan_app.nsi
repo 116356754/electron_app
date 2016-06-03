@@ -30,7 +30,6 @@
 
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Titan.exe"
 
-
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
@@ -38,9 +37,12 @@ OutFile "Titan_app.exe"
 ;InstallDir "$PROGRAMFILES\Titan"
 ;ShowInstDetails show
 ;ShowUnInstDetails show
-InstallDir "$PROGRAMFILES\Titan\resources\"
+;InstallDir "$PROGRAMFILES\Titan\resources\"
 
+;InstallDir "R0\resources\"
+  
 Function .onInit
+ 
   SetSilent silent
   ${nsProcess::KillProcess} "Titan.exe" $R2
   Sleep 2000
@@ -48,13 +50,15 @@ FunctionEnd
 
 Section "MainSection" SEC01
   SetOverwrite on
-  
-  SetOutPath "$INSTDIR"
+  ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Titan.exe" "Path"
+;MessageBox MB_OK  "你应用路径为$R0" IDOK
+;InstallDir "$PROGRAMFILES\Titan"
+  SetOutPath "$R0\resources\"
   File /r "electron_app\resources\*.*"
 SectionEnd
 
 Function .onInstSuccess
-   Exec "$PROGRAMFILES\Titan\Titan.exe"
+   Exec "$R0\Titan.exe"
    ;MessageBox MB_OK "资源文件更新成功,请重启打开应用程序"
 FunctionEnd
 

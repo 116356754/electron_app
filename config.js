@@ -16,8 +16,8 @@ module.exports = {
     APP_VERSION: APP_VERSION,
     APP_WINDOW_TITLE: APP_NAME,
 
-    AUTO_UPDATE_URL: 'http://127.0.0.1:8087/update/SVersion.json',
-    AUTO_UPDATE_CHECK_STARTUP_DELAY: 500 * 1000 /* 5 seconds */,
+    AUTO_UPDATE_URL: 'http://127.0.0.1:8088/update/SVersion.json',
+    AUTO_UPDATE_CHECK_STARTUP_DELAY: 50 * 1000 /* 5 seconds */,
 
     CRASH_REPORT_URL: 'https://www.erayt.com/desktop/crash-report',
 
@@ -38,8 +38,6 @@ module.exports = {
     //WINDOW_MAIN: 'file://' + path.join(__dirname, 'renderer', 'titan-elec','views/index/index.html'),
     //WINDOW_MAIN: 'http://localhost:8080',
     //WINDOW_ABOUT: 'http://www.codeproject.com/Lounge.aspx',
-
-    WINDOW_OTHER: 'file://' + path.join(__dirname, 'renderer', 'other.html'),
 
     WINDOW_SET: 'file://' + path.join(__dirname, 'renderer', 'settings.html'),
 
