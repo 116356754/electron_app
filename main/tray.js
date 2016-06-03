@@ -1,15 +1,14 @@
 module.exports = {
   init
 };
-
 var path = require('path');
-var electron = require('electron');
-var locale =require("../static/lang.json");
 
+var electron = require('electron');
 var app = electron.app;
 var Menu = electron.Menu;
 var Tray = electron.Tray;
 
+var locale =require("../static/lang.json");
 var windows = require('./windows');
 
 var trayIcon;

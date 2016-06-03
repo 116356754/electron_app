@@ -1,12 +1,12 @@
 var config = require('../config');
 var path =require('path');
-var ver = require(path.join(config.COMM_PATH,'version'));
 
+var logger = require('ellog');
+
+var ver = require(path.join(config.COMM_PATH,'version'));
 var net_state = require('./../network/networkStatus.js');
 var ws = require('../network/websocket.js');
 var wss = require('../network/wss.js');
-
-var logger = require('ellog');
 
 window.onload = function () {
     document.getElementById("content").innerHTML = JSON.stringify(ver.getProcessVersion());

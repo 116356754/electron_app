@@ -141,6 +141,10 @@ function init() {
         setTimeout(() => app.quit(), 2000);
         /* quit after 2 secs, at most */
     });
+
+    app.on('quit',(event,exitCode )=>{
+        logger.info('程序正在退出，退出代码为%d',exitCode);
+    })
 }
 
 // 当另一个实例运行的时候，这里将会被调用，我们需要激活应用的窗口
