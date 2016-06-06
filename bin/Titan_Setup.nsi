@@ -12,6 +12,7 @@
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 !include "nsProcess.nsh"
+!include "WinVer.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -50,6 +51,12 @@ ShowUnInstDetails show
 Function .onInit
   ${nsProcess::KillProcess} "Titan.exe" $R2
   Sleep 2000
+  ${If} ${AtLeastWin7}
+  	DetailPrint "OS???: windows 7+"
+  ${Else}
+  	MessageBox MB_OK "???????? Windows 7 ??????????"
+  	Abort
+  ${EndIf}
 FunctionEnd
 
 
@@ -57,11 +64,11 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite on
   File /r "electron_app\*.*"
-  
+
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\Titan.exe"
   CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\Titan.exe"
-  
+
 SectionEnd
 
 Section -AdditionalIcons
@@ -85,11 +92,11 @@ SectionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功地从你的计算机移除。"
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) ?????????????"
 FunctionEnd
 
 Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "你确实要完全移除 $(^Name) ，其及所有的组件？" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "???????? $(^Name) ?????????" IDYES +2
   Abort
 FunctionEnd
 
@@ -109,14 +116,14 @@ Section Uninstall
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
-  
+
   SetShellVarContext all
-  
+
   RMDir /r "$INSTDIR"
 
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk"
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\Website.lnk"
-  
+
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk"
   Delete "$SMPROGRAMS\${PRODUCT_NAME}"
 

@@ -11,6 +11,7 @@
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 !include "nsProcess.nsh"
+!include "WinVer.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -40,12 +41,26 @@ OutFile "Titan_app.exe"
 ;InstallDir "$PROGRAMFILES\Titan\resources\"
 
 ;InstallDir "R0\resources\"
-  
+
 Function .onInit
- 
+
   SetSilent silent
   ${nsProcess::KillProcess} "Titan.exe" $R2
   Sleep 2000
+
+  ${If} ${AtLeastWin7}
+  		DetailPrint "OS版本为: windows 7+"
+  	${Else}
+  	  MessageBox MB_OK "本程序只能安装在 Windows 7 版本以上的操作系统！"
+  	  Abort
+  	${EndIf}
+
+  	ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Titan.exe" "Path"
+  	Strcmp $R0 "" 0 NoAbort
+  	MessageBox MB_ICONEXCLAMATION|MB_OK "未找到程序安装目录，请运行完整安装程序后再运行本更新程序！"
+  	Abort
+  	NoAbort:
+  	  DetailPrint "程序已经安装"
 FunctionEnd
 
 Section "MainSection" SEC01
@@ -61,4 +76,3 @@ Function .onInstSuccess
    Exec "$R0\Titan.exe"
    ;MessageBox MB_OK "资源文件更新成功,请重启打开应用程序"
 FunctionEnd
-
