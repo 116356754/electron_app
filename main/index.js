@@ -87,7 +87,7 @@ function init() {
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',(frameMD5,appMD5)=> {
         logger.info('没有可用的应用更新，主框架的MD5值为:%s,资源app的MD5值为%s', frameMD5 , appMD5);
-        checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.cwd(),"resources",'electron'));
+        checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.resourcesPath,"app.asar"));
         checksum.checksumForRemote();
     });
 
