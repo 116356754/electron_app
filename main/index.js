@@ -6,7 +6,7 @@ var dialog = electron.dialog;
 var ipcMain = electron.ipcMain;
 
 var auto = require('elupdater');
-var checksum = require('elchecksum');
+//var checksum = require('elchecksum');
 var logger = require('ellog');
 
 var config = require('../config');
@@ -74,35 +74,24 @@ function init() {
         setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
-    auto.on('error',(err)=>{
+    auto.on('update-error',(err)=>{
         logger.error('自动更新期间出现错;%s',err);
         windows.main.show();
     });
+
+
     //auto.on('checking-for-update',()=>logger('checking-for-update'));
-    auto.on('update-available',(version,downloadurl)=>{
-        logger.info('有可用的应用更新，更新版本为:%s,更新地址为%s',version,downloadurl);
+    auto.on('update-available',(isframe,version,downloadurl,originMd5)=>{
+        var tips = isframe ? '主框架' : '资源包';
+        logger.info(tips+'有可用的更新，更新版本为:%s,更新地址为%s,更新程序MD5值为%s',version,downloadurl,originMd5);
         windows.main.hide();
     });
 
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',(frameMD5,appMD5)=> {
-        logger.info('没有可用的应用更新，主框架的MD5值为:%s,资源app的MD5值为%s', frameMD5 , appMD5);
-        checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.resourcesPath,"app.asar"));
-        checksum.checksumForRemote();
-    });
-
-    checksum.on('elcheck-validate',()=>logger.info('主框架与app的MD5值与远程服务端匹配成功!'));
-
-    checksum.on('elcheck-invalidate',()=>{
-        logger.error('主框架或者app的MD5值与远程服务端不匹配');
-        var index = dialog.showMessageBox({
-            type: "none",
-            title: 'checksum is not correct',
-            message: 'your Titan application checksum is not correct, should reinstall application later!',
-            buttons: ['OK']
-        });
-        if (index == 0)
-            return app.quit();
+        logger.info('没有可用的应用更新，主框架的MD5值为:%s,资源app的MD5值为%s', frameMD5 );
+        //checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.resourcesPath,"app.asar"));
+        //checksum.checksumForRemote();
     });
 
     //安装更新程序
