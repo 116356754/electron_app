@@ -48,6 +48,17 @@ if (!shouldQuit) {
     init();
 }
 
+function createMain()
+{
+    menu.init();
+    windows.createMainWindow();
+    shortcuts.init();
+    tray.init();
+
+    //连接远程websocket
+    //ws.init();
+}
+
 function init() {
     app.ipcReady = false; // main window has finished loading and IPC is ready
     app.isQuitting = false;
@@ -56,9 +67,6 @@ function init() {
     logger.info('用户的设置为:%s',JSON.stringify(global.sharedObj.setts));
 
     ipc.init();
-
-    //根据具体的情况来连接websocket服务端
-    ws.init();
 
     logger.info(path.join(process.cwd(),"resources",'app.asar'));
     app.on('will-finish-launching', function () {
@@ -73,25 +81,33 @@ function init() {
             appVer:app.getVersion(),
             downloadPath:app.getPath('downloads')
         });
-        logger.info('自动更新将在%s毫秒后开始检查更新',config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
-        setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
+        logger.info('自动更新:开始检查更新');
+        auto.checkForUpdates();
+        //logger.info('自动更新将在%s毫秒后开始检查更新',config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
+        //setTimeout(()=>auto.checkForUpdates(), config.AUTO_UPDATE_CHECK_STARTUP_DELAY);
     });
 
     auto.on('update-error',(err)=>{
         logger.error('自动更新期间出现错;%s',err);
-        windows.main.show();
+        createMain();
     });
 
     //auto.on('checking-for-update',()=>logger('checking-for-update'));
     auto.on('update-available',(isframe,version,downloadurl,originMd5)=>{
         var tips = isframe ? '主框架' : '资源包';
         logger.info(tips+'有可用的更新，更新版本为:%s,更新地址为%s,更新程序MD5值为%s',version,downloadurl,originMd5);
-        windows.main.hide();
+        //windows.main.hide();
     });
 
     //当没有更新的时候校验框架和app的哈希值
     auto.on('update-not-available',()=> {
         logger.info('没有可用的应用更新');
+        createMain();
+    });
+
+    auto.on('update-user-cancel',()=> {
+        logger.info('用户取消更新');
+        createMain();
     });
 
     //安装更新程序
@@ -106,11 +122,6 @@ function init() {
 
     app.on('ready', function () {
         logger.info('Electron完成初始化,app的ready事件被触发');
-
-        menu.init();
-        windows.createMainWindow();
-        shortcuts.init();
-        tray.init();
     });
 
     app.on('ipcReady', function () {
@@ -123,12 +134,15 @@ function init() {
 
         app.isQuitting = true;
         e.preventDefault();
-        windows.main.send('dispatch', 'saveState');
-        /* try to save state on exit */
-        ipcMain.once('savedState', () => app.quit());
+        if( windows.main) {
+            windows.main.send('dispatch', 'saveState');
+            /* try to save state on exit */
+            ipcMain.once('savedState', () => app.quit());
 
-        setTimeout(() => app.quit(), 2000);
-        /* quit after 2 secs, at most */
+            setTimeout(() => app.quit(), 2000);      /* quit after 2 secs, at most */
+        }
+        else
+            app.quit();
     });
 
     app.on('quit',(event,exitCode )=>{
