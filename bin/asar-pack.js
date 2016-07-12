@@ -11,7 +11,8 @@ var dest = path.join(__dirname,'..','..','app.asar');
 
 asar.createPackageWithOptions(src, dest,{
   dot:false,
-  unpackDir:"static"
+  unpackDir:"static",
+  unpack:'config.js'
 }, function() {
   console.log('done.');
 });
