@@ -90,8 +90,8 @@ function createMainWindow() {
         //height: 800,
         webPreferences: {
             plugins: true
-           // ,nodeIntegration:false
             , preload:require.resolve('elbarpreload')
+            // ,nodeIntegration:false
         },
         frame:config.HAVE_FRAME
     });

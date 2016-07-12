@@ -5,8 +5,10 @@ var logger = require('ellog');
 
 var ver = require(path.join(config.COMM_PATH,'version'));
 var net_state = require('./../network/networkStatus.js');
-var ws = require('../network/websocket.js');
-var wss = require('../network/wss.js');
+
+var remote = require('electron').remote;
+var electron = require('electron');
+var ipcRenderer = electron.ipcRenderer;
 
 window.onload = function () {
     document.getElementById("content").innerHTML = JSON.stringify(ver.getProcessVersion());
@@ -52,49 +54,25 @@ var decryptiontxt = function (enctext) {
     return encry.decryptiontxt(enctext);
 };
 
-//ws_client
+//websocket handle function
+ipcRenderer.on('ws-title-message', function (e, data) {
+    document.getElementById('ws-message').value += data.toString() + '\n';
+});
 
-var ws_cli;
-var ws_connect = function (host, port) {
-    ws_cli = new ws(host, port);
-    ws_cli.ws_connect();
-};
+//listen for websocket message from the main process
+var observer = remote.getGlobal('sharedObj').wsObserver;
+function setupWSObserver(title) {
+    observer.subscribe(remote.getCurrentWebContents(), title, 'ws-title-message');
+}
 
-var ws_disconnect = function () {
-    ws_cli.ws_stop();
-};
+function clearWSObserver(title) {
+    observer.unsubscribe(remote.getCurrentWebContents(), title);
+}
 
-var ws_send = function (msg) {
-    ws_cli.ws_sendmsg(msg);
-};
-
-//wss_client
-
-var wss_cli;
-var wss_connect = function (host, port) {
-    wss_cli = new wss(host, port);
-    wss_cli.wss_connect();
-};
-
-var wss_disconnect = function () {
-    wss_cli.wss_stop();
-};
-
-var wss_send = function (msg) {
-    wss_cli.wss_sendmsg(msg);
-};
-
-//share object used in render process
-var remote = require('electron').remote;
-var shareobj_set = function (key, value) {
-    remote.getGlobal('sharedObj')[key] = value;
-};
-
-var shareobj_get = function (key) {
-    var value = remote.getGlobal('sharedObj')[key];
-    alert(value);
-    return value;
-};
+function clearWSObserverAll()
+{
+    observer.unsubscribeAll(remote.getCurrentWebContents());
+}
 
 //create new window
 var createOtherWindow = function () {
@@ -210,12 +188,5 @@ function showpdf(pdfurl){
     //console.log(pdfurl);
     var pdfview = require('elpdfview');
     pdfview.showpdf(pdfurl);
-}
-
-function webview()
-{
-    var webview = document.getElementById("foo");
-
-    alert(webview.getTitle());
 }
 

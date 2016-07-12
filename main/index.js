@@ -6,7 +6,6 @@ var dialog = electron.dialog;
 var ipcMain = electron.ipcMain;
 
 var auto = require('elupdater');
-//var checksum = require('elchecksum');
 var logger = require('ellog');
 
 var config = require('../config');
@@ -17,6 +16,7 @@ var shortcuts = require('./shortcuts');
 var windows = require('./windows');
 var tray = require('./tray');
 var setting = require("./../common/userset");
+var ws =require('./ws');
 
 logger.info('====================================');
 
@@ -30,7 +30,7 @@ app.commandLine.appendSwitch('register-pepper-plugins', config.PPAPI_PATH + '/he
 
 //全局共享数据测试，将数据存在主进程的某个全局变量中，然后在多个渲染进程中使用 remote 模块来访问它
 //share object in render process and main process
-global.sharedObj = {count: '', setts: {}};
+global.sharedObj = { setts: {},wsObserver:{}};
 
 var shouldQuit = false;
 if (!shouldQuit) {
@@ -57,13 +57,16 @@ function init() {
 
     ipc.init();
 
+    //根据具体的情况来连接websocket服务端
+    ws.init();
+
     logger.info(path.join(process.cwd(),"resources",'app.asar'));
     app.on('will-finish-launching', function () {
         logger.info('app的will-finish-launching事件被触发');
         //crashReporter.init()
         logger.info('自动更新的远程服务端URL为:%s',config.AUTO_UPDATE_URL);
         logger.info('自动更新的自身主框架版本为:%s',process.versions.electron);
-        logger.info('自动更新的自身自由app版本为:%s',app.getVersion());
+        logger.info('自动更新的自身app版本为:%s',app.getVersion());
         auto.setFeedURL({
             updateURL:config.AUTO_UPDATE_URL,
             frameVer:process.versions.electron,
@@ -79,7 +82,6 @@ function init() {
         windows.main.show();
     });
 
-
     //auto.on('checking-for-update',()=>logger('checking-for-update'));
     auto.on('update-available',(isframe,version,downloadurl,originMd5)=>{
         var tips = isframe ? '主框架' : '资源包';
@@ -88,10 +90,8 @@ function init() {
     });
 
     //当没有更新的时候校验框架和app的哈希值
-    auto.on('update-not-available',(frameMD5,appMD5)=> {
-        logger.info('没有可用的应用更新，主框架的MD5值为:%s,资源app的MD5值为%s', frameMD5 );
-        //checksum.setFeedMD5(frameMD5,appMD5,process.execPath,path.join(process.resourcesPath,"app.asar"));
-        //checksum.checksumForRemote();
+    auto.on('update-not-available',()=> {
+        logger.info('没有可用的应用更新');
     });
 
     //安装更新程序

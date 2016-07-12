@@ -9,17 +9,17 @@ var remote = electron.remote;
 var logger = require('ellog');
 
 var config = require(path.join(__dirname, '..', 'config.js'));
-var {setDispatch} = require(path.join(config.RENDER_PATH,'lib', 'dispatcher'));
+var {setDispatch} = require(path.join(config.RENDER_PATH, 'lib', 'dispatcher'));
 setDispatch(dispatch);
 
-var sound = require(path.join(config.RENDER_PATH,'lib', 'sound'));
+var sound = require(path.join(config.RENDER_PATH, 'lib', 'sound'));
 
 var windowState = {
     bounds: null, /* {x, y, width, height } */
     isFocused: true,
     isFullScreen: false,
-    isMaximized:false,
-    isMinimized:false
+    isMaximized: false,
+    isMinimized: false
 };
 
 // Report crashes back to our server.
@@ -67,12 +67,12 @@ function dispatch(action, ...args) {
 }
 
 function langChanged(newlang) {
-    logger.info('客户设置应用的语言发生变化，语言改变为：%s',newlang);
+    logger.info('客户设置应用的语言发生变化，语言改变为：%s', newlang);
     console.log('current language is ' + newlang);
 }
 
 function styleChanged(newstyle) {
-    logger.info('客户设置应用的风格发生变化，风格改变为：%s',newstyle);
+    logger.info('客户设置应用的风格发生变化，风格改变为：%s', newstyle);
     console.log('current style is ' + newstyle);
 }
 
@@ -91,11 +91,11 @@ function setupIpc() {
 
     ipcRenderer.on('fullscreenChanged', function (e, isFullScreen) {
         windowState.isFullScreen = isFullScreen;
-    })
+    });
 }
 
 // save some thing before quite
-function saveState () {
+function saveState() {
     console.log('saving state');
     //处理一些关闭前需要保存的数据
     logger.info('处理一些关闭前需要保存的数据');

@@ -31,6 +31,27 @@
             ipc.send('wt-msg', target, content);
         };
 
+
+        //websocket handle function
+        ipcRenderer.on('ws-title-message', function (e, data) {
+            document.getElementById('ws-message').value += data.toString() + '\n';
+        });
+
+        //listen for websocket message from the main process
+        var observer = remote.getGlobal('sharedObj').wsObserver;
+        function setupWSObserver(title) {
+            observer.subscribe(remote.getCurrentWebContents(), title, 'ws-title-message');
+        }
+
+        function clearWSObserver(title) {
+            observer.unsubscribe(remote.getCurrentWebContents(), title);
+        }
+
+        window.onunload=function()
+        {
+            observer.unsubscribeAll(remote.getCurrentWebContents());
+        }
+
     </script>
 </head>
 <body>
@@ -45,6 +66,16 @@
 
 <button onclick="shareobj_set('count',2000)">设置共享值</button>
 <button onclick="shareobj_get('count')">获取共享值</button>
-<button onclick="window.close()">关闭</button>
+
+<fieldset>
+    <legend>通讯</legend>
+    <textarea id="ws-message" style="width:100%;height:80px;"></textarea>
+    <button onclick="setupWSObserver('Interface.Gold.Price')">订阅贵金属websocket消息</button>
+    <button onclick="setupWSObserver('Interface.Margin.Price')">订阅Margin websocket消息</button>
+    <button onclick="clearWSObserver('Interface.Gold.Price')">注销贵金属websocket消息</button>
+    <button onclick="clearWSObserver('Interface.Margin.Price')">注销Margin websocket消息</button>
+    <br>
+</fieldset>
+
 </body>
 </html>
